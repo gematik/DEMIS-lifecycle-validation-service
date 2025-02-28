@@ -1,0 +1,592 @@
+{
+  "scenarios": [
+    {
+      "scenarioId": "S_IM_V",
+      "description": "Initialmeldung - Informationen zum Vorliegen des Verdachts einer Erkrankung in Bezug auf eine der meldepflichtigen Krankheiten",
+      "composition": {
+        "status": [
+          "preliminary"
+        ]
+      },
+      "condition": {
+        "clinicalStatus": [
+          "active"
+        ],
+        "verificationStatus": [
+          "unconfirmed"
+        ]
+      },
+      "questionnaires": [
+        {
+          "questionnaire": {
+            "profileName": "DiseaseInformationCommon",
+            "status": [
+              "completed"
+            ]
+          }
+        },
+        {
+          "questionnaire": {
+            "profileName": "\\bDiseaseInformation[A-Za-z]{4}\\b",
+            "status": [
+              "completed"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "scenarioId": "S_FM_V2V",
+      "description": "Folgemeldung - Ergänzen/Korrigieren von Inhalten mit Bezug zum gemeldeten Verdacht",
+      "composition": {
+        "status": [
+          "preliminary"
+        ]
+      },
+      "condition": {
+        "clinicalStatus": [
+          "active"
+        ],
+        "verificationStatus": [
+          "unconfirmed"
+        ]
+      },
+      "questionnaires": [
+        {
+          "questionnaire": {
+            "profileName": "DiseaseInformationCommon",
+            "status": [
+              "completed",
+              "amended"
+            ]
+          }
+        },
+        {
+          "questionnaire": {
+            "profileName": "\\bDiseaseInformation[A-Za-z]{4}\\b",
+            "status": [
+              "completed",
+              "amended"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "scenarioId": "S_FM_V2I",
+      "description": "Folgemeldung - Information an das Gesundheitsamt, dass sich der bereits gemeldete Verdacht NICHT bestätigt hat",
+      "composition": {
+        "status": [
+          "final"
+        ]
+      },
+      "condition": {
+        "clinicalStatus": [
+          "inactive"
+        ],
+        "verificationStatus": [
+          "refuted"
+        ]
+      },
+      "questionnaires": [
+        {
+          "questionnaire": {
+            "profileName": "DiseaseInformationCommon",
+            "status": [
+              "completed",
+              "amended"
+            ]
+          }
+        },
+        {
+          "questionnaire": {
+            "profileName": "\\bDiseaseInformation[A-Za-z]{4}\\b",
+            "status": [
+              "completed",
+              "amended"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "scenarioId": "S_FM_V2E",
+      "description": "Folgemeldung - Information an das Gesundheitsamt, dass sich der bereits gemeldete Verdacht bestätigt hat",
+      "composition": {
+        "status": [
+          "final"
+        ]
+      },
+      "condition": {
+        "clinicalStatus": [
+          "active"
+        ],
+        "verificationStatus": [
+          "confirmed"
+        ]
+      },
+      "questionnaires": [
+        {
+          "questionnaire": {
+            "profileName": "DiseaseInformationCommon",
+            "status": [
+              "completed",
+              "amended"
+            ]
+          }
+        },
+        {
+          "questionnaire": {
+            "profileName": "\\bDiseaseInformation[A-Za-z]{4}\\b",
+            "status": [
+              "completed",
+              "amended"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "scenarioId": "S_FM_V2T",
+      "description": "Folgemeldung - Information an das Gesundheitsamt, dass sich der gemeldete Verdacht bestätigt hat und die betroffene Person in Bezug auf die gemeldete Krankheit verstorben ist",
+      "composition": {
+        "status": [
+          "final"
+        ]
+      },
+      "condition": {
+        "clinicalStatus": [
+          "active"
+        ],
+        "verificationStatus": [
+          "confirmed"
+        ]
+      },
+      "questionnaires": [
+        {
+          "questionnaire": {
+            "profileName": "DiseaseInformationCommon",
+            "status": [
+              "amended"
+            ],
+            "question": [
+              {
+                "question": "isDead",
+                "value": ["yes"]
+              }
+            ]
+          }
+        },
+        {
+          "questionnaire": {
+            "profileName": "\\bDiseaseInformation[A-Za-z]{4}\\b",
+            "status": [
+              "completed",
+              "amended"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "scenarioId": "S_IM_E",
+      "description": "Initialmeldung - Information zum Vorliegen einer Erkrankung in Bezug auf eine der meldepflichtigen Krankheiten",
+      "composition": {
+        "status": [
+          "final"
+        ]
+      },
+      "condition": {
+        "clinicalStatus": [
+          "active"
+        ],
+        "verificationStatus": [
+          "confirmed"
+        ]
+      },
+      "questionnaires": [
+        {
+          "questionnaire": {
+            "profileName": "DiseaseInformationCommon",
+            "status": [
+              "completed"
+            ]
+          }
+        },
+        {
+          "questionnaire": {
+            "profileName": "\\bDiseaseInformation[A-Za-z]{4}\\b",
+            "status": [
+              "completed"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "scenarioId": "S_FM_E2E",
+      "description": "Folgemeldung - Ergänzen/Korrigieren von Inhalten mit Bezug zur gemeldeten Erkrankung",
+      "composition": {
+        "status": [
+          "amended"
+        ]
+      },
+      "condition": {
+        "clinicalStatus": [
+          "active"
+        ],
+        "verificationStatus": [
+          "confirmed"
+        ]
+      },
+      "questionnaires": [
+        {
+          "questionnaire": {
+            "profileName": "DiseaseInformationCommon",
+            "status": [
+              "completed",
+              "amended"
+            ]
+          }
+        },
+        {
+          "questionnaire": {
+            "profileName": "\\bDiseaseInformation[A-Za-z]{4}\\b",
+            "status": [
+              "completed",
+              "amended"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "scenarioId": "S_FM_E2I",
+      "description": "Folgemeldung - Information an das Gesundheitsamt, dass das Vorliegen eine Erkrankung irrtümlich gemeldet wurde",
+      "composition": {
+        "status": [
+          "amended"
+        ]
+      },
+      "condition": {
+        "clinicalStatus": [
+
+        ],
+        "verificationStatus": [
+          "entered-in-error"
+        ]
+      },
+      "questionnaires": [
+        {
+          "questionnaire": {
+            "profileName": "DiseaseInformationCommon",
+            "status": [
+              "completed",
+              "amended"
+            ]
+          }
+        },
+        {
+          "questionnaire": {
+            "profileName": "\\bDiseaseInformation[A-Za-z]{4}\\b",
+            "status": [
+              "completed",
+              "amended"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "scenarioId": "S_FM_E2T",
+      "description": "Folgemeldung - Information an das Gesundheitsamt, dass die betroffene Person in Bezug auf die zuvor gemeldete Erkrankung verstorben ist",
+      "composition": {
+        "status": [
+          "amended"
+        ]
+      },
+      "condition": {
+        "clinicalStatus": [
+          "active"
+        ],
+        "verificationStatus": [
+          "confirmed"
+        ]
+      },
+      "questionnaires": [
+        {
+          "questionnaire": {
+            "profileName": "DiseaseInformationCommon",
+            "status": [
+              "amended"
+            ],
+            "question": [
+              {
+                "question": "isDead",
+                "value": ["yes"]
+              }
+            ]
+          }
+        },
+        {
+          "questionnaire": {
+            "profileName": "\\bDiseaseInformation[A-Za-z]{4}\\b",
+            "status": [
+              "completed",
+              "amended"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "scenarioId": "S_IM_T",
+      "description": "Initialmeldung - Information zum Vorliegen eines Todesfalls in Bezug auf eine der meldepflichtigen Krankheiten",
+      "composition": {
+        "status": [
+          "final"
+        ]
+      },
+      "condition": {
+        "clinicalStatus": [
+          "active"
+        ],
+        "verificationStatus": [
+          "confirmed"
+        ]
+      },
+      "questionnaires": [
+        {
+          "questionnaire": {
+            "profileName": "DiseaseInformationCommon",
+            "status": [
+              "completed"
+            ],
+            "question": [
+              {
+                "question": "isDead",
+                "value": ["yes"]
+              }
+            ]
+          }
+        },
+        {
+          "questionnaire": {
+            "profileName": "\\bDiseaseInformation[A-Za-z]{4}\\b",
+            "status": [
+              "completed"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "scenarioId": "S_FM_T2T",
+      "description": "Folgemeldung - Ergänzen/Korrigieren von Inhalten mit Bezug zum gemeldeten Todesfall",
+      "composition": {
+        "status": [
+          "amended"
+        ]
+      },
+      "condition": {
+        "clinicalStatus": [
+          "active"
+        ],
+        "verificationStatus": [
+          "confirmed"
+        ]
+      },
+      "questionnaires": [
+        {
+          "questionnaire": {
+            "profileName": "DiseaseInformationCommon",
+            "status": [
+              "completed",
+              "amended"
+            ],
+            "question": [
+              {
+                "question": "isDead",
+                "value": ["yes"]
+              }
+            ]
+          }
+        },
+        {
+          "questionnaire": {
+            "profileName": "\\bDiseaseInformation[A-Za-z]{4}\\b",
+            "status": [
+              "completed",
+              "amended"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "scenarioId": "S_FM_T2V",
+      "description": "Folgemeldung - Information an das Gesundheitsamt, dass der Tod irrtümlich gemeldet wurde und weiterhin ausschließlich ein Verdacht besteht",
+      "composition": {
+        "status": [
+          "amended"
+        ]
+      },
+      "condition": {
+        "clinicalStatus": [
+          "active"
+        ],
+        "verificationStatus": [
+          "unconfirmed"
+        ]
+      },
+      "questionnaires": [
+        {
+          "questionnaire": {
+            "profileName": "DiseaseInformationCommon",
+            "status": [
+              "amended"
+            ],
+            "question": [
+              {
+                "question": "isDead",
+                "value": ["no","ASKU","NASK"]
+              }
+            ]
+          }
+        },
+        {
+          "questionnaire": {
+            "profileName": "\\bDiseaseInformation[A-Za-z]{4}\\b",
+            "status": [
+              "completed",
+              "amended"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "scenarioId": "S_FM_T2E",
+      "description": "Folgemeldung - Information an das Gesundheitsamt, dass der Tod irrtümlich gemeldet wurde und weiterhin ausschließlich eine Erkrankung vorliegt",
+      "composition": {
+        "status": [
+          "amended"
+        ]
+      },
+      "condition": {
+        "clinicalStatus": [
+          "active"
+        ],
+        "verificationStatus": [
+          "confirmed"
+        ]
+      },
+      "questionnaires": [
+        {
+          "questionnaire": {
+            "profileName": "DiseaseInformationCommon",
+            "status": [
+              "amended"
+            ],
+            "question": [
+              {
+                "question": "isDead",
+                "value": ["no","ASKU","NASK"]
+              }
+            ]
+          }
+        },
+        {
+          "questionnaire": {
+            "profileName": "\\bDiseaseInformation[A-Za-z]{4}\\b",
+            "status": [
+              "completed",
+              "amended"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "scenarioId": "S_FM_T2I_1",
+      "description": "Folgemeldung - Information an das Gesundheitsamt, dass die betroffene Person zwar verstorben ist, ein Meldetatbestand aber nicht erfüllt ist",
+      "composition": {
+        "status": [
+          "amended"
+        ]
+      },
+      "condition": {
+        "clinicalStatus": [
+
+        ],
+        "verificationStatus": [
+          "entered-in-error"
+        ],
+        "note": "not_empty"
+      },
+      "questionnaires": [
+        {
+          "questionnaire": {
+            "profileName": "DiseaseInformationCommon",
+            "status": [
+              "completed",
+              "amended"
+            ]
+          }
+        },
+        {
+          "questionnaire": {
+            "profileName": "\\bDiseaseInformation[A-Za-z]{4}\\b",
+            "status": [
+              "completed",
+              "amended"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "scenarioId": "S_FM_T2I_2",
+      "description": "Folgemeldung - Information an das Gesundheitsamt, dass eine Person irrtümlich als verstorben in Bezug auf eine meldepflichtige Krankheit gemeldet wurde die letztlich nicht vorliegt",
+      "composition": {
+        "status": [
+          "amended"
+        ]
+      },
+      "condition": {
+        "clinicalStatus": [
+
+        ],
+        "verificationStatus": [
+          "entered-in-error"
+        ],
+        "note": "not_empty"
+      },
+      "questionnaires": [
+        {
+          "questionnaire": {
+            "profileName": "DiseaseInformationCommon",
+            "status": [
+              "amended"
+            ],
+            "question": [
+              {
+                "question": "isDead",
+                "value": ["no","ASKU","NASK"]
+              }
+            ]
+          }
+        },
+        {
+          "questionnaire": {
+            "profileName": "\\bDiseaseInformation[A-Za-z]{4}\\b",
+            "status": [
+              "completed",
+              "amended"
+            ]
+          }
+        }
+      ]
+    }
+  ]
+}
