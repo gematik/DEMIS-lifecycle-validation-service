@@ -1,0 +1,574 @@
+{
+  "resourceType": "Bundle",
+  "id": "6869f071-51ad-340d-94c6-a758b6ed63ed",
+  "meta": {
+    "lastUpdated": "2022-12-07T09:50:00.000+01:00",
+    "profile": [
+      "https://demis.rki.de/fhir/StructureDefinition/NotificationBundleDisease"
+    ]
+  },
+  "identifier": {
+    "system": "https://demis.rki.de/fhir/NamingSystem/NotificationBundleId",
+    "value": "d9853b35-c4b2-3e9a-805a-7c04e5ef0e32"
+  },
+  "type": "document",
+  "timestamp": "2022-12-07T09:50:00.000+01:00",
+  "entry": [
+    {
+      "fullUrl": "https://demis.rki.de/fhir/Composition/4a049c79-91c0-3d04-ba3c-0b5790263197",
+      "resource": {
+        "resourceType": "Composition",
+        "id": "4a049c79-91c0-3d04-ba3c-0b5790263197",
+        "meta": {
+          "lastUpdated": "2022-12-07T09:50:00.000+01:00",
+          "profile": [
+            "https://demis.rki.de/fhir/StructureDefinition/NotificationDiseaseRUND"
+          ]
+        },
+        "identifier": {
+          "system": "https://demis.rki.de/fhir/NamingSystem/NotificationId",
+          "value": "4670647a-b2cc-4b26-91f5-b2060b80d8c5"
+        },
+        "status": "final",
+        "type": {
+          "coding": [
+            {
+              "system": "http://loinc.org",
+              "code": "34782-3",
+              "display": "Infectious disease Note"
+            }
+          ]
+        },
+        "category": [
+          {
+            "coding": [
+              {
+                "system": "https://demis.rki.de/fhir/CodeSystem/notificationType",
+                "code": "6.1_2",
+                "display": "Meldung gemäß §6 Absatz 1, 2"
+              }
+            ]
+          }
+        ],
+        "subject": {
+          "reference": "Patient/277cd938-ec55-3b4f-aea0-c5062a341b46"
+        },
+        "date": "2022-12-07T01:00:00+01:00",
+        "author": [
+          {
+            "reference": "PractitionerRole/67beb923-90d9-3bc6-bd8b-fa0d474c2def"
+          }
+        ],
+        "title": "Meldung gemäß §6 Absatz 1, 2 IfSG",
+        "section": [
+          {
+            "title": "Diagnose",
+            "code": {
+              "coding": [
+                {
+                  "system": "https://demis.rki.de/fhir/CodeSystem/sectionCode",
+                  "code": "diagnosis",
+                  "display": "Diagnose"
+                }
+              ]
+            },
+            "entry": [
+              {
+                "reference": "Condition/5ca823d7-e357-3efa-b9af-a8def954c807"
+              }
+            ]
+          },
+          {
+            "title": "Meldetatbestandsübergreifende klinische und epidemiologische Angaben",
+            "code": {
+              "coding": [
+                {
+                  "system": "https://demis.rki.de/fhir/CodeSystem/sectionCode",
+                  "code": "generalClinAndEpiInformation",
+                  "display": "Meldetatbestandsübergreifende klinische und epidemiologische Angaben"
+                }
+              ]
+            },
+            "entry": [
+              {
+                "reference": "QuestionnaireResponse/8d158c38-ee3c-356d-a6ac-2bfc927dd943"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "fullUrl": "https://demis.rki.de/fhir/Organization/8640e112-6599-3337-9744-e93d0d929ee9",
+      "resource": {
+        "resourceType": "Organization",
+        "id": "8640e112-6599-3337-9744-e93d0d929ee9",
+        "meta": {
+          "profile": [
+            "https://demis.rki.de/fhir/StructureDefinition/NotifiedPersonFacility"
+          ]
+        },
+        "name": "Landliebe Krankenhaus",
+        "address": [
+          {
+            "line": [
+              "Eisstraße 25"
+            ],
+            "city": "Berlin",
+            "postalCode": "21481",
+            "country": "DE"
+          }
+        ],
+        "contact": [
+          {
+            "name": {
+              "use": "official",
+              "family": "Frost",
+              "given": [
+                "Frieda"
+              ]
+            }
+          }
+        ]
+      }
+    },
+    {
+      "fullUrl": "https://demis.rki.de/fhir/Patient/277cd938-ec55-3b4f-aea0-c5062a341b46",
+      "resource": {
+        "resourceType": "Patient",
+        "id": "277cd938-ec55-3b4f-aea0-c5062a341b46",
+        "meta": {
+          "profile": [
+            "https://demis.rki.de/fhir/StructureDefinition/NotifiedPerson"
+          ]
+        },
+        "name": [
+          {
+            "use": "official",
+            "family": "Brecht",
+            "given": [
+              "Jonas"
+            ]
+          }
+        ],
+        "telecom": [
+          {
+            "system": "phone",
+            "value": "030 123456789"
+          },
+          {
+            "system": "email",
+            "value": "bb@hfksjfhdaksljdfhsakl.de"
+          }
+        ],
+        "gender": "male",
+        "birthDate": "2022-12-05",
+        "address": [
+          {
+            "extension": [
+              {
+                "url": "https://demis.rki.de/fhir/StructureDefinition/AddressUse",
+                "valueCoding": {
+                  "system": "https://demis.rki.de/fhir/CodeSystem/addressUse",
+                  "code": "current"
+                }
+              },
+              {
+                "url": "https://demis.rki.de/fhir/StructureDefinition/FacilityAddressNotifiedPerson",
+                "valueReference": {
+                  "reference": "Organization/8640e112-6599-3337-9744-e93d0d929ee9"
+                }
+              }
+            ]
+          },
+          {
+            "extension": [
+              {
+                "url": "https://demis.rki.de/fhir/StructureDefinition/AddressUse",
+                "valueCoding": {
+                  "system": "https://demis.rki.de/fhir/CodeSystem/addressUse",
+                  "code": "primary"
+                }
+              }
+            ],
+            "line": [
+              "Bertolt-Brecht-Platz 1"
+            ],
+            "city": "Berlin",
+            "postalCode": "21481",
+            "country": "DE"
+          }
+        ]
+      }
+    },
+    {
+      "fullUrl": "https://demis.rki.de/fhir/Condition/5ca823d7-e357-3efa-b9af-a8def954c807",
+      "resource": {
+        "resourceType": "Condition",
+        "id": "5ca823d7-e357-3efa-b9af-a8def954c807",
+        "meta": {
+          "profile": [
+            "https://demis.rki.de/fhir/StructureDefinition/DiseaseRUND"
+          ]
+        },
+        "verificationStatus": {
+          "coding": [
+            {
+              "system": "http://terminology.hl7.org/CodeSystem/condition-ver-status",
+              "code": "confirmed"
+            }
+          ]
+        },
+        "code": {
+          "coding": [
+            {
+              "system": "https://demis.rki.de/fhir/CodeSystem/notificationDiseaseCategory",
+              "code": "rund",
+              "display": "Röteln (konnatal)"
+            }
+          ]
+        },
+        "subject": {
+          "reference": "Patient/277cd938-ec55-3b4f-aea0-c5062a341b46"
+        },
+        "onsetDateTime": "2022-12-05",
+        "recordedDate": "2022-12-07",
+        "evidence": [
+          {
+            "code": [
+              {
+                "coding": [
+                  {
+                    "system": "http://snomed.info/sct",
+                    "code": "13213009",
+                    "display": "Herzfehler, kongenital"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "code": [
+              {
+                "coding": [
+                  {
+                    "system": "http://snomed.info/sct",
+                    "code": "1148757008",
+                    "display": "Mikrozephalus"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "code": [
+              {
+                "coding": [
+                  {
+                    "system": "http://snomed.info/sct",
+                    "code": "193570009",
+                    "display": "Katarakt"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "code": [
+              {
+                "coding": [
+                  {
+                    "system": "http://snomed.info/sct",
+                    "code": "232297009+272033007",
+                    "display": "Innenohrtaubheit"
+                  }
+                ]
+              }
+            ]
+          }
+        ],
+        "note": [
+          {
+            "text": "Frühgeburt nach starken Wehen in SSW 35, hängt zusammen mit Fall RUVD_IG_01 mit ID 74a5b0de-b9b7-11ed-afa1-0242ac120002"
+          }
+        ]
+      }
+    },
+    {
+      "fullUrl": "https://demis.rki.de/fhir/Organization/77b13d7f-e222-4261-8ecb-3555f12b48c2",
+      "resource": {
+        "resourceType": "Organization",
+        "id": "77b13d7f-e222-4261-8ecb-3555f12b48c2",
+        "meta": {
+          "profile": [
+            "https://demis.rki.de/fhir/StructureDefinition/NotifierFacility"
+          ]
+        },
+        "identifier": [
+          {
+            "system": "http://fhir.de/sid/arge-ik/iknr"
+          }
+        ],
+        "type": [
+          {
+            "coding": [
+              {
+                "system": "https://demis.rki.de/fhir/CodeSystem/organizationType",
+                "code": "hospital"
+              }
+            ]
+          }
+        ],
+        "name": "Landliebe Krankenhaus – Meldestandort",
+        "telecom": [
+          {
+            "system": "phone",
+            "value": "309876543210",
+            "use": "work"
+          }
+        ],
+        "address": [
+          {
+            "line": [
+              "Eisstraße 25"
+            ],
+            "city": "Berlin",
+            "postalCode": "21481",
+            "country": "DE"
+          }
+        ]
+      }
+    },
+    {
+      "fullUrl": "https://demis.rki.de/fhir/PractitionerRole/67beb923-90d9-3bc6-bd8b-fa0d474c2def",
+      "resource": {
+        "resourceType": "PractitionerRole",
+        "id": "67beb923-90d9-3bc6-bd8b-fa0d474c2def",
+        "meta": {
+          "profile": [
+            "https://demis.rki.de/fhir/StructureDefinition/NotifierRole"
+          ]
+        },
+        "organization": {
+          "reference": "Organization/77b13d7f-e222-4261-8ecb-3555f12b48c2"
+        }
+      }
+    },
+    {
+      "fullUrl": "https://demis.rki.de/fhir/Organization/79935be3-0cf8-469d-b57e-d7e33285ec6d",
+      "resource": {
+        "resourceType": "Organization",
+        "id": "79935be3-0cf8-469d-b57e-d7e33285ec6d",
+        "meta": {
+          "profile": [
+            "http://hl7.org/fhir/StructureDefinition/Organization"
+          ]
+        },
+        "type": [
+          {
+            "coding": [
+              {
+                "system": "https://demis.rki.de/fhir/CodeSystem/organizationType",
+                "code": "hospitalLab"
+              }
+            ]
+          }
+        ],
+        "name": "Sankt Gertrauden Krankenhaus - Krankenhauslabor",
+        "telecom": [
+          {
+            "system": "phone",
+            "value": "309876543211",
+            "use": "work"
+          }
+        ],
+        "address": [
+          {
+            "line": [
+              "Dingsweg 321"
+            ],
+            "city": "Berlin",
+            "postalCode": "21481",
+            "country": "DE"
+          }
+        ]
+      }
+    },
+    {
+      "fullUrl": "https://demis.rki.de/fhir/Encounter/23b34ac8-ead9-3083-9236-ea870ea29d51",
+      "resource": {
+        "resourceType": "Encounter",
+        "id": "23b34ac8-ead9-3083-9236-ea870ea29d51",
+        "meta": {
+          "profile": [
+            "https://demis.rki.de/fhir/StructureDefinition/Hospitalization"
+          ]
+        },
+        "status": "in-progress",
+        "class": {
+          "system": "http://terminology.hl7.org/CodeSystem/v3-ActCode",
+          "code": "IMP",
+          "display": "inpatient encounter"
+        },
+        "serviceType": {
+          "coding": [
+            {
+              "system": "https://demis.rki.de/fhir/CodeSystem/hospitalizationServiceType",
+              "code": "3700",
+              "display": "Sonstige Fachabteilung"
+            }
+          ]
+        },
+        "subject": {
+          "reference": "Patient/277cd938-ec55-3b4f-aea0-c5062a341b46"
+        },
+        "period": {
+          "start": "2022-12-07"
+        },
+        "serviceProvider": {
+          "reference": "Organization/8640e112-6599-3337-9744-e93d0d929ee9"
+        }
+      }
+    },
+    {
+      "fullUrl": "https://demis.rki.de/fhir/QuestionnaireResponse/8d158c38-ee3c-356d-a6ac-2bfc927dd943",
+      "resource": {
+        "resourceType": "QuestionnaireResponse",
+        "id": "8d158c38-ee3c-356d-a6ac-2bfc927dd943",
+        "meta": {
+          "profile": [
+            "https://demis.rki.de/fhir/StructureDefinition/DiseaseInformationCommon"
+          ]
+        },
+        "questionnaire": "https://demis.rki.de/fhir/Questionnaire/DiseaseQuestionsCommon",
+        "status": "completed",
+        "subject": {
+          "reference": "Patient/277cd938-ec55-3b4f-aea0-c5062a341b46"
+        },
+        "item": [
+          {
+            "linkId": "isDead",
+            "answer": [
+              {
+                "valueCoding": {
+                  "system": "https://demis.rki.de/fhir/CodeSystem/yesOrNoAnswer",
+                  "code": "no",
+                  "display": "Nein"
+                }
+              }
+            ]
+          },
+          {
+            "linkId": "militaryAffiliation",
+            "answer": [
+              {
+                "valueCoding": {
+                  "system": "https://demis.rki.de/fhir/CodeSystem/militaryAffiliation",
+                  "code": "noReferenceToBundeswehr",
+                  "display": "Kein Bezug zur BW"
+                }
+              }
+            ]
+          },
+          {
+            "linkId": "labSpecimenTaken",
+            "answer": [
+              {
+                "valueCoding": {
+                  "system": "https://demis.rki.de/fhir/CodeSystem/yesOrNoAnswer",
+                  "code": "yes",
+                  "display": "Ja"
+                },
+                "item": [
+                  {
+                    "linkId": "labSpecimenLab",
+                    "answer": [
+                      {
+                        "valueReference": {
+                          "reference": "Organization/79935be3-0cf8-469d-b57e-d7e33285ec6d"
+                        }
+                      }
+                    ]
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "linkId": "hospitalized",
+            "answer": [
+              {
+                "valueCoding": {
+                  "system": "https://demis.rki.de/fhir/CodeSystem/yesOrNoAnswer",
+                  "code": "yes",
+                  "display": "Ja"
+                },
+                "item": [
+                  {
+                    "linkId": "hospitalizedGroup",
+                    "item": [
+                      {
+                        "linkId": "hospitalizedEncounter",
+                        "answer": [
+                          {
+                            "valueReference": {
+                              "reference": "Encounter/23b34ac8-ead9-3083-9236-ea870ea29d51"
+                            }
+                          }
+                        ]
+                      }
+                    ]
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "linkId": "infectProtectFacility",
+            "answer": [
+              {
+                "valueCoding": {
+                  "system": "https://demis.rki.de/fhir/CodeSystem/yesOrNoAnswer",
+                  "code": "no",
+                  "display": "Nein"
+                }
+              }
+            ]
+          },
+          {
+            "linkId": "placeExposure",
+            "answer": [
+              {
+                "valueCoding": {
+                  "system": "https://demis.rki.de/fhir/CodeSystem/yesOrNoAnswer",
+                  "code": "no",
+                  "display": "Nein"
+                }
+              }
+            ]
+          },
+          {
+            "linkId": "organDonation",
+            "answer": [
+              {
+                "valueCoding": {
+                  "system": "https://demis.rki.de/fhir/CodeSystem/yesOrNoAnswer",
+                  "code": "no",
+                  "display": "Nein"
+                }
+              }
+            ]
+          },
+          {
+            "linkId": "additionalInformation",
+            "answer": [
+              {
+                "valueString": "Hängt zusammen mit Fall RUVD_IG_01 mit ID 74a5b0de-b9b7-11ed-afa1-0242ac120002"
+              }
+            ]
+          }
+        ]
+      }
+    }
+  ]
+}

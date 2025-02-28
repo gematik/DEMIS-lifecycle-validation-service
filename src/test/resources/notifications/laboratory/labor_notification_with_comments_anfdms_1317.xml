@@ -1,0 +1,358 @@
+<!--
+  #%L
+  lifecycle-validation-service
+  %%
+  Copyright (C) 2025 gematik GmbH
+  %%
+  Licensed under the EUPL, Version 1.2 or - as soon they will be approved by the
+  European Commission – subsequent versions of the EUPL (the "Licence").
+  You may not use this work except in compliance with the Licence.
+  
+  You find a copy of the Licence in the "Licence" file or at
+  https://joinup.ec.europa.eu/collection/eupl/eupl-text-eupl-12
+  
+  Unless required by applicable law or agreed to in writing,
+  software distributed under the Licence is distributed on an "AS IS" basis,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either expressed or implied.
+  In case of changes by gematik find details in the "Readme" file.
+  
+  See the Licence for the specific language governing permissions and limitations under the Licence.
+  #L%
+  -->
+<Bundle xmlns="http://hl7.org/fhir">
+	<meta>
+		<lastUpdated value="2022-01-31T15:35:24.095+01:00"/>
+		<profile value="https://demis.rki.de/fhir/StructureDefinition/NotificationBundleLaboratory"/>
+	</meta>
+	<!-- this comment produces: Validation failed - Unrecognised property '@fhir_comments'  -->
+	<identifier>
+		<system value="https://demis.rki.de/fhir/NamingSystem/NotificationBundleId"/>
+		<value value="df0984f0-0455-4a34-8105-e2b2c382a3ac" />
+	</identifier>
+	<type value="document"/>
+	<timestamp value="2022-11-17T13:08:41+01:00" />
+	<entry>
+		<fullUrl value="https://demis.rki.de/fhir/Composition/6a24e56c-4139-482f-a9e6-7acd50f6dadc"/>
+		<resource>
+			<Composition xmlns="http://hl7.org/fhir">
+				<id value="6a24e56c-4139-482f-a9e6-7acd50f6dadc"/>
+				<meta>
+					<profile value="https://demis.rki.de/fhir/StructureDefinition/NotificationLaboratory"/>
+				</meta>
+				<identifier>
+					<!-- this comment produces: Validation failed - Unrecognised property '@fhir_comments'  -->
+					<system value="https://demis.rki.de/fhir/NamingSystem/NotificationId"/>
+					<value value="e36d32d8-0a9d-49d5-9610-19fa686043c5"/>
+				</identifier>
+				<status value="final"/>
+				<type>
+					<coding>
+						<system value="http://loinc.org"/>
+						<code value="34782-3"/>
+						<display value="Infectious disease Note"/>
+					</coding>
+				</type>
+				<category>
+					<coding>
+						<system value="http://loinc.org"/>
+						<code value="11502-2"/>
+						<display value="Laboratory report"/>
+					</coding>
+				</category>
+				<subject>
+					<reference value="Patient/723f4127-357f-4fe1-8288-b35ba8de5019"/>
+				</subject>
+				<date value="2022-11-17T13:08:41+01:00"/>
+				<author>
+					<reference value="PractitionerRole/4ca43487-835d-49b2-96a9-76d80102c5d1"/>
+				</author>
+				<title value="Erregernachweismeldung"/>
+				<section>
+					<code>
+						<coding>
+							<system value="http://loinc.org"/>
+							<code value="11502-2"/>
+							<display value="Laboratory report"/>
+						</coding>
+					</code>
+					<entry>
+						<reference value="DiagnosticReport/20779f3e-359d-45c7-ac5e-ba5953c44a07"/>
+					</entry>
+				</section>
+			</Composition>
+		</resource>
+	</entry>
+	<entry>
+		<fullUrl value="https://demis.rki.de/fhir/Patient/723f4127-357f-4fe1-8288-b35ba8de5019"/>
+		<resource>
+			<Patient xmlns="http://hl7.org/fhir">
+				<id value="723f4127-357f-4fe1-8288-b35ba8de5019"/>
+				<meta>
+					<profile value="https://demis.rki.de/fhir/StructureDefinition/NotifiedPerson"/>
+				</meta>
+				<name>
+					<use value="official"/>
+					<family value="Mustermann"/>
+					<given value="Max"/>
+				</name>
+				<telecom>
+					<system value="phone"/>
+					<value value="01799266567"/>
+				</telecom>
+                
+            <telecom>
+                <system value="email"/>
+                <value value="afri.cola88@gmail.com"/>
+            </telecom>
+				<gender value="male"/>
+				<birthDate value="1970-06-05"/>
+				<address>
+					<extension url="https://demis.rki.de/fhir/StructureDefinition/AddressUse">
+						<valueCoding>
+							<system value="https://demis.rki.de/fhir/CodeSystem/addressUse"/>
+							<code value="primary"/>
+							<display value="Hauptwohnsitz"/>
+						</valueCoding>
+					</extension>
+					<line value="Teststrasse 12">
+						<extension url="http://hl7.org/fhir/StructureDefinition/iso21090-ADXP-streetName">
+							<valueString value="Teststrasse"/>
+						</extension>
+						<extension url="http://hl7.org/fhir/StructureDefinition/iso21090-ADXP-houseNumber">
+							<valueString value="12"/>
+						</extension>
+					</line>
+					<city value="Test"/>
+                    <postalCode value="74321"/>
+					<country value="20422"/>
+				</address>
+			</Patient>
+		</resource>
+	</entry>
+	<entry>
+		<fullUrl value="https://demis.rki.de/fhir/PractitionerRole/4ca43487-835d-49b2-96a9-76d80102c5d1"/>
+		<resource>
+			<PractitionerRole xmlns="http://hl7.org/fhir">
+				<id value="4ca43487-835d-49b2-96a9-76d80102c5d1"/>
+				<meta>
+					<profile value="https://demis.rki.de/fhir/StructureDefinition/NotifierRole"/>
+				</meta>
+				<organization>
+					<reference value="Organization/a218744f-01ef-41b4-a8e5-f3dd6dba51da"/>
+				</organization>
+			</PractitionerRole>
+		</resource>
+	</entry>
+	<entry>
+		<fullUrl value="https://demis.rki.de/fhir/Organization/a218744f-01ef-41b4-a8e5-f3dd6dba51da"/>
+		<resource>
+			<Organization xmlns="http://hl7.org/fhir">
+				<id value="a218744f-01ef-41b4-a8e5-f3dd6dba51da"/>
+				<meta>
+					<profile value="https://demis.rki.de/fhir/StructureDefinition/NotifierFacility"/>
+				</meta>
+				<identifier>
+					<system value="https://fhir.kbv.de/NamingSystem/KBV_NS_Base_BSNR"/>
+					<value value="987654321"/>
+				</identifier>
+				<type>
+					<coding>
+						<system value="https://demis.rki.de/fhir/CodeSystem/organizationType"/>
+						<code value="othPrivatLab"/>
+						<display value="Sonstige private Untersuchungsstelle"/>
+					</coding>
+				</type>
+				<name value="Test Firma"/>
+				<telecom>
+					<system value="phone"/>
+					<value value="01799266567"/>
+				</telecom>
+				<telecom>
+					<system value="email"/>
+					<value value="med.manufaktur@gmx.net"/>
+				</telecom>
+				<address>
+					<line value="Hohenstaufenstrasse 18, 18">
+						<extension url="http://hl7.org/fhir/StructureDefinition/iso21090-ADXP-streetName">
+							<valueString value="Hohenstaufenstrasse 18,"/>
+						</extension>
+						<extension url="http://hl7.org/fhir/StructureDefinition/iso21090-ADXP-houseNumber">
+							<valueString value="18"/>
+						</extension>
+					</line>
+					<city value="Möglingen"/>
+					<postalCode value="71696"/>
+					<country value="20422"/>
+				</address>
+				<contact>
+					<name>
+						<text value="Andreas Friedrich"/>
+						<family value="Friedrich"/>
+						<given value="Andreas"/>
+					</name>
+				</contact>
+			</Organization>
+		</resource>
+	</entry>
+	<entry>
+		<fullUrl value="https://demis.rki.de/fhir/Organization/29571773-d8fa-4a7e-bf72-a6b93f71a814"/>
+		<resource>
+			<Organization xmlns="http://hl7.org/fhir">
+				<id value="29571773-d8fa-4a7e-bf72-a6b93f71a814"/>
+				<meta>
+					<profile value="https://demis.rki.de/fhir/StructureDefinition/SubmittingFacility"/>
+				</meta>
+				<type>
+					<coding>
+						<system value="https://demis.rki.de/fhir/CodeSystem/organizationType"/>
+                        <code value="laboratory"/>
+						<display value="Erregerdiagnostische Untersuchungsstelle"/>
+					</coding>
+				</type>
+				<name value="F+S Medien GmbH"/>
+                <telecom>
+                    <system value="phone"/>
+                    <value value="01799266567"/>
+                </telecom>
+                <telecom>
+                    <system value="email"/>
+                    <value value="med.manufaktur@gmx.net"/>
+                </telecom>
+				<address>
+					<line value="Haigernstrasse 61">
+						<extension url="http://hl7.org/fhir/StructureDefinition/iso21090-ADXP-streetName">
+							<valueString value="Haigernstrasse"/>
+						</extension>
+						<extension url="http://hl7.org/fhir/StructureDefinition/iso21090-ADXP-houseNumber">
+							<valueString value="61"/>
+						</extension>
+					</line>
+					<city value="Flein"/>
+					<postalCode value="74223"/>
+					<country value="20422"/>
+				</address>
+			</Organization>
+		</resource>
+	</entry>
+	<entry>
+		<fullUrl value="https://demis.rki.de/fhir/PractitionerRole/007c909d-31eb-4956-aa6c-344aea2dcfec"/>
+		<resource>
+			<PractitionerRole xmlns="http://hl7.org/fhir">
+				<id value="007c909d-31eb-4956-aa6c-344aea2dcfec"/>
+				<meta>
+					<profile value="https://demis.rki.de/fhir/StructureDefinition/SubmittingRole"/>
+				</meta>
+				<organization>
+					<reference value="Organization/29571773-d8fa-4a7e-bf72-a6b93f71a814"/>
+				</organization>
+			</PractitionerRole>
+		</resource>
+	</entry>
+	<entry>
+		<fullUrl value="https://demis.rki.de/fhir/DiagnosticReport/20779f3e-359d-45c7-ac5e-ba5953c44a07"/>
+		<resource>
+			<DiagnosticReport xmlns="http://hl7.org/fhir">
+				<id value="20779f3e-359d-45c7-ac5e-ba5953c44a07"/>
+				<meta>
+					<profile value="https://demis.rki.de/fhir/StructureDefinition/LaboratoryReportCVDP"/>
+				</meta>
+				<status value="final"/>
+				<code>
+					<coding>
+						<system value="https://demis.rki.de/fhir/CodeSystem/notificationCategory"/>
+						<code value="cvdp"/>
+						<display value="Severe-Acute-Respiratory-Syndrome-Coronavirus-2 (SARS-CoV-2)"/>
+					</coding>
+				</code>
+				<subject>
+					<reference value="Patient/723f4127-357f-4fe1-8288-b35ba8de5019"/>
+				</subject>
+                <issued value="2022-11-17T13:07:31+01:00" />
+				<result>
+					<reference value="Observation/d0801b3d-c46d-4710-ba59-2911866d2912"/>
+				</result>
+				<conclusionCode>
+					<coding>
+						<system value="https://demis.rki.de/fhir/CodeSystem/conclusionCode"/>
+						<code value="pathogenDetected"/>
+						<display value="Meldepflichtiger Erreger nachgewiesen"/>
+					</coding>
+				</conclusionCode>
+			</DiagnosticReport>
+		</resource>
+	</entry>
+	<entry>
+		<fullUrl value="https://demis.rki.de/fhir/Observation/d0801b3d-c46d-4710-ba59-2911866d2912"/>
+		<resource>
+			<Observation xmlns="http://hl7.org/fhir">
+				<id value="d0801b3d-c46d-4710-ba59-2911866d2912"/>
+				<meta>
+					<profile value="https://demis.rki.de/fhir/StructureDefinition/PathogenDetectionCVDP"/>
+				</meta>
+				<status value="final"/>
+				<category>
+					<coding>
+						<system value="http://terminology.hl7.org/CodeSystem/observation-category"/>
+						<code value="laboratory"/>
+						<display value="Laboratory"/>
+					</coding>
+				</category>
+				<code>
+					<coding>
+						<system value="http://loinc.org"/>
+						<code value="94558-4"/>
+						<display value="SARS-CoV-2 (COVID-19) Ag [Presence] in Respiratory specimen by Rapid immunoassay"/>
+					</coding>
+				</code>
+				<subject>
+					<reference value="Patient/723f4127-357f-4fe1-8288-b35ba8de5019"/>
+				</subject>
+				<valueString value="Positiv"/>
+                <interpretation>
+					<coding>
+						<system value="http://terminology.hl7.org/CodeSystem/v3-ObservationInterpretation"/>
+						<code value="POS"/>
+					</coding>
+				</interpretation>
+                <method>
+					<coding>
+						<system value="http://snomed.info/sct"/>
+						<code value="121276004"/>
+						<display value="Antigen assay (procedure)"/>
+					</coding>
+				</method>
+			 	<specimen>
+					<reference value="Specimen/7f98c69c-d1ef-44f9-b6ff-3c29cb2f5873"/>
+				</specimen>
+			</Observation>
+		</resource>
+	</entry>
+	<entry>
+		<fullUrl value="https://demis.rki.de/fhir/Specimen/7f98c69c-d1ef-44f9-b6ff-3c29cb2f5873"/>
+		<resource>
+			<Specimen xmlns="http://hl7.org/fhir">
+				<id value="7f98c69c-d1ef-44f9-b6ff-3c29cb2f5873"/>
+				<meta>
+					<profile value="https://demis.rki.de/fhir/StructureDefinition/SpecimenCVDP"/>
+				</meta>
+				<status value="available"/>
+				<type>
+					<coding>
+						<system value="http://snomed.info/sct"/>
+						<code value="309164002"/>
+						<display value="Upper respiratory swab sample (specimen)"/>
+					</coding>
+				</type>
+				<subject>
+					<reference value="Patient/723f4127-357f-4fe1-8288-b35ba8de5019"/>
+				</subject>
+                <receivedTime value="2022-11-17T13:07:55+01:00" />
+				<collection>
+					<collector>
+						<reference value="PractitionerRole/007c909d-31eb-4956-aa6c-344aea2dcfec"/>
+					</collector>
+				</collection>
+			</Specimen>
+		</resource>
+	</entry>
+</Bundle>
