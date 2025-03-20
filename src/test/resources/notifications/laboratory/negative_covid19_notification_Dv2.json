@@ -25,7 +25,7 @@
               "id": "bfa5c3e9-13e7-45b0-a845-f28b3e7afa6d",
               "meta": {
                 "profile": [
-                  "https://demis.rki.de/fhir/StructureDefinition/NotificationLaboratoryNotByName"
+                  "https://demis.rki.de/fhir/StructureDefinition/NotificationLaboratoryNegative"
                 ]
               },
               "identifier": {

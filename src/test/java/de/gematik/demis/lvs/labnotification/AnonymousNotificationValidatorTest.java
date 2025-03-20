@@ -69,7 +69,7 @@ class AnonymousNotificationValidatorTest {
       final Composition.CompositionStatus status, final String expectedMessage) {
     final AnonymousNotificationValidator validator = validatorWithStatus(status);
     final LifecycleValidationException throwable =
-        catchThrowableOfType(validator::assertIsValid, LifecycleValidationException.class);
+        catchThrowableOfType(LifecycleValidationException.class, validator::assertIsValid);
     assertThat(throwable).hasMessage(expectedMessage);
   }
 

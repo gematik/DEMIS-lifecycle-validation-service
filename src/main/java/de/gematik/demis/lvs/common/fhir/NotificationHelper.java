@@ -40,7 +40,7 @@ import org.hl7.fhir.r4.model.Resource;
 public final class NotificationHelper {
 
   public static final String ANONYMOUS_LABORATORY_NOTIFICATION_PROFILE =
-      "https://demis.rki.de/fhir/StructureDefinition/NotificationLaboratoryNotByName";
+      "https://demis.rki.de/fhir/StructureDefinition/NotificationLaboratoryNegative";
 
   private NotificationHelper() {}
 
