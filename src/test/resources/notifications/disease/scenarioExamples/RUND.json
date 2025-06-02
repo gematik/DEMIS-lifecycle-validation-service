@@ -210,6 +210,14 @@
           "profile": [
             "https://demis.rki.de/fhir/StructureDefinition/DiseaseRUND"
           ]
+        },"clinicalStatus": {
+          "coding": [
+            {
+              "system": "http://terminology.hl7.org/CodeSystem/condition-clinical",
+              "code": "active",
+              "display": "Aktiv"
+            }
+          ]
         },
         "verificationStatus": {
           "coding": [

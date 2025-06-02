@@ -34,7 +34,10 @@ info:
 # diesease configuration
 disease:
   config: classpath:diseaseConfiguration.json
+  config-show-all-scenario-passed: true
+  fhir-path-data: configuration/diseaseScenarios.json
 
 feature:
   flag:
     accepting_anonymous_notifications: false
+    notifications.7_3: false

@@ -110,9 +110,9 @@ service:
 # Default Resources
 resources:
   limits:
-    memory: "1Gi"
+    memory: "375Mi"
   requests:
-    cpu: "200m"
+    cpu: "50m"
     memory: "375Mi"
 
 autoscaling:

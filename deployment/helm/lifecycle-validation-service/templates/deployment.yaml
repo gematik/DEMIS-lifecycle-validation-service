@@ -93,6 +93,11 @@ spec:
             - name: svc-port
               containerPort: 8080
               protocol: TCP
+            {{- if .Values.debug.enable }}
+            - name: debug-port
+              containerPort: 9000
+              protocol: TCP
+            {{- end }}
           # Performs checks to verify that the application is successfully started
           # The Application is marked as failed after periodSeconds*failureThreshold seconds
           startupProbe:

@@ -1,0 +1,365 @@
+[
+  {
+    "name": "S_IM_V",
+    "fhirPathExpression": [
+      {
+        "fhirPath": "Bundle.entry.resource.where($this is Composition).where(status = 'preliminary').exists()",
+        "description": "Ensure the Composition resource has a status of 'preliminary'."
+      },
+      {
+        "fhirPath": "Bundle.entry.resource.where($this is Condition).clinicalStatus.coding.where(code = 'active').exists()",
+        "description": "Ensure there is at least one Condition resource with a clinicalStatus of 'active'."
+      },
+      {
+        "fhirPath": "Bundle.entry.resource.where($this is Condition).verificationStatus.coding.where(code = 'unconfirmed').exists()",
+        "description": "Ensure there is at least one Condition resource with a verificationStatus of 'unconfirmed'."
+      },
+      {
+        "fhirPath": "Bundle.entry.resource.where($this is Composition).section.code.coding.where(code = 'generalClinAndEpiInformation').empty() or Bundle.entry.resource.where($this is Composition).section.where($this.code.coding.where(code = 'generalClinAndEpiInformation')).entry.resolve().where(status = 'completed').exists()",
+        "description": "Optional: If the general clinical and epidemiological QuestionnaireResponse exists, it must have a status of 'completed'."
+      },
+      {
+        "fhirPath": "Bundle.entry.resource.where($this is Composition).section.code.coding.where(code = 'specificClinAndEpiInformation').empty() or Bundle.entry.resource.where($this is Composition).section.where($this.code.coding.where(code = 'specificClinAndEpiInformation')).entry.resolve().where(status = 'completed').exists()",
+        "description": "Optional: If the specific clinical and epidemiological QuestionnaireResponse exists, it must have a status of 'completed'."
+      }
+    ]
+  },
+  {
+    "name": "S_FM_V2V",
+    "fhirPathExpression": [
+      {
+        "fhirPath": "Bundle.entry.resource.where($this is Composition).where(status = 'preliminary').exists()",
+        "description": "Ensure the Composition resource has a status of 'preliminary'."
+      },
+      {
+        "fhirPath": "Bundle.entry.resource.where($this is Condition).clinicalStatus.coding.where(code = 'active').exists()",
+        "description": "Ensure there is at least one Condition resource with a clinicalStatus of 'active'."
+      },
+      {
+        "fhirPath": "Bundle.entry.resource.where($this is Condition).verificationStatus.coding.where(code = 'unconfirmed').exists()",
+        "description": "Ensure there is at least one Condition resource with a verificationStatus of 'unconfirmed'."
+      },
+      {
+        "fhirPath": "Bundle.entry.resource.where($this is Composition).section.code.coding.where(code = 'generalClinAndEpiInformation').empty or Bundle.entry.resource.where($this is Composition).section.where($this.code.coding.where(code = 'generalClinAndEpiInformation')).entry.resolve().where(status = 'completed' or status = 'amended').exists()",
+        "description": "Optional: If the general clinical and epidemiological QuestionnaireResponse exists, it must have a status of 'completed' or 'amended'."
+      },
+      {
+        "fhirPath": "Bundle.entry.resource.where($this is Composition).section.code.coding.where(code = 'specificClinAndEpiInformation').empty() or Bundle.entry.resource.where($this is Composition).section.where($this.code.coding.where(code = 'specificClinAndEpiInformation')).entry.resolve().where(status = 'completed' or status = 'amended').exists()",
+        "description": "Optional: If the specific clinical and epidemiological QuestionnaireResponse exists, it must have a status of 'completed' or 'amended'."
+      }
+    ]
+  },
+  {
+    "name": "S_FM_V2I",
+    "fhirPathExpression": [
+      {
+        "fhirPath": "Bundle.entry.resource.where($this is Composition).where(status = 'final').exists()",
+        "description": "Ensure the Composition resource has a status of 'final'."
+      },
+      {
+        "fhirPath": "Bundle.entry.resource.where($this is Condition).clinicalStatus.coding.where(code = 'inactive').exists()",
+        "description": "Ensure there is at least one Condition resource with a clinicalStatus of 'inactive'."
+      },
+      {
+        "fhirPath": "Bundle.entry.resource.where($this is Condition).verificationStatus.coding.where(code = 'refuted').exists()",
+        "description": "Ensure there is at least one Condition resource with a verificationStatus of 'refuted'."
+      },
+      {
+        "fhirPath": "Bundle.entry.resource.where($this is Composition).section.code.coding.where(code = 'generalClinAndEpiInformation').empty() or Bundle.entry.resource.where($this is Composition).section.where($this.code.coding.where(code = 'generalClinAndEpiInformation')).entry.resolve().where(status = 'completed' or status = 'amended').exists()",
+        "description": "Optional: If the general clinical and epidemiological QuestionnaireResponse exists, it must have a status of 'completed' or 'amended'."
+      },
+      {
+        "fhirPath": "Bundle.entry.resource.where($this is Composition).section.code.coding.where(code = 'specificClinAndEpiInformation').empty() or Bundle.entry.resource.where($this is Composition).section.where($this.code.coding.where(code = 'specificClinAndEpiInformation')).entry.resolve().where(status = 'completed' or status = 'amended').exists()",
+        "description": "Optional: If the specific clinical and epidemiological QuestionnaireResponse exists, it must have a status of 'completed' or 'amended'."
+      }
+    ]
+  },
+  {
+    "name": "S_FM_V2E",
+    "fhirPathExpression": [
+      {
+        "fhirPath": "Bundle.entry.resource.where($this is Composition).where(status = 'final').exists()",
+        "description": "Ensure the Composition resource has a status of 'final'."
+      },
+      {
+        "fhirPath": "Bundle.entry.resource.where($this is Condition).clinicalStatus.coding.where(code = 'active').exists()",
+        "description": "Ensure there is at least one Condition resource with a clinicalStatus of 'active'."
+      },
+      {
+        "fhirPath": "Bundle.entry.resource.where($this is Condition).verificationStatus.coding.where(code = 'confirmed').exists()",
+        "description": "Ensure there is at least one Condition resource with a verificationStatus of 'confirmed'."
+      },
+      {
+        "fhirPath": "Bundle.entry.resource.where($this is Composition).section.code.coding.where(code = 'generalClinAndEpiInformation').empty() or Bundle.entry.resource.where($this is Composition).section.where($this.code.coding.where(code = 'generalClinAndEpiInformation')).entry.resolve().where(status = 'completed' or status = 'amended').exists()",
+        "description": "Optional: If the general clinical and epidemiological QuestionnaireResponse exists, it must have a status of 'completed' or 'amended'."
+      },
+      {
+        "fhirPath": "Bundle.entry.resource.where($this is Composition).section.code.coding.where(code = 'specificClinAndEpiInformation').empty() or Bundle.entry.resource.where($this is Composition).section.where($this.code.coding.where(code = 'specificClinAndEpiInformation')).entry.resolve().where(status = 'completed' or status = 'amended').exists()",
+        "description": "Optional: If the specific clinical and epidemiological QuestionnaireResponse exists, it must have a status of 'completed' or 'amended'."
+      }
+    ]
+  },
+  {
+    "name": "S_FM_V2T",
+    "fhirPathExpression": [
+      {
+        "fhirPath": "Bundle.entry.resource.where($this is Composition).where(status = 'final').exists()",
+        "description": "Ensure the Composition resource has a status of 'final'."
+      },
+      {
+        "fhirPath": "Bundle.entry.resource.where($this is Condition).clinicalStatus.coding.where(code = 'active').exists()",
+        "description": "Ensure there is at least one Condition resource with a clinicalStatus of 'active'."
+      },
+      {
+        "fhirPath": "Bundle.entry.resource.where($this is Condition).verificationStatus.coding.where(code = 'confirmed').exists()",
+        "description": "Ensure there is at least one Condition resource with a verificationStatus of 'confirmed'."
+      },
+      {
+        "fhirPath": "Bundle.entry.resource.where($this is Composition).section.code.coding.where(code = 'generalClinAndEpiInformation').empty() or Bundle.entry.resource.where($this is Composition).section.where($this.code.coding.where(code = 'generalClinAndEpiInformation')).entry.resolve().where(status = 'amended').item.where($this.linkId = 'isDead').answer.value.where(code = 'yes').exists()",
+        "description": "Optional: If the general clinical and epidemiological QuestionnaireResponse exists, it must have a status of 'amended' and include an answer to 'isDead' with a code of 'yes'."
+      },
+      {
+        "fhirPath": "Bundle.entry.resource.where($this is Composition).section.code.coding.where(code = 'specificClinAndEpiInformation').empty() or Bundle.entry.resource.where($this is Composition).section.where($this.code.coding.where(code = 'specificClinAndEpiInformation')).entry.resolve().where(status = 'completed' or status = 'amended').exists()",
+        "description": "Optional: If the specific clinical and epidemiological QuestionnaireResponse exists, it must have a status of 'completed' or 'amended'."
+      }
+    ]
+  },
+  {
+    "name": "S_IM_E",
+    "fhirPathExpression": [
+      {
+        "fhirPath": "Bundle.entry.resource.where($this is Composition).where(status = 'final').exists()",
+        "description": "Ensure the Composition resource has a status of 'final'."
+      },
+      {
+        "fhirPath": "Bundle.entry.resource.where($this is Condition).clinicalStatus.coding.where(code = 'active').exists()",
+        "description": "Ensure there is at least one Condition resource with a clinicalStatus of 'active'."
+      },
+      {
+        "fhirPath": "Bundle.entry.resource.where($this is Condition).verificationStatus.coding.where(code = 'confirmed').exists()",
+        "description": "Ensure there is at least one Condition resource with a verificationStatus of 'confirmed'."
+      },
+      {
+        "fhirPath": "Bundle.entry.resource.where($this is Composition).section.code.coding.where(code = 'generalClinAndEpiInformation').empty() or Bundle.entry.resource.where($this is Composition).section.where($this.code.coding.where(code = 'generalClinAndEpiInformation')).entry.resolve().where(status = 'completed').exists()",
+        "description": "Optional: If the general clinical and epidemiological QuestionnaireResponse exists, it must have a status of 'completed'."
+      },
+      {
+        "fhirPath": "Bundle.entry.resource.where($this is Composition).section.code.coding.where(code = 'specificClinAndEpiInformation').empty() or Bundle.entry.resource.where($this is Composition).section.where($this.code.coding.where(code = 'specificClinAndEpiInformation')).entry.resolve().where(status = 'completed').exists()",
+        "description": "Optional: If the specific clinical and epidemiological QuestionnaireResponse exists, it must have a status of 'completed'."
+      }
+    ]
+  },
+  {
+    "name": "S_FM_E2E",
+    "fhirPathExpression": [
+      {
+        "fhirPath": "Bundle.entry.resource.where($this is Composition).where(status = 'amended').exists()",
+        "description": "Ensure the Composition resource has a status of 'amended'."
+      },
+      {
+        "fhirPath": "Bundle.entry.resource.where($this is Condition).clinicalStatus.coding.where(code = 'active').exists()",
+        "description": "Ensure there is at least one Condition resource with a clinicalStatus of 'active'."
+      },
+      {
+        "fhirPath": "Bundle.entry.resource.where($this is Condition).verificationStatus.coding.where(code = 'confirmed').exists()",
+        "description": "Ensure there is at least one Condition resource with a verificationStatus of 'confirmed'."
+      },
+      {
+        "fhirPath": "Bundle.entry.resource.where($this is Composition).section.code.coding.where(code = 'generalClinAndEpiInformation').empty() or Bundle.entry.resource.where($this is Composition).section.where($this.code.coding.where(code = 'generalClinAndEpiInformation')).entry.resolve().where(status = 'completed' or status = 'amended').exists()",
+        "description": "Optional: If the general clinical and epidemiological QuestionnaireResponse exists, it must have a status of 'completed' or 'amended'."
+      },
+      {
+        "fhirPath": "Bundle.entry.resource.where($this is Composition).section.code.coding.where(code = 'specificClinAndEpiInformation').empty() or Bundle.entry.resource.where($this is Composition).section.where($this.code.coding.where(code = 'specificClinAndEpiInformation')).entry.resolve().where(status = 'completed' or status = 'amended').exists()",
+        "description": "Optional: If the specific clinical and epidemiological QuestionnaireResponse exists, it must have a status of 'completed' or 'amended'."
+      }
+    ]
+  },
+  {
+    "name": "S_FM_E2I",
+    "fhirPathExpression": [
+      {
+        "fhirPath": "Bundle.entry.resource.where($this is Composition).where(status = 'amended').exists()",
+        "description": "Ensure the Composition resource has a status of 'amended'."
+      },
+      {
+        "fhirPath": "Bundle.entry.resource.where($this is Condition).verificationStatus.coding.where(code = 'entered-in-error').exists()",
+        "description": "Ensure there is at least one Condition resource with a verificationStatus of 'entered-in-error'."
+      },
+      {
+        "fhirPath": "Bundle.entry.resource.where($this is Composition).section.code.coding.where(code = 'generalClinAndEpiInformation').empty() or Bundle.entry.resource.where($this is Composition).section.where($this.code.coding.where(code = 'generalClinAndEpiInformation')).entry.resolve().where(status = 'completed' or status = 'amended').exists()",
+        "description": "Optional: If the general clinical and epidemiological QuestionnaireResponse exists, it must have a status of 'completed' or 'amended'."
+      },
+      {
+        "fhirPath": "Bundle.entry.resource.where($this is Composition).section.code.coding.where(code = 'specificClinAndEpiInformation').empty() or Bundle.entry.resource.where($this is Composition).section.where($this.code.coding.where(code = 'specificClinAndEpiInformation')).entry.resolve().where(status = 'completed' or status = 'amended').exists()",
+        "description": "Optional: If the specific clinical and epidemiological QuestionnaireResponse exists, it must have a status of 'completed' or 'amended'."
+      }
+    ]
+  },
+  {
+    "name": "S_FM_E2T",
+    "fhirPathExpression": [
+      {
+        "fhirPath": "Bundle.entry.resource.where($this is Composition).where(status = 'amended').exists()",
+        "description": "Ensure the Composition resource has a status of 'amended'."
+      },
+      {
+        "fhirPath": "Bundle.entry.resource.where($this is Condition).clinicalStatus.coding.where(code = 'active').exists()",
+        "description": "Ensure there is at least one Condition resource with a clinicalStatus of 'active'."
+      },
+      {
+        "fhirPath": "Bundle.entry.resource.where($this is Condition).verificationStatus.coding.where(code = 'confirmed').exists()",
+        "description": "Ensure there is at least one Condition resource with a verificationStatus of 'confirmed'."
+      },
+      {
+        "fhirPath": "Bundle.entry.resource.where($this is Composition).section.code.coding.where(code = 'generalClinAndEpiInformation').empty() or Bundle.entry.resource.where($this is Composition).section.where($this.code.coding.where(code = 'generalClinAndEpiInformation')).entry.resolve().where(status = 'amended').item.where($this.linkId = 'isDead').answer.value.where(code = 'yes').exists()",
+        "description": "Optional: If the general clinical and epidemiological QuestionnaireResponse exists, it must have a status of 'amended' and include an answer to 'isDead' with a code of 'yes'."
+      },
+      {
+        "fhirPath": "Bundle.entry.resource.where($this is Composition).section.code.coding.where(code = 'specificClinAndEpiInformation').empty() or Bundle.entry.resource.where($this is Composition).section.where($this.code.coding.where(code = 'specificClinAndEpiInformation')).entry.resolve().where(status = 'completed' or status = 'amended').exists()",
+        "description": "Optional: If the specific clinical and epidemiological QuestionnaireResponse exists, it must have a status of 'completed' or 'amended'."
+      }
+    ]
+  },
+  {
+    "name": "S_IM_T",
+    "fhirPathExpression": [
+      {
+        "fhirPath": "Bundle.entry.resource.where($this is Composition).where(status = 'final').exists()",
+        "description": "Ensure the Composition resource has a status of 'final'."
+      },
+      {
+        "fhirPath": "Bundle.entry.resource.where($this is Condition).clinicalStatus.coding.where(code = 'active').exists()",
+        "description": "Ensure there is at least one Condition resource with a clinicalStatus of 'active'."
+      },
+      {
+        "fhirPath": "Bundle.entry.resource.where($this is Condition).verificationStatus.coding.where(code = 'confirmed').exists()",
+        "description": "Ensure there is at least one Condition resource with a verificationStatus of 'confirmed'."
+      },
+      {
+        "fhirPath": "Bundle.entry.resource.where($this is Composition).section.code.coding.where(code = 'generalClinAndEpiInformation').empty() or Bundle.entry.resource.where($this is Composition).section.where($this.code.coding.where(code = 'generalClinAndEpiInformation')).entry.resolve().where(status = 'completed').item.where($this.linkId = 'isDead').answer.value.where(code = 'yes').exists()",
+        "description": "Optional: If the general clinical and epidemiological QuestionnaireResponse exists, it must have a status of 'completed' and include an answer to 'isDead' with a code of 'yes'."
+      },
+      {
+        "fhirPath": "Bundle.entry.resource.where($this is Composition).section.code.coding.where(code = 'specificClinAndEpiInformation').empty() or Bundle.entry.resource.where($this is Composition).section.where($this.code.coding.where(code = 'specificClinAndEpiInformation')).entry.resolve().where(status = 'completed').exists()",
+        "description": "Optional: If the specific clinical and epidemiological QuestionnaireResponse exists, it must have a status of 'completed'."
+      }
+    ]
+  },
+  {
+    "name": "S_FM_T2T",
+    "fhirPathExpression": [
+      {
+        "fhirPath": "Bundle.entry.resource.where($this is Composition).where(status = 'amended').exists()",
+        "description": "Ensure the Composition resource has a status of 'amended'."
+      },
+      {
+        "fhirPath": "Bundle.entry.resource.where($this is Condition).clinicalStatus.coding.where(code = 'active').exists()",
+        "description": "Ensure there is at least one Condition resource with a clinicalStatus of 'active'."
+      },
+      {
+        "fhirPath": "Bundle.entry.resource.where($this is Condition).verificationStatus.coding.where(code = 'confirmed').exists()",
+        "description": "Ensure there is at least one Condition resource with a verificationStatus of 'confirmed'."
+      },
+      {
+        "fhirPath": "Bundle.entry.resource.where($this is Composition).section.code.coding.where(code = 'generalClinAndEpiInformation').empty() or Bundle.entry.resource.where($this is Composition).section.where($this.code.coding.where(code = 'generalClinAndEpiInformation')).entry.resolve().where(status = 'completed' or status = 'amended').item.where($this.linkId = 'isDead').answer.value.where(code = 'yes').exists()",
+        "description": "Optional: If the general clinical and epidemiological QuestionnaireResponse exists, it must have a status of 'completed' or 'amended' and include an answer to 'isDead' with a code of 'yes'."
+      },
+      {
+        "fhirPath": "Bundle.entry.resource.where($this is Composition).section.code.coding.where(code = 'specificClinAndEpiInformation').empty() or Bundle.entry.resource.where($this is Composition).section.where($this.code.coding.where(code = 'specificClinAndEpiInformation')).entry.resolve().where(status = 'completed' or status = 'amended').exists()",
+        "description": "Optional: If the specific clinical and epidemiological QuestionnaireResponse exists, it must have a status of 'completed' or 'amended'."
+      }
+    ]
+  },
+  {
+    "name": "S_FM_T2V",
+    "fhirPathExpression": [
+      {
+        "fhirPath": "Bundle.entry.resource.where($this is Composition).where(status = 'amended').exists()",
+        "description": "Ensure the Composition resource has a status of 'amended'."
+      },
+      {
+        "fhirPath": "Bundle.entry.resource.where($this is Condition).clinicalStatus.coding.where(code = 'active').exists()",
+        "description": "Ensure there is at least one Condition resource with a clinicalStatus of 'active'."
+      },
+      {
+        "fhirPath": "Bundle.entry.resource.where($this is Condition).verificationStatus.coding.where(code = 'unconfirmed').exists()",
+        "description": "Ensure there is at least one Condition resource with a verificationStatus of 'unconfirmed'."
+      },
+      {
+        "fhirPath": "Bundle.entry.resource.where($this is Composition).section.code.coding.where(code = 'generalClinAndEpiInformation').empty() or Bundle.entry.resource.where($this is Composition).section.where($this.code.coding.where(code = 'generalClinAndEpiInformation')).entry.resolve().where(status = 'amended').item.where($this.linkId = 'isDead').answer.value.where(code = 'no' or code = 'ASKU' or code = 'NASK').exists()",
+        "description": "Optional: If the general clinical and epidemiological QuestionnaireResponse exists, it must have a status of 'amended' and include an answer to 'isDead' with a code of 'no', 'ASKU', or 'NASK'."
+      },
+      {
+        "fhirPath": "Bundle.entry.resource.where($this is Composition).section.code.coding.where(code = 'specificClinAndEpiInformation').empty() or Bundle.entry.resource.where($this is Composition).section.where($this.code.coding.where(code = 'specificClinAndEpiInformation')).entry.resolve().where(status = 'completed' or status = 'amended').exists()",
+        "description": "Optional: If the specific clinical and epidemiological QuestionnaireResponse exists, it must have a status of 'completed' or 'amended'."
+      }
+    ]
+  },
+  {
+    "name": "S_FM_T2E",
+    "fhirPathExpression": [
+      {
+        "fhirPath": "Bundle.entry.resource.where($this is Composition).where(status = 'amended').exists()",
+        "description": "Ensure the Composition resource has a status of 'amended'."
+      },
+      {
+        "fhirPath": "Bundle.entry.resource.where($this is Condition).clinicalStatus.coding.where(code = 'active').exists()",
+        "description": "Ensure there is at least one Condition resource with a clinicalStatus of 'active'."
+      },
+      {
+        "fhirPath": "Bundle.entry.resource.where($this is Condition).verificationStatus.coding.where(code = 'confirmed').exists()",
+        "description": "Ensure there is at least one Condition resource with a verificationStatus of 'confirmed'."
+      },
+      {
+        "fhirPath": "Bundle.entry.resource.where($this is Composition).section.code.coding.where(code = 'generalClinAndEpiInformation').empty() or Bundle.entry.resource.where($this is Composition).section.where($this.code.coding.where(code = 'generalClinAndEpiInformation')).entry.resolve().where(status = 'amended').item.where($this.linkId = 'isDead').answer.value.where(code = 'no' or code = 'ASKU' or code = 'NASK').exists()",
+        "description": "Optional: If the general clinical and epidemiological QuestionnaireResponse exists, it must have a status of 'amended' and include an answer to 'isDead' with a code of 'no', 'ASKU', or 'NASK'."
+      },
+      {
+        "fhirPath": "Bundle.entry.resource.where($this is Composition).section.code.coding.where(code = 'specificClinAndEpiInformation').empty() or Bundle.entry.resource.where($this is Composition).section.where($this.code.coding.where(code = 'specificClinAndEpiInformation')).entry.resolve().where(status = 'completed' or status = 'amended').exists()",
+        "description": "Optional: If the specific clinical and epidemiological QuestionnaireResponse exists, it must have a status of 'completed' or 'amended'."
+      }
+    ]
+  },
+  {
+    "name": "S_FM_T2I_1",
+    "fhirPathExpression": [
+      {
+        "fhirPath": "Bundle.entry.resource.where($this is Composition).where(status = 'amended').exists()",
+        "description": "Ensure the Composition resource has a status of 'amended'."
+      },
+      {
+        "fhirPath": "Bundle.entry.resource.where($this is Condition).verificationStatus.coding.where(code = 'entered-in-error').exists() and Bundle.entry.resource.where($this is Condition).note.exists()",
+        "description": "Ensure there is at least one Condition resource with a verificationStatus of 'entered-in-error' and a non-empty note field."
+      },
+      {
+        "fhirPath": "Bundle.entry.resource.where($this is Composition).section.code.coding.where(code = 'generalClinAndEpiInformation').empty() or Bundle.entry.resource.where($this is Composition).section.where($this.code.coding.where(code = 'generalClinAndEpiInformation')).entry.resolve().where(status = 'completed' or status = 'amended').exists()",
+        "description": "Optional: If the general clinical and epidemiological QuestionnaireResponse exists, it must have a status of 'completed' or 'amended'."
+      },
+      {
+        "fhirPath": "Bundle.entry.resource.where($this is Composition).section.code.coding.where(code = 'specificClinAndEpiInformation').empty() or Bundle.entry.resource.where($this is Composition).section.where($this.code.coding.where(code = 'specificClinAndEpiInformation')).entry.resolve().where(status = 'completed' or status = 'amended').exists()",
+        "description": "Optional: If the specific clinical and epidemiological QuestionnaireResponse exists, it must have a status of 'completed' or 'amended'."
+      }
+    ]
+  },
+  {
+    "name": "S_FM_T2I_2",
+    "fhirPathExpression": [
+      {
+        "fhirPath": "Bundle.entry.resource.where($this is Composition).where(status = 'amended').exists()",
+        "description": "Ensure the Composition resource has a status of 'amended'."
+      },
+      {
+        "fhirPath": "Bundle.entry.resource.where($this is Condition).verificationStatus.coding.where(code = 'entered-in-error').exists() and Bundle.entry.resource.where($this is Condition).note.exists()",
+        "description": "Ensure there is at least one Condition resource with a verificationStatus of 'entered-in-error' and a non-empty note field."
+      },
+      {
+        "fhirPath": "Bundle.entry.resource.where($this is Composition).section.code.coding.where(code = 'generalClinAndEpiInformation').empty() or Bundle.entry.resource.where($this is Composition).section.where($this.code.coding.where(code = 'generalClinAndEpiInformation')).entry.resolve().where(status = 'amended').item.where($this.linkId = 'isDead').answer.value.where(code = 'no' or code = 'ASKU' or code = 'NASK').exists()",
+        "description": "Optional: If the general clinical and epidemiological QuestionnaireResponse exists, it must have a status of 'amended' and include an answer to 'isDead' with a code of 'no', 'ASKU', or 'NASK'."
+      },
+      {
+        "fhirPath": "Bundle.entry.resource.where($this is Composition).section.code.coding.where(code = 'specificClinAndEpiInformation').empty() or Bundle.entry.resource.where($this is Composition).section.where($this.code.coding.where(code = 'specificClinAndEpiInformation')).entry.resolve().where(status = 'completed' or status = 'amended').exists()",
+        "description": "Optional: If the specific clinical and epidemiological QuestionnaireResponse exists, it must have a status of 'completed' or 'amended'."
+      }
+    ]
+  }
+]

@@ -2,6 +2,14 @@
  
 # Release notes
 
+## Release 1.3.0
+- Updated ospo-resources for adding additional notes and disclaimer
+- setting new ressources in helm chart
+- setting new timeouts and retries in helm chart
+- updating dependencies
+- switched processing of §7.3 disease notifications and §6.1 notifications to fhir path
+
+
 ## Release 1.2.1
 - First official GitHub-Release
 - Optional check for questionnaire responses.
