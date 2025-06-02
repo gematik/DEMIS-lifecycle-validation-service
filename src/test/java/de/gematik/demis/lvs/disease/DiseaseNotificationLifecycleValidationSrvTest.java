@@ -19,6 +19,10 @@ package de.gematik.demis.lvs.disease;
  * In case of changes by gematik find details in the "Readme" file.
  *
  * See the Licence for the specific language governing permissions and limitations under the Licence.
+ *
+ * *******
+ *
+ * For additional notes and disclaimer from gematik and in case of changes by gematik find details in the "Readme" file.
  * #L%
  */
 
@@ -30,6 +34,9 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import de.gematik.demis.fhirparserlibrary.FhirParser;
 import de.gematik.demis.fhirparserlibrary.MessageType;
 import de.gematik.demis.lvs.common.exception.LifecycleValidationException;
+import de.gematik.demis.lvs.disease.fhirpath.DiseaseConfiguration;
+import de.gematik.demis.lvs.disease.fhirpath.DiseaseConfigurationProperties;
+import de.gematik.demis.lvs.disease.fhirpath.DiseaseScenario;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
@@ -38,6 +45,7 @@ import java.util.List;
 import java.util.stream.Stream;
 import org.apache.commons.io.IOUtils;
 import org.hl7.fhir.r4.model.Bundle;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
@@ -47,6 +55,8 @@ import org.springframework.http.MediaType;
 class DiseaseNotificationLifecycleValidationSrvTest {
 
   private final FhirParser fhirParser = new FhirParser(FhirContext.forR4Cached());
+  private List<DiseaseScenario> scenarios;
+  private DiseaseConfigurationProperties properties;
 
   static Stream<Arguments> scenarioNames() {
     return Stream.of(
@@ -109,10 +119,10 @@ class DiseaseNotificationLifecycleValidationSrvTest {
             List.of("S_FM_E2E")),
         Arguments.of(
             "src/test/resources/notifications/disease/scenarioExamples/S_FM_E2E-21.json",
-            List.of("S_FM_E2E")),
+            List.of("S_FM_E2E", "S_FM_T2E")),
         Arguments.of(
             "src/test/resources/notifications/disease/scenarioExamples/S_FM_E2E-22.json",
-            List.of("S_FM_E2E")),
+            List.of("S_FM_E2E", "S_FM_T2E")),
         Arguments.of(
             "src/test/resources/notifications/disease/scenarioExamples/S_FM_E2I-11.json",
             List.of("S_FM_E2I", "S_FM_T2I_1")),
@@ -172,11 +182,21 @@ class DiseaseNotificationLifecycleValidationSrvTest {
             List.of("S_FM_T2I_2", "S_FM_T2I_1", "S_FM_E2I")),
         Arguments.of(
             "src/test/resources/notifications/disease/scenarioExamples/RUND.json",
-            List.of("S_FM_V2E", "S_IM_E")));
+            List.of("S_FM_V2E", "S_IM_E")),
+        Arguments.of(
+            "src/test/resources/notifications/disease/scenarioExamples/no_common_questionnaire.json",
+            List.of("S_FM_V2E", "S_FM_V2T", "S_IM_E", "S_IM_T")));
+  }
+
+  @BeforeEach
+  void setUp() {
+    DiseaseConfiguration configuration = new DiseaseConfiguration();
+    properties = new DiseaseConfigurationProperties("configuration/diseaseScenarios.json", true);
+    scenarios = configuration.loadDiseaseScenarios(properties);
   }
 
   @Test
-  void shouldCreateDataOnBuildAndValidateNotifications() throws IOException {
+  void shouldCreateDataOnBuildAndValidateNotificationsRegression() throws IOException {
 
     File file = new File("src/test/resources/notifications/disease/scenarioExamples/S_FM_V2E.json");
     FileInputStream inputStream = new FileInputStream(file);
@@ -187,7 +207,13 @@ class DiseaseNotificationLifecycleValidationSrvTest {
 
     DiseaseNotificationLifecycleValidationSrv diseaseNotificationLifecycleValidationSrv =
         new DiseaseNotificationLifecycleValidationSrv(
-            "notifications/disease/diseaseConfiguration.json", fhirParser, new ObjectMapper());
+            "notifications/disease/diseaseConfiguration.json",
+            properties,
+            fhirParser,
+            new ObjectMapper(),
+            FhirContext.forR4Cached(),
+            scenarios,
+            true);
 
     diseaseNotificationLifecycleValidationSrv.init();
 
@@ -209,7 +235,13 @@ class DiseaseNotificationLifecycleValidationSrvTest {
 
     DiseaseNotificationLifecycleValidationSrv diseaseNotificationLifecycleValidationSrv =
         new DiseaseNotificationLifecycleValidationSrv(
-            "notifications/disease/diseaseConfiguration.json", fhirParser, new ObjectMapper());
+            "notifications/disease/diseaseConfiguration.json",
+            properties,
+            fhirParser,
+            new ObjectMapper(),
+            FhirContext.forR4Cached(),
+            scenarios,
+            true);
 
     diseaseNotificationLifecycleValidationSrv.init();
 
@@ -218,7 +250,7 @@ class DiseaseNotificationLifecycleValidationSrvTest {
   }
 
   @Test
-  void shouldCreateDataOnBuildAndValidateNotificationsAlternativValidateMethod()
+  void shouldCreateDataOnBuildAndValidateNotificationsAlternativValidateMethodRegression()
       throws IOException {
 
     File file = new File("src/test/resources/notifications/disease/scenarioExamples/S_FM_V2E.json");
@@ -228,7 +260,13 @@ class DiseaseNotificationLifecycleValidationSrvTest {
 
     DiseaseNotificationLifecycleValidationSrv diseaseNotificationLifecycleValidationSrv =
         new DiseaseNotificationLifecycleValidationSrv(
-            "notifications/disease/diseaseConfiguration.json", fhirParser, new ObjectMapper());
+            "notifications/disease/diseaseConfiguration.json",
+            properties,
+            fhirParser,
+            new ObjectMapper(),
+            FhirContext.forR4Cached(),
+            scenarios,
+            true);
 
     diseaseNotificationLifecycleValidationSrv.init();
 
@@ -252,12 +290,48 @@ class DiseaseNotificationLifecycleValidationSrvTest {
 
     DiseaseNotificationLifecycleValidationSrv diseaseNotificationLifecycleValidationSrv =
         new DiseaseNotificationLifecycleValidationSrv(
-            "notifications/disease/diseaseConfiguration.json", fhirParser, new ObjectMapper());
+            "notifications/disease/diseaseConfiguration.json",
+            properties,
+            fhirParser,
+            new ObjectMapper(),
+            FhirContext.forR4Cached(),
+            scenarios,
+            true);
 
     diseaseNotificationLifecycleValidationSrv.init();
 
     List<String> validate = diseaseNotificationLifecycleValidationSrv.validate(diseaseExample);
 
     assertThat(validate).containsExactlyInAnyOrderElementsOf(expectedScenarios);
+  }
+
+  @ParameterizedTest
+  @MethodSource("scenarioNames")
+  void shouldReturnOnlyOneScenario(String path, List<String> expectedScenarios) throws IOException {
+
+    File file = new File(path);
+    FileInputStream inputStream = new FileInputStream(file);
+    String jsonString = IOUtils.toString(inputStream, StandardCharsets.UTF_8);
+    inputStream.close();
+
+    Bundle diseaseExample = fhirParser.parseBundleOrParameter(jsonString, MessageType.JSON);
+
+    properties = new DiseaseConfigurationProperties("configuration/diseaseScenarios.json", false);
+
+    DiseaseNotificationLifecycleValidationSrv diseaseNotificationLifecycleValidationSrv =
+        new DiseaseNotificationLifecycleValidationSrv(
+            "notifications/disease/diseaseConfiguration.json",
+            properties,
+            fhirParser,
+            new ObjectMapper(),
+            FhirContext.forR4Cached(),
+            scenarios,
+            true);
+
+    diseaseNotificationLifecycleValidationSrv.init();
+
+    List<String> validate = diseaseNotificationLifecycleValidationSrv.validate(diseaseExample);
+
+    assertThat(validate).hasSize(1);
   }
 }

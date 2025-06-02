@@ -12,6 +12,10 @@ istio:
             prefix: /
       rewrite:
         uri: /
+      timeout: 5s
+      retries:
+        enable: true
+        attempts: 1
     hosts: {}
   subsets:
     main:

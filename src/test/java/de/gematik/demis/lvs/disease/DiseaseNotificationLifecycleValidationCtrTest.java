@@ -19,6 +19,10 @@ package de.gematik.demis.lvs.disease;
  * In case of changes by gematik find details in the "Readme" file.
  *
  * See the Licence for the specific language governing permissions and limitations under the Licence.
+ *
+ * *******
+ *
+ * For additional notes and disclaimer from gematik and in case of changes by gematik find details in the "Readme" file.
  * #L%
  */
 
@@ -44,13 +48,6 @@ import org.springframework.test.web.servlet.MockMvc;
 @AutoConfigureObservability
 // @TestPropertySource(locations = "classpath:application-test.properties")
 class DiseaseNotificationLifecycleValidationCtrTest {
-
-  //    @MockBean
-  //    private DiseaseNotificationLifecycleValidationSrv
-  // diseaseNotificationLifecycleValidationSrvMock;
-  //
-  //    @InjectMocks
-  //    private DiseaseNotificationLifecycleValidationCtr diseaseNotificationLifecycleValidationCtr;
 
   @Autowired private MockMvc mockMvc;
 

@@ -19,6 +19,10 @@ package de.gematik.demis.lvs.labnotification;
  * In case of changes by gematik find details in the "Readme" file.
  *
  * See the Licence for the specific language governing permissions and limitations under the Licence.
+ *
+ * *******
+ *
+ * For additional notes and disclaimer from gematik and in case of changes by gematik find details in the "Readme" file.
  * #L%
  */
 
@@ -36,6 +40,8 @@ import org.hl7.fhir.r4.model.Reference;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.ValueSource;
 import org.springframework.http.MediaType;
 
 class LaboratoryNotificationValidationServiceTest {
@@ -124,12 +130,15 @@ class LaboratoryNotificationValidationServiceTest {
         () -> rejectingAnonymousNotifications.validate(notification, MediaType.APPLICATION_JSON));
   }
 
-  @Test
-  void expectThat74CompositionWithNegativeCOVPIsAccepted() {
-    // GIVEN isPositive 7.4 notification for Covid-19
-    final String notification =
-        FileLoaderHelper.loadResourceFile(
-            "src/test/resources/notifications/laboratory/negative_covid19_notification_Dv2.json");
+  @ParameterizedTest
+  @ValueSource(
+      strings = {
+        "src/test/resources/notifications/laboratory/nonnominal-notifiedperson.json",
+        "src/test/resources/notifications/laboratory/anonymous.json",
+        "src/test/resources/notifications/laboratory/negative_covid19_notification_Dv2.json"
+      })
+  void processNotification(String notificationPath) {
+    final String notification = FileLoaderHelper.loadResourceFile(notificationPath);
 
     service.validate(notification, MediaType.APPLICATION_JSON);
   }
