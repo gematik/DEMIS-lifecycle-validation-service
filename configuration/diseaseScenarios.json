@@ -7,7 +7,7 @@
         "description": "Ensure the Composition resource has a status of 'preliminary'."
       },
       {
-        "fhirPath": "Bundle.entry.resource.where($this is Condition).clinicalStatus.coding.where(code = 'active').exists()",
+        "fhirPath": "Bundle.entry.resource.where($this is Condition).clinicalStatus.coding.where(code = 'active').exists() or (Bundle.meta.profile = 'https://demis.rki.de/fhir/StructureDefinition/NotificationBundleDisease' and Bundle.entry.resource.where($this is Condition).clinicalStatus.empty())",
         "description": "Ensure there is at least one Condition resource with a clinicalStatus of 'active'."
       },
       {
@@ -32,7 +32,7 @@
         "description": "Ensure the Composition resource has a status of 'preliminary'."
       },
       {
-        "fhirPath": "Bundle.entry.resource.where($this is Condition).clinicalStatus.coding.where(code = 'active').exists()",
+        "fhirPath": "Bundle.entry.resource.where($this is Condition).clinicalStatus.coding.where(code = 'active').exists() or (Bundle.meta.profile = 'https://demis.rki.de/fhir/StructureDefinition/NotificationBundleDisease' and Bundle.entry.resource.where($this is Condition).clinicalStatus.empty())",
         "description": "Ensure there is at least one Condition resource with a clinicalStatus of 'active'."
       },
       {
@@ -57,7 +57,7 @@
         "description": "Ensure the Composition resource has a status of 'final'."
       },
       {
-        "fhirPath": "Bundle.entry.resource.where($this is Condition).clinicalStatus.coding.where(code = 'inactive').exists()",
+        "fhirPath": "Bundle.entry.resource.where($this is Condition).clinicalStatus.coding.where(code = 'inactive').exists() or (Bundle.meta.profile = 'https://demis.rki.de/fhir/StructureDefinition/NotificationBundleDisease' and Bundle.entry.resource.where($this is Condition).clinicalStatus.empty())",
         "description": "Ensure there is at least one Condition resource with a clinicalStatus of 'inactive'."
       },
       {
@@ -82,7 +82,7 @@
         "description": "Ensure the Composition resource has a status of 'final'."
       },
       {
-        "fhirPath": "Bundle.entry.resource.where($this is Condition).clinicalStatus.coding.where(code = 'active').exists()",
+        "fhirPath": "Bundle.entry.resource.where($this is Condition).clinicalStatus.coding.where(code = 'active').exists() or (Bundle.meta.profile = 'https://demis.rki.de/fhir/StructureDefinition/NotificationBundleDisease' and Bundle.entry.resource.where($this is Condition).clinicalStatus.empty())",
         "description": "Ensure there is at least one Condition resource with a clinicalStatus of 'active'."
       },
       {
@@ -107,7 +107,7 @@
         "description": "Ensure the Composition resource has a status of 'final'."
       },
       {
-        "fhirPath": "Bundle.entry.resource.where($this is Condition).clinicalStatus.coding.where(code = 'active').exists()",
+        "fhirPath": "Bundle.entry.resource.where($this is Condition).clinicalStatus.coding.where(code = 'active').exists() or (Bundle.meta.profile = 'https://demis.rki.de/fhir/StructureDefinition/NotificationBundleDisease' and Bundle.entry.resource.where($this is Condition).clinicalStatus.empty())",
         "description": "Ensure there is at least one Condition resource with a clinicalStatus of 'active'."
       },
       {
@@ -132,7 +132,7 @@
         "description": "Ensure the Composition resource has a status of 'final'."
       },
       {
-        "fhirPath": "Bundle.entry.resource.where($this is Condition).clinicalStatus.coding.where(code = 'active').exists()",
+        "fhirPath": "Bundle.entry.resource.where($this is Condition).clinicalStatus.coding.where(code = 'active').exists() or (Bundle.meta.profile = 'https://demis.rki.de/fhir/StructureDefinition/NotificationBundleDisease' and Bundle.entry.resource.where($this is Condition).clinicalStatus.empty())",
         "description": "Ensure there is at least one Condition resource with a clinicalStatus of 'active'."
       },
       {
@@ -157,7 +157,7 @@
         "description": "Ensure the Composition resource has a status of 'amended'."
       },
       {
-        "fhirPath": "Bundle.entry.resource.where($this is Condition).clinicalStatus.coding.where(code = 'active').exists()",
+        "fhirPath": "Bundle.entry.resource.where($this is Condition).clinicalStatus.coding.where(code = 'active').exists() or (Bundle.meta.profile = 'https://demis.rki.de/fhir/StructureDefinition/NotificationBundleDisease' and Bundle.entry.resource.where($this is Condition).clinicalStatus.empty())",
         "description": "Ensure there is at least one Condition resource with a clinicalStatus of 'active'."
       },
       {
@@ -203,7 +203,7 @@
         "description": "Ensure the Composition resource has a status of 'amended'."
       },
       {
-        "fhirPath": "Bundle.entry.resource.where($this is Condition).clinicalStatus.coding.where(code = 'active').exists()",
+        "fhirPath": "Bundle.entry.resource.where($this is Condition).clinicalStatus.coding.where(code = 'active').exists() or (Bundle.meta.profile = 'https://demis.rki.de/fhir/StructureDefinition/NotificationBundleDisease' and Bundle.entry.resource.where($this is Condition).clinicalStatus.empty())",
         "description": "Ensure there is at least one Condition resource with a clinicalStatus of 'active'."
       },
       {
@@ -228,7 +228,7 @@
         "description": "Ensure the Composition resource has a status of 'final'."
       },
       {
-        "fhirPath": "Bundle.entry.resource.where($this is Condition).clinicalStatus.coding.where(code = 'active').exists()",
+        "fhirPath": "Bundle.entry.resource.where($this is Condition).clinicalStatus.coding.where(code = 'active').exists() or (Bundle.meta.profile = 'https://demis.rki.de/fhir/StructureDefinition/NotificationBundleDisease' and Bundle.entry.resource.where($this is Condition).clinicalStatus.empty())",
         "description": "Ensure there is at least one Condition resource with a clinicalStatus of 'active'."
       },
       {
@@ -253,7 +253,7 @@
         "description": "Ensure the Composition resource has a status of 'amended'."
       },
       {
-        "fhirPath": "Bundle.entry.resource.where($this is Condition).clinicalStatus.coding.where(code = 'active').exists()",
+        "fhirPath": "Bundle.entry.resource.where($this is Condition).clinicalStatus.coding.where(code = 'active').exists() or (Bundle.meta.profile = 'https://demis.rki.de/fhir/StructureDefinition/NotificationBundleDisease' and Bundle.entry.resource.where($this is Condition).clinicalStatus.empty())",
         "description": "Ensure there is at least one Condition resource with a clinicalStatus of 'active'."
       },
       {
@@ -278,7 +278,7 @@
         "description": "Ensure the Composition resource has a status of 'amended'."
       },
       {
-        "fhirPath": "Bundle.entry.resource.where($this is Condition).clinicalStatus.coding.where(code = 'active').exists()",
+        "fhirPath": "Bundle.entry.resource.where($this is Condition).clinicalStatus.coding.where(code = 'active').exists() or (Bundle.meta.profile = 'https://demis.rki.de/fhir/StructureDefinition/NotificationBundleDisease' and Bundle.entry.resource.where($this is Condition).clinicalStatus.empty())",
         "description": "Ensure there is at least one Condition resource with a clinicalStatus of 'active'."
       },
       {
@@ -303,7 +303,7 @@
         "description": "Ensure the Composition resource has a status of 'amended'."
       },
       {
-        "fhirPath": "Bundle.entry.resource.where($this is Condition).clinicalStatus.coding.where(code = 'active').exists()",
+        "fhirPath": "Bundle.entry.resource.where($this is Condition).clinicalStatus.coding.where(code = 'active').exists() or (Bundle.meta.profile = 'https://demis.rki.de/fhir/StructureDefinition/NotificationBundleDisease' and Bundle.entry.resource.where($this is Condition).clinicalStatus.empty())",
         "description": "Ensure there is at least one Condition resource with a clinicalStatus of 'active'."
       },
       {
