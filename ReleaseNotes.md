@@ -2,6 +2,11 @@
  
 # Release notes
 
+## Release 1.3.1
+- updated dependencies
+- updated base image
+- relax clinicalStatus validation for nominal Bundles
+
 ## Release 1.3.0
 - Updated ospo-resources for adding additional notes and disclaimer
 - setting new ressources in helm chart
