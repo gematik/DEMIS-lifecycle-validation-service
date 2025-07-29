@@ -2,6 +2,9 @@
  
 # Release notes
 
+## Release 1.3.2
+- add default feature flag FEATURE_FLAG_NOTIFICATIONS_7_3 to values.yaml
+
 ## Release 1.3.1
 - updated dependencies
 - updated base image
