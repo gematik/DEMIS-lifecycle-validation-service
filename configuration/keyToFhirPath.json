@@ -1,0 +1,25 @@
+[
+  {
+    "Bundle.profile(negative)": "Bundle.where(meta.profile = 'https://demis.rki.de/fhir/StructureDefinition/NotificationBundleLaboratoryNegative').exists()",
+    "Patient.profile(anonymous)": "Bundle.entry.resource.where($this is Patient).meta.where(profile = 'https://demis.rki.de/fhir/StructureDefinition/NotifiedPersonAnonymous').exists()",
+    "HasRelatesToEntry": "Bundle.entry.resource.where($this is Composition and relatesTo.exists()).exists()",
+    "RelatesToEmpty": "Bundle.entry.resource.where($this is Composition and relatesTo.empty()).exists()",
+    "Patient.profile(byName)": "Bundle.entry.resource.where($this is Patient).meta.where(profile = 'https://demis.rki.de/fhir/StructureDefinition/NotifiedPerson').exists()",
+    "NotificationId": "Bundle.entry.resource.where($this is Composition).identifier.where(system='https://demis.rki.de/fhir/NamingSystem/NotificationId').value",
+    "RelatesToId": "Bundle.entry.resource.where($this is Composition).relatesTo.target.identifier.value",
+    "NotificationCategory": "Bundle.entry.resource.where($this is DiagnosticReport).code.coding.where(system='https://demis.rki.de/fhir/CodeSystem/notificationCategory').code",
+    "Composition.status(final)": "Bundle.entry.resource.where($this is Composition).where(status = 'final').exists()",
+    "Composition.status(amended)": "Bundle.entry.resource.where($this is Composition).where(status = 'amended').exists()",
+    "Composition.status(preliminary)": "Bundle.entry.resource.where($this is Composition).where(status = 'preliminary').exists()",
+    "DiagnosticReport.status(amended)": "Bundle.entry.resource.where($this is DiagnosticReport).where(status = 'amended').exists()",
+    "DiagnosticReport.status(final)": "Bundle.entry.resource.where($this is DiagnosticReport).where(status = 'final').exists()",
+    "DiagnosticReport.status(preliminary)": "Bundle.entry.resource.where($this is DiagnosticReport).where(status = 'preliminary').exists()",
+    "DiagnosticReport.status(corrected)": "Bundle.entry.resource.where($this is DiagnosticReport).where(status = 'corrected').exists()",
+    "DiagnosticReport.conclusionCode(pathogenDetected)": "Bundle.entry.resource.where($this is DiagnosticReport).where(conclusionCode.coding.code.lower() = 'pathogendetected').exists()",
+    "DiagnosticReport.conclusionCode(pathogenNotDetected)": "Bundle.entry.resource.where($this is DiagnosticReport).where(conclusionCode.coding.code.lower() = 'pathogennotdetected').exists()",
+    "NotificationCategory(cvdp)": "Bundle.entry.resource.where($this is DiagnosticReport).where(code.coding.code.lower() = 'cvdp').exists()",
+    "Observation.interpretation(pos)": "Bundle.entry.resource.where($this is Observation).where(interpretation.coding.code = 'POS').count() >= 1",
+    "Observation.interpretation(neg)": "Bundle.entry.resource.where($this is Observation).where(interpretation.coding.code = 'NEG').count() >= 1",
+    "Observation.interpretation(pos).or.valueCoding(R,S,I)": "Bundle.entry.resource.where($this is Observation).exists(interpretation.coding.code = 'POS' or value.coding.code= '131196009' or value.coding.code = '11896004' or value.coding.code = '1255965005' or value.coding.code = '30714006')"
+  }
+]

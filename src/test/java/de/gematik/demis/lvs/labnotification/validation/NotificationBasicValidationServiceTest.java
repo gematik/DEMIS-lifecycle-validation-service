@@ -1,4 +1,4 @@
-package de.gematik.demis.lvs.labnotification;
+package de.gematik.demis.lvs.labnotification.validation;
 
 /*-
  * #%L
@@ -44,16 +44,15 @@ import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
 import org.springframework.http.MediaType;
 
-class LaboratoryNotificationValidationServiceTest {
+class NotificationBasicValidationServiceTest {
 
   private final BundleBuilder bundleBuilder = new BundleBuilder(FhirContext.forR4Cached());
-  private LaboratoryNotificationValidationService service;
+  private NotificationBasicValidationService service;
 
   @BeforeEach
   void beforeEach() {
     service =
-        new LaboratoryNotificationValidationService(
-            new FhirParser(FhirContext.forR4Cached()), true);
+        new NotificationBasicValidationService(new FhirParser(FhirContext.forR4Cached()), true);
   }
 
   @Test
@@ -89,15 +88,6 @@ class LaboratoryNotificationValidationServiceTest {
   }
 
   @Test
-  void expectThatCompositionWithStatusNullThrowsException() {
-    Composition composition = new Composition();
-    composition.setStatus(Composition.CompositionStatus.ENTEREDINERROR);
-    bundleBuilder.addDocumentEntry(composition);
-
-    Assertions.assertThrows(LifecycleValidationException.class, this::performValidation);
-  }
-
-  @Test
   void expectThatCompositionWithStatusPreliminaryThrowsExceptionOnEmptyComposition() {
     Composition composition = new Composition();
     composition.setStatus(Composition.CompositionStatus.PRELIMINARY);
@@ -117,9 +107,8 @@ class LaboratoryNotificationValidationServiceTest {
 
   @Test
   void regression_expectThat74CompositionWithNegativeCOVPIsRejected() {
-    final LaboratoryNotificationValidationService rejectingAnonymousNotifications =
-        new LaboratoryNotificationValidationService(
-            new FhirParser(FhirContext.forR4Cached()), false);
+    final NotificationBasicValidationService rejectingAnonymousNotifications =
+        new NotificationBasicValidationService(new FhirParser(FhirContext.forR4Cached()), false);
     // GIVEN isPositive 7.4 notification for Covid-19
     final String notification =
         FileLoaderHelper.loadResourceFile(

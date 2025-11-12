@@ -30,9 +30,11 @@ import static org.springframework.http.HttpHeaders.CONTENT_TYPE;
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 import static org.springframework.http.MediaType.APPLICATION_XML_VALUE;
 
+import de.gematik.demis.lvs.labnotification.validation.NotificationBasicValidationService;
 import jakarta.validation.constraints.NotBlank;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
@@ -47,9 +49,10 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping(path = "/laboratory")
 @RequiredArgsConstructor
 @Slf4j
+@ConditionalOnProperty(name = "feature.flag.fhirpath.validation.enabled", havingValue = "false")
 class LaboratoryNotificationRestController {
 
-  private final LaboratoryNotificationValidationService laboratoryNotificationValidationService;
+  private final NotificationBasicValidationService notificationBasicValidationService;
 
   @PostMapping(
       path = "$validate",
@@ -68,7 +71,7 @@ class LaboratoryNotificationRestController {
   ResponseEntity<String> validate(
       @RequestBody @NotBlank final String notification,
       @RequestHeader(name = CONTENT_TYPE) final MediaType mediaType) {
-    laboratoryNotificationValidationService.validate(notification, mediaType);
+    notificationBasicValidationService.validate(notification, mediaType);
     return ResponseEntity.ok().build();
   }
 }

@@ -9,7 +9,6 @@ package de.gematik.demis.lvs.disease;
  * Licensed under the EUPL, Version 1.2 or - as soon they will be approved by the
  * European Commission – subsequent versions of the EUPL (the "Licence").
  * You may not use this work except in compliance with the Licence.
- *
  * You find a copy of the Licence in the "Licence" file or at
  * https://joinup.ec.europa.eu/collection/eupl/eupl-text-eupl-12
  *
@@ -34,6 +33,7 @@ import jakarta.validation.constraints.NotBlank;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
@@ -48,9 +48,11 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping(path = "/disease")
 @RequiredArgsConstructor
 @Slf4j
+@ConditionalOnProperty(name = "feature.flag.fhirpath.validation.enabled", havingValue = "false")
 public class DiseaseNotificationLifecycleValidationCtr {
 
-  private final DiseaseNotificationLifecycleValidationSrv diseaseNotificationLifecycleValidationSrv;
+  private final DiseaseBasicNotificationLifecycleValidationSrv
+      diseaseNotificationLifecycleValidationSrv;
 
   @PostMapping(
       path = "$validate",
@@ -70,7 +72,9 @@ public class DiseaseNotificationLifecycleValidationCtr {
       @RequestBody @NotBlank final String notification,
       @RequestHeader(name = CONTENT_TYPE) final MediaType mediaType) {
     List<String> validate =
-        diseaseNotificationLifecycleValidationSrv.validate(notification, mediaType);
+        List.of(
+            diseaseNotificationLifecycleValidationSrv.validateNotificationRegression(
+                notification, mediaType));
     return ResponseEntity.ok().body(validate);
   }
 }

@@ -1,4 +1,4 @@
-package de.gematik.demis.lvs.labnotification;
+package de.gematik.demis.lvs.labnotification.validation;
 
 /*-
  * #%L
@@ -28,39 +28,24 @@ package de.gematik.demis.lvs.labnotification;
 
 import static de.gematik.demis.lvs.common.exception.ExceptionMessages.EXCEPTION_MESSAGE_ENTERED_IN_ERROR_NOT_ALLOWED;
 import static de.gematik.demis.lvs.common.exception.ExceptionMessages.EXCEPTION_MESSAGE_NULL_STATUS_NOT_ALLOWED;
-import static de.gematik.demis.lvs.common.exception.ExceptionMessages.EXCEPTION_MESSAGE_ONLY_POSITIVE_FINAL;
-import static de.gematik.demis.lvs.common.exception.ExceptionMessages.EXCEPTION_MESSAGE_UNKNOWN_STATUS;
 
 import de.gematik.demis.lvs.common.exception.ExceptionMessages;
 import de.gematik.demis.lvs.common.exception.LifecycleValidationException;
+import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.hl7.fhir.r4.model.Composition;
 
 @RequiredArgsConstructor
-public final class RegularNotificationValidator implements NotificationValidator {
+public class AnonymousNotificationValidator implements NotificationValidator {
+  public static final String COVID_PATHOGEN = "cvdp";
+
   private final String bundleId;
   private final Composition.CompositionStatus status;
-  private final boolean isPositive;
-  private final boolean hasRelatesTo;
+  private final List<String> pathogens;
 
   @Override
   public void assertIsValid() {
     switch (status) {
-      case FINAL -> {
-        final boolean isValid = isPositive || hasRelatesTo;
-        if (!isValid) {
-          throw new LifecycleValidationException(EXCEPTION_MESSAGE_ONLY_POSITIVE_FINAL);
-        }
-      }
-      case PRELIMINARY -> {
-        if (!isPositive) {
-          throw new LifecycleValidationException(
-              ExceptionMessages.EXCEPTION_MESSAGE_ONLY_POSITIVE_PRELIMINARY);
-        }
-      }
-      case AMENDED -> {
-        // Do nothing
-      }
       // All other statuses are not valid in the life cycle management
       case ENTEREDINERROR ->
           throw new LifecycleValidationException(
@@ -68,10 +53,13 @@ public final class RegularNotificationValidator implements NotificationValidator
       case NULL ->
           throw new LifecycleValidationException(
               String.format(EXCEPTION_MESSAGE_NULL_STATUS_NOT_ALLOWED, bundleId));
-      default ->
-          // Should never happen
+      default -> {
+        boolean isCovid = pathogens.contains(COVID_PATHOGEN);
+        if (!isCovid) {
           throw new LifecycleValidationException(
-              String.format(EXCEPTION_MESSAGE_UNKNOWN_STATUS, bundleId, status));
+              ExceptionMessages.EXCEPTION_MESSAGE_PATHOGEN_NOT_SUPPORTED_FOR_ANONYMOUS);
+        }
+      }
     }
   }
 }

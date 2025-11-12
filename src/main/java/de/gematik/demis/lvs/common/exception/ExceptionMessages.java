@@ -51,4 +51,7 @@ public final class ExceptionMessages {
 
   public static final String EXCEPTION_MESSAGE_PATHOGEN_NOT_SUPPORTED_FOR_ANONYMOUS =
       "LVS-008: Pathogen not supported for anonymous notifications";
+
+  public static final String EXCEPTION_MESSAGE_NOTIFICATION_CATEGORY_MISMATCH =
+      "Notification-category of related notification does not match";
 }

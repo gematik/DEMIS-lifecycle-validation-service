@@ -2,6 +2,15 @@
  
 # Release notes
 
+## Release 1.4.0
+- add fhir path validation for laboratory notifications
+- add feature flag FEATURE_FLAG_FHIRPATH_VALIDATION_ENABLED
+- add feature flag FEATURE_FLAG_RETURN_FHIRPATH_VALIDATION_IN_RESPONSE
+- remove feature flag FEATURE_FLAG_NOTIFICATIONS_7_3
+- updated dependencies
+- bump spring parent to 2.14.2
+- add validation of notificationId to be UUID, before sending request to get notification category to DLS, skip scenario if invalid
+
 ## Release 1.3.2
 - add default feature flag FEATURE_FLAG_NOTIFICATIONS_7_3 to values.yaml
 

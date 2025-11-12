@@ -31,13 +31,42 @@ info:
     name: @project.name@
     version: @project.version@
 
+
+lvs:
+  client:
+    dls: "http://destination-lookup-reader.demis.svc.cluster.local"
+    futs:
+      address: "http://futs.demis.svc.cluster.local"
+      context-path: ${DEMIS_NETWORK_FUTS_CONTEXT_PATH:/fhir-ui-data-model-translation/}
+
+  codemapping:
+    cache:
+      reload:
+        cron: "0 0/30 * * * *"
+
 # diesease configuration
 disease:
   config: classpath:diseaseConfiguration.json
   config-show-all-scenario-passed: true
   fhir-path-data: configuration/diseaseScenarios.json
 
+# laboratory configuration
+laboratory:
+  config-show-all-scenario-passed: true
+  fhir-path-data: configuration/laboratoryScenarios.json
+  key-to-fhir-path-data: configuration/keyToFhirPath.json
+
 feature:
   flag:
     accepting_anonymous_notifications: false
-    notifications.7_3: false
+    fhirpath.validation.enabled: false
+    return.fhirpath.validation.in.responses: false
+
+feign:
+  client:
+    config:
+      default:
+        retryer: feign.Retryer.Default
+        maxAttempts: 3
+        period: 100
+        maxPeriod: 1000
