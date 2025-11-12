@@ -1,0 +1,384 @@
+{ 
+  "resourceType" : "Bundle" ,
+  "meta" : {
+      "lastUpdated" : "2021-03-04T20:05:01.000+01:00" ,
+      "profile" : [ "https://demis.rki.de/fhir/StructureDefinition/NotificationBundleLaboratory" ]
+    } ,
+  "identifier" : {
+      "system" : "https://demis.rki.de/fhir/NamingSystem/NotificationBundleId" ,
+      "value" : "e817c273-403a-323e-b5f7-4f12c15b554b"
+    } ,
+  "type" : "document" ,
+  "timestamp" : "2021-03-04T20:05:01.000+01:00" ,
+  "entry" : [ 
+      { 
+        "fullUrl" : "urn:uuid:3bc6af2d-8521-3d1e-91fc-4fd680878849" ,
+        "resource" : {
+            "resourceType" : "Composition" ,
+            "id" : "3bc6af2d-8521-3d1e-91fc-4fd680878849" ,
+            "meta" : {"profile" : [ "https://demis.rki.de/fhir/StructureDefinition/NotificationLaboratory" ] } ,
+            "identifier" : {
+                "system" : "https://demis.rki.de/fhir/NamingSystem/NotificationId" ,
+                "value" : "43c2f6f1-f935-4a26-9aeb-9a6f3f1bd36c"
+              } ,
+            "status" : "final" ,
+            "type" : {
+                "coding" : [ 
+                    { 
+                      "system" : "http://loinc.org" ,
+                      "code" : "34782-3" ,
+                      "display" : "Infectious disease Note"
+                    }
+                  ]
+              } ,
+            "category" : [ 
+                { 
+                  "coding" : [ 
+                      { 
+                        "system" : "http://loinc.org" ,
+                        "code" : "11502-2" ,
+                        "display" : "Laboratory report"
+                      }
+                    ]
+                }
+              ] ,
+            "subject" : {"reference" : "urn:uuid:08fd5c45-d0d2-33da-ab17-77797485b099" } ,
+            "date" : "2021-03-04T20:16:00.000+01:00" ,
+            "author" : [ 
+                { "reference" : "urn:uuid:4961b6d0-6a16-3fa6-8396-6b9781bfe3e8" }
+              ] ,
+            "title" : "Erregernachweismeldung" ,
+            "section" : [ 
+                { 
+                  "code" : {
+                      "coding" : [ 
+                          { 
+                            "system" : "http://loinc.org" ,
+                            "code" : "11502-2" ,
+                            "display" : "Laboratory report"
+                          }
+                        ]
+                    } ,
+                  "entry" : [ 
+                      { "reference" : "urn:uuid:767e3a30-57a9-3540-bfb4-9fc09345e348" }
+                    ]
+                }
+              ]
+          }
+      } ,
+      { 
+        "fullUrl" : "urn:uuid:08fd5c45-d0d2-33da-ab17-77797485b099" ,
+        "resource" : {
+            "resourceType" : "Patient" ,
+            "id" : "08fd5c45-d0d2-33da-ab17-77797485b099" ,
+            "meta" : {"profile" : [ "https://demis.rki.de/fhir/StructureDefinition/NotifiedPerson" ] } ,
+            "name" : [ 
+                { 
+                  "use" : "official" ,
+                  "family" : "Tester" ,
+                  "given" : [ "Testus" ]
+                }
+              ] ,
+            "gender" : "male" ,
+            "birthDate" : "1978-12-12" ,
+            "address" : [ 
+                { 
+                  "extension" : [ 
+                      { 
+                        "url" : "https://demis.rki.de/fhir/StructureDefinition/AddressUse" ,
+                        "valueCoding" : {
+                            "system" : "https://demis.rki.de/fhir/CodeSystem/addressUse" ,
+                            "code" : "primary"
+                          }
+                      }
+                    ] ,
+                  "line" : [ "Teststr. 123" ] ,
+                  "city" : "Berlin" ,
+                  "postalCode" : "13055" ,
+                  "country" : "DE"
+                }
+              ]
+          }
+      } ,
+      { 
+        "fullUrl" : "urn:uuid:4961b6d0-6a16-3fa6-8396-6b9781bfe3e8" ,
+        "resource" : {
+            "resourceType" : "PractitionerRole" ,
+            "id" : "4961b6d0-6a16-3fa6-8396-6b9781bfe3e8" ,
+            "meta" : {"profile" : [ "https://demis.rki.de/fhir/StructureDefinition/NotifierRole" ] } ,
+            "organization" : {"reference" : "urn:uuid:2db98376-ee06-38e2-bb98-89a7e18295d4" }
+          }
+      } ,
+      { 
+        "fullUrl" : "urn:uuid:2db98376-ee06-38e2-bb98-89a7e18295d4" ,
+        "resource" : {
+            "resourceType" : "Organization" ,
+            "id" : "2db98376-ee06-38e2-bb98-89a7e18295d4" ,
+            "meta" : {"profile" : [ "https://demis.rki.de/fhir/StructureDefinition/NotifierFacility" ] } ,
+            "identifier" : [ 
+                { 
+                  "system" : "https://demis.rki.de/fhir/NamingSystem/DemisParticipantId" ,
+                  "value" : "12345"
+                } ,
+                { 
+                  "system" : "https://fhir.kbv.de/NamingSystem/KBV_NS_Base_BSNR" ,
+                  "value" : "987654300"
+                }
+              ] ,
+            "type" : [ 
+                { 
+                  "coding" : [ 
+                      { 
+                        "system" : "https://demis.rki.de/fhir/CodeSystem/organizationType" ,
+                        "code" : "laboratory" ,
+                        "display" : "Erregerdiagnostische Untersuchungsstelle"
+                      }
+                    ]
+                }
+              ] ,
+            "name" : "Primärlabor" ,
+            "telecom" : [ 
+                { 
+                  "system" : "phone" ,
+                  "value" : "0309876543210" ,
+                  "use" : "work"
+                }
+              ] ,
+            "address" : [ 
+                { 
+                  "line" : [ "Dingsweg 321" ] ,
+                  "city" : "Berlin" ,
+                  "postalCode" : "13055" ,
+                  "country" : "DE"
+                }
+              ]
+          }
+      } ,
+      { 
+        "fullUrl" : "urn:uuid:c4882868-76e5-39ea-9e0f-3cdac050d634" ,
+        "resource" : {
+            "resourceType" : "PractitionerRole" ,
+            "id" : "c4882868-76e5-39ea-9e0f-3cdac050d634" ,
+            "meta" : {"profile" : [ "https://demis.rki.de/fhir/StructureDefinition/SubmittingRole" ] } ,
+            "organization" : {"reference" : "urn:uuid:602f17e5-e40d-30a9-9b32-7eb7e13997d0" }
+          }
+      } ,
+      { 
+        "fullUrl" : "urn:uuid:602f17e5-e40d-30a9-9b32-7eb7e13997d0" ,
+        "resource" : {
+            "resourceType" : "Organization" ,
+            "id" : "602f17e5-e40d-30a9-9b32-7eb7e13997d0" ,
+            "meta" : {"profile" : [ "https://demis.rki.de/fhir/StructureDefinition/SubmittingFacility" ] } ,
+            "identifier" : [ 
+                { 
+                  "system" : "https://fhir.kbv.de/NamingSystem/KBV_NS_Base_BSNR" ,
+                  "value" : "123456780"
+                }
+              ] ,
+            "name" : "Einsendepraxis ABC" ,
+            "telecom" : [ 
+                { 
+                  "system" : "phone" ,
+                  "value" : "030 1234567890" ,
+                  "use" : "work"
+                }
+              ] ,
+            "address" : [ 
+                { 
+                  "line" : [ "Teststr. 123" ] ,
+                  "city" : "Berlin" ,
+                  "postalCode" : "13055" ,
+                  "country" : "DE"
+                }
+              ]
+          }
+      } ,
+      { 
+        "fullUrl" : "urn:uuid:767e3a30-57a9-3540-bfb4-9fc09345e348" ,
+        "resource" : {
+            "resourceType" : "DiagnosticReport" ,
+            "id" : "767e3a30-57a9-3540-bfb4-9fc09345e348" ,
+            "meta" : {"profile" : [ "https://demis.rki.de/fhir/StructureDefinition/LaboratoryReportCVDP" ] } ,
+            "basedOn" : [ 
+                { 
+                  "type" : "ServiceRequest" ,
+                  "identifier" : {
+                      "system" : "https://demis.rki.de/fhir/NamingSystem/ServiceRequestId" ,
+                      "value" : "2021-000672926"
+                    }
+                }
+              ] ,
+            "status" : "final" ,
+            "code" : {
+                "coding" : [ 
+                    { 
+                      "system" : "https://demis.rki.de/fhir/CodeSystem/notificationCategory" ,
+                      "code" : "cvdp" ,
+                      "display" : "Severe-Acute-Respiratory-Syndrome-Coronavirus-2 (SARS-CoV-2)"
+                    }
+                  ]
+              } ,
+            "subject" : {"reference" : "urn:uuid:08fd5c45-d0d2-33da-ab17-77797485b099" } ,
+            "issued" : "2021-03-04T20:15:00.000+01:00" ,
+            "result" : [ 
+                { "reference" : "urn:uuid:ac6760e6-c32a-3798-be0a-503505ccae2d" } ,
+                { "reference" : "urn:uuid:0ac33792-106e-3b7c-a305-2039d5d563fd" }
+              ] ,
+            "conclusion" : "Ich bin die textuelle Conclusion ..." ,
+            "conclusionCode" : [ 
+                { 
+                  "coding" : [ 
+                      { 
+                        "system" : "https://demis.rki.de/fhir/CodeSystem/conclusionCode" ,
+                        "code" : "pathogenDetected" ,
+                        "display" : "Meldepflichtiger Erreger nachgewiesen"
+                      }
+                    ]
+                }
+              ]
+          }
+      } ,
+      { 
+        "fullUrl" : "urn:uuid:ac6760e6-c32a-3798-be0a-503505ccae2d" ,
+        "resource" : {
+            "resourceType" : "Observation" ,
+            "id" : "ac6760e6-c32a-3798-be0a-503505ccae2d" ,
+            "meta" : {"profile" : [ "https://demis.rki.de/fhir/StructureDefinition/PathogenDetectionCVDP" ] } ,
+            "status" : "final" ,
+            "category" : [ 
+                { 
+                  "coding" : [ 
+                      { 
+                        "system" : "http://terminology.hl7.org/CodeSystem/observation-category" ,
+                        "code" : "laboratory"
+                      }
+                    ]
+                }
+              ] ,
+            "code" : {
+                "coding" : [ 
+                    { 
+                      "system" : "http://loinc.org" ,
+                      "code" : "95209-3" ,
+                      "display" : "SARS-CoV+SARS-CoV-2 (COVID-19) Ag [Presence] in Respiratory specimen by Rapid immunoassay"
+                    }
+                  ]
+              } ,
+            "subject" : {"reference" : "urn:uuid:08fd5c45-d0d2-33da-ab17-77797485b099" } ,
+            "valueCodeableConcept" : {
+                "coding" : [ 
+                    { 
+                      "system" : "http://loinc.org" ,
+                      "code" : "LA6576-8" ,
+                      "display" : "Positive"
+                    }
+                  ]
+              } ,
+            "interpretation" : [ 
+                { 
+                  "coding" : [ 
+                      { 
+                        "system" : "http://terminology.hl7.org/CodeSystem/v3-ObservationInterpretation" ,
+                        "code" : "POS" ,
+                        "display" : "Positive"
+                      }
+                    ]
+                }
+              ] ,
+            "note" : [ 
+                { "text" : "Nette Zusatzinformation \u2026" }
+              ] ,
+            "specimen" : {"reference" : "urn:uuid:c8aea588-5965-3cd3-ac76-17d6edc97124" }
+          }
+      } ,
+      { 
+        "fullUrl" : "urn:uuid:0ac33792-106e-3b7c-a305-2039d5d563fd" ,
+        "resource" : {
+            "resourceType" : "Observation" ,
+            "id" : "0ac33792-106e-3b7c-a305-2039d5d563fd" ,
+            "meta" : {"profile" : [ "https://demis.rki.de/fhir/StructureDefinition/PathogenDetectionCVDP" ] } ,
+            "status" : "final" ,
+            "category" : [ 
+                { 
+                  "coding" : [ 
+                      { 
+                        "system" : "http://terminology.hl7.org/CodeSystem/observation-category" ,
+                        "code" : "laboratory"
+                      }
+                    ]
+                }
+              ] ,
+            "code" : {
+                "coding" : [ 
+                    { 
+                      "system" : "http://loinc.org" ,
+                      "code" : "94759-8" ,
+                      "display" : "SARS-CoV-2 (COVID-19) RNA [Presence] in Nasopharynx by NAA with probe detection"
+                    }
+                  ]
+              } ,
+            "subject" : {"reference" : "urn:uuid:08fd5c45-d0d2-33da-ab17-77797485b099" } ,
+            "valueCodeableConcept" : {
+                "coding" : [ 
+                    { 
+                      "system" : "http://loinc.org" ,
+                      "code" : "LA11882-0" ,
+                      "display" : "Detected"
+                    }
+                  ]
+              } ,
+            "interpretation" : [ 
+                { 
+                  "coding" : [ 
+                      { 
+                        "system" : "http://terminology.hl7.org/CodeSystem/v3-ObservationInterpretation" ,
+                        "code" : "POS" ,
+                        "display" : "Positive"
+                      }
+                    ]
+                }
+              ] ,
+            "note" : [ 
+                { "text" : "Nette Zusatzinformation \u2026" }
+              ] ,
+            "method" : {
+                "coding" : [ 
+                    { 
+                      "system" : "http://snomed.info/sct" ,
+                      "code" : "398545005" ,
+                      "display" : "Nucleic acid assay (procedure)"
+                    }
+                  ]
+              } ,
+            "specimen" : {"reference" : "urn:uuid:c8aea588-5965-3cd3-ac76-17d6edc97124" }
+          }
+      } ,
+      { 
+        "fullUrl" : "urn:uuid:c8aea588-5965-3cd3-ac76-17d6edc97124" ,
+        "resource" : {
+            "resourceType" : "Specimen" ,
+            "id" : "c8aea588-5965-3cd3-ac76-17d6edc97124" ,
+            "meta" : {"profile" : [ "https://demis.rki.de/fhir/StructureDefinition/SpecimenCVDP" ] } ,
+            "status" : "available" ,
+            "type" : {
+                "coding" : [ 
+                    { 
+                      "system" : "http://snomed.info/sct" ,
+                      "code" : "258500001" ,
+                      "display" : "Nasopharyngeal swab (specimen)"
+                    }
+                  ]
+              } ,
+            "subject" : {"reference" : "urn:uuid:08fd5c45-d0d2-33da-ab17-77797485b099" } ,
+            "receivedTime" : "2021-03-04T09:50:00.000+01:00" ,
+            "collection" : {
+                "collector" : {"reference" : "urn:uuid:c4882868-76e5-39ea-9e0f-3cdac050d634" } ,
+                "collectedDateTime" : "2021-03-04T09:50:00.000+01:00"
+              } ,
+            "note" : [ 
+                { "text" : "Ich bin eine interessante Zusatzinformation ..." }
+              ]
+          }
+      }
+    ]
+}

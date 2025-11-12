@@ -1,0 +1,357 @@
+[
+  {
+    "name": "1",
+    "fhirPathExpression": [
+      {
+        "fhirPath": "Patient.profile(byName)"
+      },
+      {
+        "fhirPath": "RelatesToEmpty"
+      },
+      {
+        "fhirPath": "Composition.status(final)",
+        "description": "Ensure the Composition resource has a status of 'final' and no relatesTo entry."
+      },
+      {
+        "fhirPath": "DiagnosticReport.status(final)"
+      },
+      {
+        "fhirPath": "DiagnosticReport.conclusionCode(pathogenDetected)"
+      },
+      {
+        "fhirPath": "Observation.interpretation(pos)"
+      }
+    ],
+    "externalChecks": [
+      {
+        "type": "NOTIFICATION_ID_NOT_EXISTING",
+        "inputs": {
+          "notificationId": "NotificationId"
+        }
+      }
+    ]
+  },
+  {
+    "name": "2A",
+    "fhirPathExpression": [
+      {
+        "fhirPath": "Patient.profile(byName)"
+      },
+      {
+        "fhirPath": "Composition.status(amended)",
+        "description": "Ensure the Composition resource has a status of 'amended'"
+      },
+      {
+        "fhirPath": "DiagnosticReport.status(amended)"
+      },
+      {
+        "fhirPath": "DiagnosticReport.conclusionCode(pathogenDetected)"
+      },
+      {
+        "fhirPath": "Observation.interpretation(pos).or.valueCoding(R,S,I)"
+      }
+    ],
+    "externalChecks": [
+      {
+        "type": "NOTIFICATION_ID_CATEGORY_MAPPING",
+        "inputs": {
+          "notificationId": "NotificationId",
+          "notificationCategory": "NotificationCategory"
+        }
+      }
+    ]
+  },
+  {
+    "name": "2B",
+    "fhirPathExpression": [
+      {
+        "fhirPath": "Patient.profile(byName)"
+      },
+      {
+        "fhirPath": "HasRelatesToEntry",
+        "description": "Ensure the Composition resource has a relatesTo entry. As fast fail."
+      },
+      {
+        "fhirPath": "Composition.status(final)",
+        "description": "Ensure the Composition resource has a status of 'final'"
+      },
+      {
+        "fhirPath": "DiagnosticReport.status(final)",
+        "description": "Ensure the DiagnosticReport resource has a status of 'final'"
+      },
+      {
+        "fhirPath": "DiagnosticReport.conclusionCode(pathogenDetected)",
+        "description": "Ensure the DiagnosticReport resource has conclusionCode 'pathogenDetected'"
+      },
+      {
+        "fhirPath": "Observation.interpretation(pos).or.valueCoding(R,S,I)",
+        "description": "Ensure at least one Observation has interpretation POS or valueCoding R, S, I"
+      }
+    ],
+    "externalChecks": [
+      {
+        "type": "RELATES_TO_ID_CATEGORY_MAPPING",
+        "inputs": {
+          "relatesToId": "RelatesToId",
+          "hasToExist": false,
+          "notificationCategory": "NotificationCategory"
+        }
+      }
+    ]
+  },
+  {
+    "name": "2C",
+    "fhirPathExpression": [
+      {
+        "fhirPath": "Patient.profile(anonymous)"
+      },
+      {
+        "fhirPath": "HasRelatesToEntry",
+        "description": "Ensure the Composition resource has a relatesTo entry. As fast fail."
+      },
+      {
+        "fhirPath": "Composition.status(final)",
+        "description": "Ensure the Composition resource has a status of 'final' or 'amended' and no relatesTo entry."
+      },
+      {
+        "fhirPath": "DiagnosticReport.status(final)"
+      },
+      {
+        "fhirPath": "DiagnosticReport.conclusionCode(pathogenDetected)"
+      },
+      {
+        "fhirPath": "Observation.interpretation(pos).or.valueCoding(R,S,I)"
+      }
+    ],
+    "externalChecks": [
+      {
+        "type": "RELATES_TO_ID_CATEGORY_MAPPING",
+        "inputs": {
+          "relatesToId": "RelatesToId",
+          "hasToExist": true,
+          "notificationCategory": "NotificationCategory"
+        }
+      }
+    ]
+  },
+  {
+    "name" : "3A",
+    "fhirPathExpression": [
+      {
+        "fhirPath": "Patient.profile(byName)"
+      },
+      {
+        "fhirPath": "Composition.status(preliminary)"
+      },
+      {
+        "fhirPath": "DiagnosticReport.status(preliminary)"
+      },
+      {
+        "fhirPath": "DiagnosticReport.conclusionCode(pathogenDetected)"
+      },
+      {
+        "fhirPath": "Observation.interpretation(pos)"
+      }
+    ]
+  },
+  {
+    "name": "3A1",
+    "fhirPathExpression": [
+      {
+        "fhirPath": "Patient.profile(byName)"
+      },
+      {
+        "fhirPath": "Composition.status(final)"
+      },
+      {
+        "fhirPath": "DiagnosticReport.status(final)"
+      },
+      {
+        "fhirPath": "DiagnosticReport.conclusionCode(pathogenDetected)"
+      },
+      {
+        "fhirPath": "Observation.interpretation(pos).or.valueCoding(R,S,I)"
+      }
+    ],
+    "externalChecks": [
+      {
+        "type": "NOTIFICATION_ID_CATEGORY_MAPPING",
+        "inputs": {
+          "notificationId": "NotificationId",
+          "notificationCategory": "NotificationCategory"
+        }
+      }
+    ]
+  },
+  {
+    "name": "3A2",
+    "fhirPathExpression": [
+      {
+        "fhirPath": "Patient.profile(byName)"
+      },
+      {
+        "fhirPath": "Composition.status(final)"
+      },
+      {
+        "fhirPath": "DiagnosticReport.status(final)"
+      },
+      {
+        "fhirPath": "DiagnosticReport.conclusionCode(pathogenNotDetected)"
+      },
+      {
+        "fhirPath": "Observation.interpretation(neg)"
+      }
+    ],
+    "externalChecks": [
+      {
+        "type": "NOTIFICATION_ID_CATEGORY_MAPPING",
+        "inputs": {
+          "notificationId": "NotificationId",
+          "notificationCategory": "NotificationCategory"
+        }
+      }
+    ]
+  },
+  {
+    "name": "4A",
+    "fhirPathExpression": [
+      {
+        "fhirPath": "Patient.profile(byName)"
+      },
+      {
+        "fhirPath": "Composition.status(amended)"
+      },
+      {
+        "fhirPath": "DiagnosticReport.status(corrected)"
+      },
+      {
+        "fhirPath": "DiagnosticReport.conclusionCode(pathogenNotDetected)"
+      },
+      {
+        "fhirPath": "Observation.interpretation(neg)"
+      }
+    ],
+    "externalChecks": [
+      {
+        "type": "NOTIFICATION_ID_CATEGORY_MAPPING",
+        "inputs": {
+          "notificationId": "NotificationId",
+          "notificationCategory": "NotificationCategory"
+        }
+      }
+    ]
+  },
+  {
+    "name": "4B",
+    "fhirPathExpression": [
+      {
+        "fhirPath": "Patient.profile(byName)"
+      },
+      {
+        "fhirPath": "Composition.status(amended)"
+      },
+      {
+        "fhirPath": "DiagnosticReport.status(corrected)"
+      },
+      {
+        "fhirPath": "DiagnosticReport.conclusionCode(pathogenDetected)"
+      },
+      {
+        "fhirPath": "Observation.interpretation(pos).or.valueCoding(R,S,I)"
+      }
+    ],
+    "externalChecks": [
+      {
+        "type": "NOTIFICATION_ID_CATEGORY_MAPPING",
+        "inputs": {
+          "notificationId": "NotificationId",
+          "notificationCategory": "NotificationCategory"
+        }
+      }
+    ]
+  },
+  {
+    "name": "5A",
+    "fhirPathExpression": [
+      {
+        "fhirPath": "Patient.profile(byName)"
+      },
+      {
+        "fhirPath": "Composition.status(amended)"
+      },
+      {
+        "fhirPath": "DiagnosticReport.status(final)"
+      },
+      {
+        "fhirPath": "DiagnosticReport.conclusionCode(pathogenDetected)"
+      },
+      {
+        "fhirPath": "Observation.interpretation(pos).or.valueCoding(R,S,I)"
+      }
+    ],
+    "externalChecks": [
+      {
+        "type": "NOTIFICATION_ID_CATEGORY_MAPPING",
+        "inputs": {
+          "notificationId": "NotificationId",
+          "notificationCategory": "NotificationCategory"
+        }
+      }
+    ]
+  },
+  {
+    "name": "5B",
+    "fhirPathExpression": [
+      {
+        "fhirPath": "Patient.profile(byName)"
+      },
+      {
+        "fhirPath": "Composition.status(amended)"
+      },
+      {
+        "fhirPath": "DiagnosticReport.status(final)"
+      },
+      {
+        "fhirPath": "DiagnosticReport.conclusionCode(pathogenNotDetected)"
+      },
+      {
+        "fhirPath": "Observation.interpretation(neg)"
+      }
+    ],
+    "externalChecks": [
+      {
+        "type": "NOTIFICATION_ID_CATEGORY_MAPPING",
+        "inputs": {
+          "notificationId": "NotificationId",
+          "notificationCategory": "NotificationCategory"
+        }
+      }
+    ]
+  },
+  {
+    "name": "7",
+    "fhirPathExpression": [
+      {
+        "fhirPath": "Bundle.profile(negative)"
+      },
+      {
+        "fhirPath": "Patient.profile(anonymous)"
+      },
+      {
+        "fhirPath": "Composition.status(final)"
+      },
+      {
+        "fhirPath": "DiagnosticReport.status(final)"
+      },
+      {
+        "fhirPath": "DiagnosticReport.conclusionCode(pathogenNotDetected)"
+      },
+      {
+        "fhirPath": "Observation.interpretation(neg)"
+      },
+      {
+        "fhirPath": "NotificationCategory(cvdp)"
+      }
+    ]
+  }
+]

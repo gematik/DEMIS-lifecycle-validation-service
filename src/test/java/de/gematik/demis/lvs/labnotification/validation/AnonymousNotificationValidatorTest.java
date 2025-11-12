@@ -1,4 +1,4 @@
-package de.gematik.demis.lvs.labnotification;
+package de.gematik.demis.lvs.labnotification.validation;
 
 /*-
  * #%L
@@ -26,7 +26,7 @@ package de.gematik.demis.lvs.labnotification;
  * #L%
  */
 
-import static de.gematik.demis.lvs.labnotification.AnonymousNotificationValidator.COVID_PATHOGEN;
+import static de.gematik.demis.lvs.labnotification.validation.AnonymousNotificationValidator.COVID_PATHOGEN;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.catchThrowableOfType;
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;

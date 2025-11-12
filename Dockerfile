@@ -30,7 +30,7 @@ COPY --chown=$USERID:$GROUPID target/lifecycle-validation-service.jar /app.jar
 USER $USERID:$USERID
 
 # Copy Configurtation
-COPY --chown=$USERID:$GROUPID configuration/diseaseScenarios.json /configuration/diseaseScenarios.json
+COPY --chown=$USERID:$GROUPID configuration/*.json /configuration/
 
 ENTRYPOINT ["java", "-jar", "/app.jar"]
 

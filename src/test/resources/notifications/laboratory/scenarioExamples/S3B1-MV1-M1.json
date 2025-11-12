@@ -1,0 +1,321 @@
+{ 
+  "resourceType" : "Bundle" ,
+  "meta" : {
+      "lastUpdated" : "2021-03-04T10:05:01.000+01:00" ,
+      "profile" : [ "https://demis.rki.de/fhir/StructureDefinition/NotificationBundleLaboratory" ]
+    } ,
+  "identifier" : {
+      "system" : "https://demis.rki.de/fhir/NamingSystem/NotificationBundleId" ,
+      "value" : "64b82f60-0588-3a29-979e-be34775aa95e"
+    } ,
+  "type" : "document" ,
+  "timestamp" : "2021-03-04T10:05:01.000+01:00" ,
+  "entry" : [ 
+      { 
+        "fullUrl" : "urn:uuid:5a5d3433-a3c1-3041-b7aa-2e9fa621e9e7" ,
+        "resource" : {
+            "resourceType" : "Composition" ,
+            "id" : "5a5d3433-a3c1-3041-b7aa-2e9fa621e9e7" ,
+            "meta" : {"profile" : [ "https://demis.rki.de/fhir/StructureDefinition/NotificationLaboratory" ] } ,
+            "identifier" : {
+                "system" : "https://demis.rki.de/fhir/NamingSystem/NotificationId" ,
+                "value" : "3fbfb4aa-7e7c-46d2-96aa-18b2f34047f2"
+              } ,
+            "status" : "preliminary" ,
+            "type" : {
+                "coding" : [ 
+                    { 
+                      "system" : "http://loinc.org" ,
+                      "code" : "34782-3" ,
+                      "display" : "Infectious disease Note"
+                    }
+                  ]
+              } ,
+            "category" : [ 
+                { 
+                  "coding" : [ 
+                      { 
+                        "system" : "http://loinc.org" ,
+                        "code" : "11502-2" ,
+                        "display" : "Laboratory report"
+                      }
+                    ]
+                }
+              ] ,
+            "subject" : {"reference" : "urn:uuid:9f3a38d1-f252-3d93-abcf-e12a5db9f496" } ,
+            "date" : "2021-03-04T10:05:00.000+01:00" ,
+            "author" : [ 
+                { "reference" : "urn:uuid:b6add204-6038-3c4f-8f7c-6035bc9754ae" }
+              ] ,
+            "title" : "Erregernachweismeldung" ,
+            "section" : [ 
+                { 
+                  "code" : {
+                      "coding" : [ 
+                          { 
+                            "system" : "http://loinc.org" ,
+                            "code" : "11502-2" ,
+                            "display" : "Laboratory report"
+                          }
+                        ]
+                    } ,
+                  "entry" : [ 
+                      { "reference" : "urn:uuid:16b0164d-5ca1-3756-9e47-69ebb51d29df" }
+                    ]
+                }
+              ]
+          }
+      } ,
+      { 
+        "fullUrl" : "urn:uuid:9f3a38d1-f252-3d93-abcf-e12a5db9f496" ,
+        "resource" : {
+            "resourceType" : "Patient" ,
+            "id" : "9f3a38d1-f252-3d93-abcf-e12a5db9f496" ,
+            "meta" : {"profile" : [ "https://demis.rki.de/fhir/StructureDefinition/NotifiedPerson" ] } ,
+            "name" : [ 
+                { 
+                  "use" : "official" ,
+                  "family" : "Tester" ,
+                  "given" : [ "Testus" ]
+                }
+              ] ,
+            "gender" : "male" ,
+            "birthDate" : "1978-12-12" ,
+            "address" : [ 
+                { 
+                  "extension" : [ 
+                      { 
+                        "url" : "https://demis.rki.de/fhir/StructureDefinition/AddressUse" ,
+                        "valueCoding" : {
+                            "system" : "https://demis.rki.de/fhir/CodeSystem/addressUse" ,
+                            "code" : "primary"
+                          }
+                      }
+                    ] ,
+                  "line" : [ "Teststr. 123" ] ,
+                  "city" : "Berlin" ,
+                  "postalCode" : "13055" ,
+                  "country" : "DE"
+                }
+              ]
+          }
+      } ,
+      { 
+        "fullUrl" : "urn:uuid:b6add204-6038-3c4f-8f7c-6035bc9754ae" ,
+        "resource" : {
+            "resourceType" : "PractitionerRole" ,
+            "id" : "b6add204-6038-3c4f-8f7c-6035bc9754ae" ,
+            "meta" : {"profile" : [ "https://demis.rki.de/fhir/StructureDefinition/NotifierRole" ] } ,
+            "organization" : {"reference" : "urn:uuid:ececcf13-df52-3311-a3c6-d708b09070b1" }
+          }
+      } ,
+      { 
+        "fullUrl" : "urn:uuid:ececcf13-df52-3311-a3c6-d708b09070b1" ,
+        "resource" : {
+            "resourceType" : "Organization" ,
+            "id" : "ececcf13-df52-3311-a3c6-d708b09070b1" ,
+            "meta" : {"profile" : [ "https://demis.rki.de/fhir/StructureDefinition/NotifierFacility" ] } ,
+            "identifier" : [ 
+                { 
+                  "system" : "https://demis.rki.de/fhir/NamingSystem/DemisParticipantId" ,
+                  "value" : "12345"
+                } ,
+                { 
+                  "system" : "https://fhir.kbv.de/NamingSystem/KBV_NS_Base_BSNR" ,
+                  "value" : "987654300"
+                }
+              ] ,
+            "type" : [ 
+                { 
+                  "coding" : [ 
+                      { 
+                        "system" : "https://demis.rki.de/fhir/CodeSystem/organizationType" ,
+                        "code" : "laboratory" ,
+                        "display" : "Erregerdiagnostische Untersuchungsstelle"
+                      }
+                    ]
+                }
+              ] ,
+            "name" : "Primärlabor" ,
+            "telecom" : [ 
+                { 
+                  "system" : "phone" ,
+                  "value" : "0309876543210" ,
+                  "use" : "work"
+                }
+              ] ,
+            "address" : [ 
+                { 
+                  "line" : [ "Dingsweg 321" ] ,
+                  "city" : "Berlin" ,
+                  "postalCode" : "13055" ,
+                  "country" : "DE"
+                }
+              ]
+          }
+      } ,
+      { 
+        "fullUrl" : "urn:uuid:19925ab6-f861-3d4c-86b7-bd88cf471bb3" ,
+        "resource" : {
+            "resourceType" : "PractitionerRole" ,
+            "id" : "19925ab6-f861-3d4c-86b7-bd88cf471bb3" ,
+            "meta" : {"profile" : [ "https://demis.rki.de/fhir/StructureDefinition/SubmittingRole" ] } ,
+            "organization" : {"reference" : "urn:uuid:e84746b0-a179-3c20-9160-72839c3f19bf" }
+          }
+      } ,
+      { 
+        "fullUrl" : "urn:uuid:e84746b0-a179-3c20-9160-72839c3f19bf" ,
+        "resource" : {
+            "resourceType" : "Organization" ,
+            "id" : "e84746b0-a179-3c20-9160-72839c3f19bf" ,
+            "meta" : {"profile" : [ "https://demis.rki.de/fhir/StructureDefinition/SubmittingFacility" ] } ,
+            "identifier" : [ 
+                { 
+                  "system" : "https://fhir.kbv.de/NamingSystem/KBV_NS_Base_BSNR" ,
+                  "value" : "123456780"
+                }
+              ] ,
+            "name" : "Einsendepraxis ABC" ,
+            "telecom" : [ 
+                { 
+                  "system" : "phone" ,
+                  "value" : "030 1234567890" ,
+                  "use" : "work"
+                }
+              ] ,
+            "address" : [ 
+                { 
+                  "line" : [ "Teststr. 123" ] ,
+                  "city" : "Berlin" ,
+                  "postalCode" : "13055" ,
+                  "country" : "DE"
+                }
+              ]
+          }
+      } ,
+      { 
+        "fullUrl" : "urn:uuid:16b0164d-5ca1-3756-9e47-69ebb51d29df" ,
+        "resource" : {
+            "resourceType" : "DiagnosticReport" ,
+            "id" : "16b0164d-5ca1-3756-9e47-69ebb51d29df" ,
+            "meta" : {"profile" : [ "https://demis.rki.de/fhir/StructureDefinition/LaboratoryReportCVDP" ] } ,
+            "basedOn" : [ 
+                { 
+                  "type" : "ServiceRequest" ,
+                  "identifier" : {
+                      "system" : "https://demis.rki.de/fhir/NamingSystem/ServiceRequestId" ,
+                      "value" : "2021-000672928"
+                    }
+                }
+              ] ,
+            "status" : "preliminary" ,
+            "code" : {
+                "coding" : [ 
+                    { 
+                      "system" : "https://demis.rki.de/fhir/CodeSystem/notificationCategory" ,
+                      "code" : "cvdp" ,
+                      "display" : "Severe-Acute-Respiratory-Syndrome-Coronavirus-2 (SARS-CoV-2)"
+                    }
+                  ]
+              } ,
+            "subject" : {"reference" : "urn:uuid:9f3a38d1-f252-3d93-abcf-e12a5db9f496" } ,
+            "issued" : "2021-03-04T10:04:00.000+01:00" ,
+            "result" : [ 
+                { "reference" : "urn:uuid:88910527-5e15-3053-9ab9-1d21c7d73e57" }
+              ] ,
+            "conclusion" : "Ich bin die textuelle Conclusion ..." ,
+            "conclusionCode" : [ 
+                { 
+                  "coding" : [ 
+                      { 
+                        "system" : "https://demis.rki.de/fhir/CodeSystem/conclusionCode" ,
+                        "code" : "pathogenDetected" ,
+                        "display" : "Meldepflichtiger Erreger nachgewiesen"
+                      }
+                    ]
+                }
+              ]
+          }
+      } ,
+      { 
+        "fullUrl" : "urn:uuid:88910527-5e15-3053-9ab9-1d21c7d73e57" ,
+        "resource" : {
+            "resourceType" : "Observation" ,
+            "id" : "88910527-5e15-3053-9ab9-1d21c7d73e57" ,
+            "meta" : {"profile" : [ "https://demis.rki.de/fhir/StructureDefinition/PathogenDetectionCVDP" ] } ,
+            "status" : "final" ,
+            "category" : [ 
+                { 
+                  "coding" : [ 
+                      { 
+                        "system" : "http://terminology.hl7.org/CodeSystem/observation-category" ,
+                        "code" : "laboratory"
+                      }
+                    ]
+                }
+              ] ,
+            "code" : {
+                "coding" : [ 
+                    { 
+                      "system" : "http://loinc.org" ,
+                      "code" : "95209-3" ,
+                      "display" : "SARS-CoV+SARS-CoV-2 (COVID-19) Ag [Presence] in Respiratory specimen by Rapid immunoassay"
+                    }
+                  ]
+              } ,
+            "subject" : {"reference" : "urn:uuid:9f3a38d1-f252-3d93-abcf-e12a5db9f496" } ,
+            "valueCodeableConcept" : {
+                "coding" : [ 
+                    { 
+                      "system" : "http://loinc.org" ,
+                      "code" : "LA6576-8" ,
+                      "display" : "Positive"
+                    }
+                  ]
+              } ,
+            "interpretation" : [ 
+                { 
+                  "coding" : [ 
+                      { 
+                        "system" : "http://terminology.hl7.org/CodeSystem/v3-ObservationInterpretation" ,
+                        "code" : "POS" ,
+                        "display" : "Positive"
+                      }
+                    ]
+                }
+              ] ,
+            "note" : [ 
+                { "text" : "Nette Zusatzinformation \u2026" }
+              ] ,
+            "specimen" : {"reference" : "urn:uuid:67b44404-c727-3401-bf01-5bcc4b080f16" }
+          }
+      } ,
+      { 
+        "fullUrl" : "urn:uuid:67b44404-c727-3401-bf01-5bcc4b080f16" ,
+        "resource" : {
+            "resourceType" : "Specimen" ,
+            "id" : "67b44404-c727-3401-bf01-5bcc4b080f16" ,
+            "meta" : {"profile" : [ "https://demis.rki.de/fhir/StructureDefinition/SpecimenCVDP" ] } ,
+            "status" : "available" ,
+            "type" : {
+                "coding" : [ 
+                    { 
+                      "system" : "http://snomed.info/sct" ,
+                      "code" : "258500001" ,
+                      "display" : "Nasopharyngeal swab (specimen)"
+                    }
+                  ]
+              } ,
+            "subject" : {"reference" : "urn:uuid:9f3a38d1-f252-3d93-abcf-e12a5db9f496" } ,
+            "receivedTime" : "2021-03-04T09:50:00.000+01:00" ,
+            "collection" : {
+                "collector" : {"reference" : "urn:uuid:19925ab6-f861-3d4c-86b7-bd88cf471bb3" } ,
+                "collectedDateTime" : "2021-03-04T09:50:00.000+01:00"
+              } ,
+            "note" : [ 
+                { "text" : "Ich bin eine interessante Zusatzinformation ..." }
+              ]
+          }
+      }
+    ]
+}

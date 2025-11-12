@@ -41,6 +41,7 @@ import org.springframework.boot.test.web.client.TestRestTemplate;
 import org.springframework.boot.test.web.server.LocalServerPort;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
+import org.springframework.test.context.TestPropertySource;
 
 @SpringBootTest(
     classes = Application.class,
@@ -48,6 +49,11 @@ import org.springframework.http.MediaType;
 @AutoConfigureObservability
 @AutoConfiguration
 @Slf4j
+@TestPropertySource(
+    properties = {
+      "lvs.client.futs.address=http://localhost:9999",
+      "feature.flag.fhirpath.validation.enabled=false"
+    })
 class LaboratoryNotificationAppContextTest {
 
   @Autowired TestRestTemplate restTemplate;
@@ -159,7 +165,7 @@ class LaboratoryNotificationAppContextTest {
     // GIVEN a Valid Laboratory Notification is loaded
     final var notification =
         FileLoaderHelper.loadResourceFile(
-            "src/test/resources/notifications/laboratory/not_parseable_positive_test_notification_Dv2.json");
+            "src/test/resources/notifications/laboratory/InvalidNotification.json");
     // WHEN it is sent to the Service
     // THEN the response of the server is 422
     final var result =

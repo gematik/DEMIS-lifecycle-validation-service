@@ -1,4 +1,4 @@
-package de.gematik.demis.lvs.labnotification;
+package de.gematik.demis.lvs.labnotification.validation;
 
 /*-
  * #%L

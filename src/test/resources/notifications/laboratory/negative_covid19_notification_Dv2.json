@@ -80,18 +80,6 @@
                     }
                   ]
                 }
-              ],
-              "relatesTo": [
-                {
-                  "code": "appends",
-                  "targetReference": {
-                    "type": "Composition",
-                    "identifier": {
-                      "system": "https://demis.rki.de/fhir/NamingSystem/NotificationId",
-                      "value": "12345"
-                    }
-                  }
-                }
               ]
             }
           },
@@ -298,7 +286,7 @@
                   "coding": [
                     {
                       "system": "https://demis.rki.de/fhir/CodeSystem/conclusionCode",
-                      "code": "pathogenDetected",
+                      "code": "pathogenNotDetected",
                       "display": "Meldepflichtiger Erreger nachgewiesen"
                     }
                   ]

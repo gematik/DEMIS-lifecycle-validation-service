@@ -26,38 +26,52 @@ package de.gematik.demis.lvs.disease;
  * #L%
  */
 
+import static org.mockito.ArgumentMatchers.anyString;
+import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.nio.charset.StandardCharsets;
+import de.gematik.demis.lvs.common.codemapping.FutsClient;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.util.HashMap;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.commons.io.IOUtils;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.actuate.observability.AutoConfigureObservability;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.context.TestPropertySource;
+import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.test.web.servlet.MockMvc;
 
 @Slf4j
 @AutoConfigureMockMvc
 @SpringBootTest
 @AutoConfigureObservability
-// @TestPropertySource(locations = "classpath:application-test.properties")
+@TestPropertySource(
+    properties = {
+      "feature.flag.fhirpath.validation.enabled=true",
+    })
 class DiseaseNotificationLifecycleValidationCtrTest {
 
   @Autowired private MockMvc mockMvc;
 
+  @MockitoBean private FutsClient futsClientMock;
+
+  @BeforeEach
+  void setUp() {
+    when(futsClientMock.getConceptMap(anyString())).thenReturn(new HashMap<>());
+  }
+
   @Test
   void shouldCallDiseaseNotificationLifecycleValidationSrv() throws Exception {
 
-    File file = new File("src/test/resources/notifications/disease/scenarioExamples/S_IM_V.json");
-    FileInputStream inputStream = new FileInputStream(file);
-    String notification = IOUtils.toString(inputStream, StandardCharsets.UTF_8);
-    inputStream.close();
+    String notification =
+        Files.readString(
+            Path.of("src/test/resources/notifications/disease/scenarioExamples/S_IM_V.json"));
 
     mockMvc
         .perform(
@@ -65,18 +79,17 @@ class DiseaseNotificationLifecycleValidationCtrTest {
                 .header("Content-Type", "application/json")
                 .content(notification))
         .andExpect(status().isOk())
-        .andExpect(content().json("[\"S_IM_V\",\"S_FM_V2V\"]"))
+        .andExpect(content().string("S_IM_V"))
         .andReturn();
   }
 
   @Test
   void shouldReturnErrorForNotValid() throws Exception {
 
-    File file =
-        new File("src/test/resources/notifications/disease/scenarioExamples/S_IM_V_not_valid.json");
-    FileInputStream inputStream = new FileInputStream(file);
-    String notification = IOUtils.toString(inputStream, StandardCharsets.UTF_8);
-    inputStream.close();
+    String notification =
+        Files.readString(
+            Path.of(
+                "src/test/resources/notifications/disease/scenarioExamples/S_IM_V_not_valid.json"));
 
     mockMvc
         .perform(

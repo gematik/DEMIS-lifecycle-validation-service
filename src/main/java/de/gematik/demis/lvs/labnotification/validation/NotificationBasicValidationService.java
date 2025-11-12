@@ -1,4 +1,4 @@
-package de.gematik.demis.lvs.labnotification;
+package de.gematik.demis.lvs.labnotification.validation;
 
 /*-
  * #%L
@@ -39,10 +39,7 @@ import de.gematik.demis.lvs.labnotification.definitions.PathogenDetectionInterpr
 import java.util.List;
 import java.util.Optional;
 import lombok.extern.slf4j.Slf4j;
-import org.hl7.fhir.r4.model.Bundle;
-import org.hl7.fhir.r4.model.Composition;
-import org.hl7.fhir.r4.model.DiagnosticReport;
-import org.hl7.fhir.r4.model.Observation;
+import org.hl7.fhir.r4.model.*;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Service;
@@ -50,12 +47,12 @@ import org.springframework.stereotype.Service;
 /** Service validating the lifecycle of Laboratory Notifications. */
 @Service
 @Slf4j
-class LaboratoryNotificationValidationService {
+public class NotificationBasicValidationService {
 
   private final boolean isAcceptingAnonymousNotifications;
   private final FhirParser fhirParser;
 
-  public LaboratoryNotificationValidationService(
+  public NotificationBasicValidationService(
       final FhirParser fhirParser,
       @Value("${feature.flag.accepting_anonymous_notifications:false}")
           final boolean isAcceptingAnonymousNotifications) {
