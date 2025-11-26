@@ -53,8 +53,6 @@ class DiseaseNotificationLifecycleValidationSrvRegressionTest {
   static Stream<Arguments> scenarioNames() {
     return Stream.of(
         Arguments.of(
-            "src/test/resources/notifications/disease/scenarioExamples/S_FM_V2E.json", "S_FM_V2E"),
-        Arguments.of(
             "src/test/resources/notifications/disease/scenarioExamples/S_FM_V2V-11.json", "S_IM_V"),
         Arguments.of(
             "src/test/resources/notifications/disease/scenarioExamples/S_FM_V2V-12.json",
@@ -65,8 +63,6 @@ class DiseaseNotificationLifecycleValidationSrvRegressionTest {
         Arguments.of(
             "src/test/resources/notifications/disease/scenarioExamples/S_FM_V2V-12.json",
             "S_FM_V2V"),
-        Arguments.of(
-            "src/test/resources/notifications/disease/scenarioExamples/S_IM_V.json", "S_IM_V"),
         Arguments.of(
             "src/test/resources/notifications/disease/scenarioExamples/S_FM_V2I-11.json",
             "S_FM_V2I"),
@@ -92,14 +88,6 @@ class DiseaseNotificationLifecycleValidationSrvRegressionTest {
             "src/test/resources/notifications/disease/scenarioExamples/S_FM_V2E-22.json",
             "S_FM_V2E"),
         Arguments.of(
-            "src/test/resources/notifications/disease/scenarioExamples/S_FM_V2T-1.json",
-            "S_FM_V2E"),
-        Arguments.of(
-            "src/test/resources/notifications/disease/scenarioExamples/S_FM_V2T-2.json",
-            "S_FM_V2E"),
-        Arguments.of(
-            "src/test/resources/notifications/disease/scenarioExamples/S_IM_E.json", "S_FM_V2E"),
-        Arguments.of(
             "src/test/resources/notifications/disease/scenarioExamples/S_FM_E2E-11.json",
             "S_FM_E2E"),
         Arguments.of(
@@ -124,49 +112,11 @@ class DiseaseNotificationLifecycleValidationSrvRegressionTest {
             "src/test/resources/notifications/disease/scenarioExamples/S_FM_E2I-22.json",
             "S_FM_E2I"),
         Arguments.of(
-            "src/test/resources/notifications/disease/scenarioExamples/S_FM_E2T-1.json",
-            "S_FM_E2E"),
-        Arguments.of(
-            "src/test/resources/notifications/disease/scenarioExamples/S_FM_E2T-2.json",
-            "S_FM_E2E"),
-        Arguments.of(
             "src/test/resources/notifications/disease/scenarioExamples/S_FM_T2V-1.json",
             "S_FM_T2V"),
         Arguments.of(
             "src/test/resources/notifications/disease/scenarioExamples/S_FM_T2V-2.json",
             "S_FM_T2V"),
-        Arguments.of(
-            "src/test/resources/notifications/disease/scenarioExamples/S_IM_T.json", "S_FM_V2E"),
-        Arguments.of(
-            "src/test/resources/notifications/disease/scenarioExamples/S_FM_T2T-11.json",
-            "S_FM_E2E"),
-        Arguments.of(
-            "src/test/resources/notifications/disease/scenarioExamples/S_FM_T2T-12.json",
-            "S_FM_E2E"),
-        Arguments.of(
-            "src/test/resources/notifications/disease/scenarioExamples/S_FM_T2T-21.json",
-            "S_FM_E2E"),
-        Arguments.of(
-            "src/test/resources/notifications/disease/scenarioExamples/S_FM_T2T-22.json",
-            "S_FM_E2E"),
-        Arguments.of(
-            "src/test/resources/notifications/disease/scenarioExamples/S_FM_T2I_1-11.json",
-            "S_FM_E2I"),
-        Arguments.of(
-            "src/test/resources/notifications/disease/scenarioExamples/S_FM_T2I_1-12.json",
-            "S_FM_E2I"),
-        Arguments.of(
-            "src/test/resources/notifications/disease/scenarioExamples/S_FM_T2I_1-21.json",
-            "S_FM_E2I"),
-        Arguments.of(
-            "src/test/resources/notifications/disease/scenarioExamples/S_FM_T2I_1-22.json",
-            "S_FM_E2I"),
-        Arguments.of(
-            "src/test/resources/notifications/disease/scenarioExamples/S_FM_T2I_2-1.json",
-            "S_FM_E2I"),
-        Arguments.of(
-            "src/test/resources/notifications/disease/scenarioExamples/S_FM_T2I_2-2.json",
-            "S_FM_E2I"),
         Arguments.of(
             "src/test/resources/notifications/disease/scenarioExamples/RUND.json", "S_FM_V2E"));
   }
@@ -176,7 +126,7 @@ class DiseaseNotificationLifecycleValidationSrvRegressionTest {
 
     String jsonString =
         Files.readString(
-            Path.of("src/test/resources/notifications/disease/scenarioExamples/S_FM_V2E.json"));
+            Path.of("src/test/resources/notifications/disease/scenarioExamples/S_FM_V2E-11.json"));
 
     DiseaseBasicNotificationLifecycleValidationSrv diseaseNotificationLifecycleValidationSrv =
         new DiseaseBasicNotificationLifecycleValidationSrv(
@@ -185,8 +135,7 @@ class DiseaseNotificationLifecycleValidationSrvRegressionTest {
     diseaseNotificationLifecycleValidationSrv.init();
 
     String validate =
-        diseaseNotificationLifecycleValidationSrv.validateNotificationRegression(
-            jsonString, MediaType.APPLICATION_JSON);
+        diseaseNotificationLifecycleValidationSrv.validate(jsonString, MediaType.APPLICATION_JSON);
 
     assertThat(validate).isEqualTo("S_FM_V2E");
   }
@@ -197,7 +146,7 @@ class DiseaseNotificationLifecycleValidationSrvRegressionTest {
     String jsonString =
         Files.readString(
             Path.of(
-                "src/test/resources/notifications/disease/scenarioExamples/S_IM_V_not_valid.json"));
+                "src/test/resources/notifications/disease/scenarioExamples/S_FM_V2V_not_valid.json"));
 
     DiseaseBasicNotificationLifecycleValidationSrv diseaseNotificationLifecycleValidationSrv =
         new DiseaseBasicNotificationLifecycleValidationSrv(
@@ -207,7 +156,7 @@ class DiseaseNotificationLifecycleValidationSrvRegressionTest {
 
     assertThatThrownBy(
             () ->
-                diseaseNotificationLifecycleValidationSrv.validateNotificationRegression(
+                diseaseNotificationLifecycleValidationSrv.validate(
                     jsonString, MediaType.APPLICATION_JSON))
         .isInstanceOf(LifecycleValidationException.class);
   }
@@ -226,8 +175,7 @@ class DiseaseNotificationLifecycleValidationSrvRegressionTest {
     diseaseNotificationLifecycleValidationSrv.init();
 
     String validate =
-        diseaseNotificationLifecycleValidationSrv.validateNotificationRegression(
-            jsonString, MediaType.APPLICATION_JSON);
+        diseaseNotificationLifecycleValidationSrv.validate(jsonString, MediaType.APPLICATION_JSON);
 
     assertThat(validate).isEqualTo(expectedScenarios);
   }

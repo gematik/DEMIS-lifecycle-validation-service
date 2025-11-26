@@ -1,4 +1,4 @@
-package de.gematik.demis.lvs.labnotification.validation;
+package de.gematik.demis.lvs.common.validation;
 
 /*-
  * #%L
@@ -30,36 +30,27 @@ import ca.uhn.fhir.rest.server.exceptions.InternalErrorException;
 import de.gematik.demis.fhirparserlibrary.FhirParser;
 import de.gematik.demis.lvs.common.exception.LifecycleValidationException;
 import de.gematik.demis.lvs.common.fhir.NotificationHelper;
-import de.gematik.demis.lvs.common.validation.NotificationScenarioValidationService;
-import de.gematik.demis.lvs.labnotification.fhirpath.LaboratoryScenario;
+import de.gematik.demis.lvs.common.fhirpath.Scenario;
 import java.util.Objects;
 import java.util.Optional;
 import javax.annotation.CheckForNull;
 import lombok.extern.slf4j.Slf4j;
 import org.hl7.fhir.r4.model.Bundle;
 import org.hl7.fhir.r4.model.Composition;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.http.MediaType;
-import org.springframework.stereotype.Service;
 
-@ConditionalOnProperty(name = "feature.flag.fhirpath.validation.enabled", havingValue = "true")
-@Service
 @Slf4j
-public class LaboratoryNotificationValidationService {
+public class NotificationValidationService<S extends Scenario> {
 
-  private final NotificationBasicValidationService notificationBasicValidationService;
-  private final NotificationScenarioValidationService<LaboratoryScenario>
-      notificationScenarioValidationService;
+  private final NotifcationBasicValidator notificationBasicValidationService;
+  private final NotificationScenarioValidationService<S> notificationScenarioValidationService;
   private final boolean returnFhirpathValidationInResponse;
   private final FhirParser fhirParser;
 
-  public LaboratoryNotificationValidationService(
-      final NotificationBasicValidationService notificationBasicValidationService,
-      final NotificationScenarioValidationService<LaboratoryScenario>
-          notificationScenarioValidationService,
-      @Value("${feature.flag.return.fhirpath.validation.in.responses}")
-          boolean returnFhirpathValidationInResponse,
+  public NotificationValidationService(
+      final NotifcationBasicValidator notificationBasicValidationService,
+      final NotificationScenarioValidationService<S> notificationScenarioValidationService,
+      boolean returnFhirpathValidationInResponse,
       final FhirParser fhirParser) {
     this.notificationBasicValidationService = notificationBasicValidationService;
     this.notificationScenarioValidationService = notificationScenarioValidationService;
@@ -91,7 +82,7 @@ public class LaboratoryNotificationValidationService {
 
     if (!returnFhirpathValidationInResponse) {
       try {
-        notificationBasicValidationService.validate(fhirMessage);
+        notificationBasicValidationService.validate(notification, mediaType);
         successfulBasicValidation = true;
       } catch (final InternalErrorException | LifecycleValidationException e) {
         basicValidationException = e;

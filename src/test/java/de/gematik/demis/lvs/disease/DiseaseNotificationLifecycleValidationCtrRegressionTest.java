@@ -58,7 +58,7 @@ class DiseaseNotificationLifecycleValidationCtrRegressionTest {
 
     String notification =
         Files.readString(
-            Path.of("src/test/resources/notifications/disease/scenarioExamples/S_IM_V.json"));
+            Path.of("src/test/resources/notifications/disease/scenarioExamples/S_FM_V2V-11.json"));
 
     mockMvc
         .perform(
@@ -76,7 +76,7 @@ class DiseaseNotificationLifecycleValidationCtrRegressionTest {
     String notification =
         Files.readString(
             Path.of(
-                "src/test/resources/notifications/disease/scenarioExamples/S_IM_V_not_valid.json"));
+                "src/test/resources/notifications/disease/scenarioExamples/S_FM_V2V_not_valid.json"));
 
     mockMvc
         .perform(

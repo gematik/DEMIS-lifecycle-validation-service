@@ -1,4 +1,4 @@
-package de.gematik.demis.lvs.labnotification.fhirpath;
+package de.gematik.demis.lvs.common.fhirpath;
 
 /*-
  * #%L
@@ -35,23 +35,18 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.boot.context.properties.EnableConfigurationProperties;
-import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Configuration;
 
-@Configuration
 @Slf4j
-@EnableConfigurationProperties(LaboratoryConfigurationProperties.class)
-public class LaboratoryConfiguration {
-  @Bean
-  public List<LaboratoryScenario> loadLaboratoryScenarios(
-      final LaboratoryConfigurationProperties properties) {
+public final class ScenarioLoader {
+
+  private ScenarioLoader() {}
+
+  public static <S extends Scenario> List<S> loadScenarios(
+      String fhirPathData, String keyToFhirPathData, Class<S[]> scenarioClass) {
     try {
       ObjectMapper objectMapper = new ObjectMapper();
-      final LaboratoryScenario[] scenarios =
-          objectMapper.readValue(new File(properties.fhirPathData()), LaboratoryScenario[].class);
-      final JsonNode keysToFhirPath =
-          objectMapper.readTree(new File(properties.keyToFhirPathData())).get(0);
+      final S[] scenarios = objectMapper.readValue(new File(fhirPathData), scenarioClass);
+      final JsonNode keysToFhirPath = objectMapper.readTree(new File(keyToFhirPathData)).get(0);
 
       Arrays.stream(scenarios)
           .forEach(

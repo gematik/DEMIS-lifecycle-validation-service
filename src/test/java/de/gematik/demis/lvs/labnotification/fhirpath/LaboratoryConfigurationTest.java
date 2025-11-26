@@ -28,6 +28,7 @@ package de.gematik.demis.lvs.labnotification.fhirpath;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 
+import de.gematik.demis.lvs.common.fhirpath.ScenarioLoader;
 import java.util.List;
 import org.junit.jupiter.api.Test;
 
@@ -38,7 +39,8 @@ class LaboratoryConfigurationTest {
         new LaboratoryConfigurationProperties(
             "configuration/laboratoryScenarios.json", "configuration/keyToFhirPath.json", true);
     final List<LaboratoryScenario> scenarios =
-        new LaboratoryConfiguration().loadLaboratoryScenarios(properties);
+        ScenarioLoader.loadScenarios(
+            properties.fhirPathData(), properties.keyToFhirPathData(), LaboratoryScenario[].class);
     assertThat(scenarios.getFirst().getFhirPathExpression().getFirst().getFhirPath())
         .isEqualTo(
             "Bundle.entry.resource.where($this is Patient).meta.where(profile = 'https://demis.rki.de/fhir/StructureDefinition/NotifiedPerson').exists()");

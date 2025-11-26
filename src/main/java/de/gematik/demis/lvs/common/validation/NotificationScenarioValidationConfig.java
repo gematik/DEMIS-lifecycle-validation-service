@@ -29,11 +29,14 @@ package de.gematik.demis.lvs.common.validation;
 import ca.uhn.fhir.context.FhirContext;
 import de.gematik.demis.fhirparserlibrary.FhirParser;
 import de.gematik.demis.lvs.common.externalchecks.AdditionalOperationExecuter;
+import de.gematik.demis.lvs.disease.DiseaseBasicNotificationLifecycleValidationSrv;
 import de.gematik.demis.lvs.disease.fhirpath.DiseaseScenario;
 import de.gematik.demis.lvs.labnotification.fhirpath.LaboratoryScenario;
+import de.gematik.demis.lvs.labnotification.validation.NotificationBasicValidationService;
 import de.gematik.demis.lvs.metrics.ValidationMetrics;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -72,6 +75,38 @@ public class NotificationScenarioValidationConfig {
         loadLaboratoryScenarios,
         validationMetrics,
         additionalOperationExecuter,
+        fhirParser);
+  }
+
+  @Bean
+  public NotificationValidationService<DiseaseScenario>
+      diseaseScenarioNotificationValidationService(
+          DiseaseBasicNotificationLifecycleValidationSrv notificationBasicValidationService,
+          NotificationScenarioValidationService<DiseaseScenario>
+              notificationScenarioValidationService,
+          @Value("${feature.flag.return.disease.fhirpath.validation.in.responses}")
+              boolean returnValidationInResponses,
+          FhirParser fhirParser) {
+    return new NotificationValidationService<>(
+        notificationBasicValidationService,
+        notificationScenarioValidationService,
+        returnValidationInResponses,
+        fhirParser);
+  }
+
+  @Bean
+  public NotificationValidationService<LaboratoryScenario>
+      laboratoryScenarioNotificationValidationService(
+          NotificationBasicValidationService notificationBasicValidationService,
+          NotificationScenarioValidationService<LaboratoryScenario>
+              notificationScenarioValidationService,
+          @Value("${feature.flag.return.fhirpath.validation.in.responses}")
+              boolean returnValidationInResponses,
+          FhirParser fhirParser) {
+    return new NotificationValidationService<>(
+        notificationBasicValidationService,
+        notificationScenarioValidationService,
+        returnValidationInResponses,
         fhirParser);
   }
 }

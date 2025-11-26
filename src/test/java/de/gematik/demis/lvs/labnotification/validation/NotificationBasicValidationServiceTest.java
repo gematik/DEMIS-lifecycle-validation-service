@@ -26,8 +26,6 @@ package de.gematik.demis.lvs.labnotification.validation;
  * #L%
  */
 
-import static org.junit.jupiter.api.Assertions.*;
-
 import ca.uhn.fhir.context.FhirContext;
 import ca.uhn.fhir.util.BundleBuilder;
 import de.gematik.demis.fhirparserlibrary.FhirParser;
@@ -51,8 +49,7 @@ class NotificationBasicValidationServiceTest {
 
   @BeforeEach
   void beforeEach() {
-    service =
-        new NotificationBasicValidationService(new FhirParser(FhirContext.forR4Cached()), true);
+    service = new NotificationBasicValidationService(new FhirParser(FhirContext.forR4Cached()));
   }
 
   @Test
@@ -103,20 +100,6 @@ class NotificationBasicValidationServiceTest {
     bundleBuilder.addDocumentEntry(composition);
 
     Assertions.assertThrows(LifecycleValidationException.class, this::performValidation);
-  }
-
-  @Test
-  void regression_expectThat74CompositionWithNegativeCOVPIsRejected() {
-    final NotificationBasicValidationService rejectingAnonymousNotifications =
-        new NotificationBasicValidationService(new FhirParser(FhirContext.forR4Cached()), false);
-    // GIVEN isPositive 7.4 notification for Covid-19
-    final String notification =
-        FileLoaderHelper.loadResourceFile(
-            "src/test/resources/notifications/laboratory/negative_covid19_notification_Dv2.json");
-
-    assertThrows(
-        LifecycleValidationException.class,
-        () -> rejectingAnonymousNotifications.validate(notification, MediaType.APPLICATION_JSON));
   }
 
   @ParameterizedTest

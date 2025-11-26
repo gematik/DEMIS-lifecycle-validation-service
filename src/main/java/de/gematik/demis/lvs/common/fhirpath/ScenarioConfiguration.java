@@ -1,4 +1,4 @@
-package de.gematik.demis.lvs.disease.fhirpath;
+package de.gematik.demis.lvs.common.fhirpath;
 
 /*-
  * #%L
@@ -26,31 +26,33 @@ package de.gematik.demis.lvs.disease.fhirpath;
  * #L%
  */
 
-import com.fasterxml.jackson.databind.ObjectMapper;
-import java.io.File;
-import java.io.IOException;
-import java.util.Collections;
+import de.gematik.demis.lvs.disease.fhirpath.DiseaseConfigurationProperties;
+import de.gematik.demis.lvs.disease.fhirpath.DiseaseScenario;
+import de.gematik.demis.lvs.labnotification.fhirpath.LaboratoryConfigurationProperties;
+import de.gematik.demis.lvs.labnotification.fhirpath.LaboratoryScenario;
 import java.util.List;
-import lombok.extern.slf4j.Slf4j;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
+@ConditionalOnProperty(name = "feature.flag.fhirpath.validation.enabled", havingValue = "true")
 @Configuration
-@Slf4j
-@EnableConfigurationProperties(DiseaseConfigurationProperties.class)
-public class DiseaseConfiguration {
+@EnableConfigurationProperties({
+  LaboratoryConfigurationProperties.class,
+  DiseaseConfigurationProperties.class
+})
+public class ScenarioConfiguration {
+  @Bean
+  public List<DiseaseScenario> loadDiseaseScenarios(DiseaseConfigurationProperties properties) {
+    return ScenarioLoader.loadScenarios(
+        properties.fhirPathData(), properties.keyToFhirPathData(), DiseaseScenario[].class);
+  }
 
   @Bean
-  public List<DiseaseScenario> loadDiseaseScenarios(
-      final DiseaseConfigurationProperties properties) {
-    try {
-      ObjectMapper objectMapper = new ObjectMapper();
-      File file = new File(properties.fhirPathData());
-      return List.of(objectMapper.readValue(file, DiseaseScenario[].class));
-    } catch (IOException e) {
-      log.warn("Error while processing routing rules config file", e);
-    }
-    return Collections.emptyList();
+  public List<LaboratoryScenario> loadLaboratoryScenarios(
+      LaboratoryConfigurationProperties properties) {
+    return ScenarioLoader.loadScenarios(
+        properties.fhirPathData(), properties.keyToFhirPathData(), LaboratoryScenario[].class);
   }
 }

@@ -35,8 +35,8 @@ import com.github.tomakehurst.wiremock.WireMockServer;
 import de.gematik.demis.fhirparserlibrary.FhirParser;
 import de.gematik.demis.lvs.common.exception.LifecycleValidationException;
 import de.gematik.demis.lvs.common.externalchecks.AdditionalOperationExecuter;
+import de.gematik.demis.lvs.common.fhirpath.ScenarioLoader;
 import de.gematik.demis.lvs.common.validation.NotificationScenarioValidationService;
-import de.gematik.demis.lvs.labnotification.fhirpath.LaboratoryConfiguration;
 import de.gematik.demis.lvs.labnotification.fhirpath.LaboratoryConfigurationProperties;
 import de.gematik.demis.lvs.labnotification.fhirpath.LaboratoryScenario;
 import de.gematik.demis.lvs.metrics.ValidationMetrics;
@@ -85,11 +85,12 @@ class NotificationScenarioValidationServiceIntegrationTest {
   static void startServer() {
     DLS_SERVER.start();
     FUTS_SERVER.start();
-    LaboratoryConfiguration configuration = new LaboratoryConfiguration();
     LaboratoryConfigurationProperties properties =
         new LaboratoryConfigurationProperties(
             "configuration/laboratoryScenarios.json", "configuration/keyToFhirPath.json", true);
-    scenarios = configuration.loadLaboratoryScenarios(properties);
+    scenarios =
+        ScenarioLoader.loadScenarios(
+            properties.fhirPathData(), properties.keyToFhirPathData(), LaboratoryScenario[].class);
 
     configureFor(FUTS_SERVER.port());
     stubFor(

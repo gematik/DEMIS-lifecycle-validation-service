@@ -30,9 +30,9 @@ import static org.springframework.http.HttpHeaders.CONTENT_TYPE;
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 import static org.springframework.http.MediaType.APPLICATION_XML_VALUE;
 
-import de.gematik.demis.lvs.common.validation.NotificationScenarioValidationService;
+import de.gematik.demis.lvs.common.validation.NotificationValidationService;
 import de.gematik.demis.lvs.disease.fhirpath.DiseaseScenario;
-import de.gematik.demis.lvs.labnotification.validation.LaboratoryNotificationValidationService;
+import de.gematik.demis.lvs.labnotification.fhirpath.LaboratoryScenario;
 import jakarta.validation.constraints.NotBlank;
 import javax.annotation.CheckForNull;
 import lombok.RequiredArgsConstructor;
@@ -56,9 +56,9 @@ public class LifecycleValidationController {
 
   public static final String HEADER_SENDER = "x-sender";
 
-  private final NotificationScenarioValidationService<DiseaseScenario>
-      diseaseNotificationLifecycleValidationSrv;
-  private final LaboratoryNotificationValidationService laboratoryNotificationValidationService;
+  private final NotificationValidationService<DiseaseScenario> diseaseNotificationValidationService;
+  private final NotificationValidationService<LaboratoryScenario>
+      laboratoryNotificationValidationService;
 
   @PostMapping(
       path = "{notificationType}/$validate",
@@ -77,8 +77,7 @@ public class LifecycleValidationController {
     if (notificationType.equals("disease")) {
       return ResponseEntity.ok()
           .body(
-              diseaseNotificationLifecycleValidationSrv.getValidScenariosForNotification(
-                  notification, mediaType, principalId));
+              diseaseNotificationValidationService.validate(notification, mediaType, principalId));
     }
     if (notificationType.equals("laboratory")) {
       return ResponseEntity.ok()

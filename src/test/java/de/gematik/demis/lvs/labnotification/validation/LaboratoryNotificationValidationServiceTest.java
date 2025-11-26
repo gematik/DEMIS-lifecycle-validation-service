@@ -37,6 +37,7 @@ import de.gematik.demis.fhirparserlibrary.FhirParser;
 import de.gematik.demis.lvs.common.exception.LifecycleValidationException;
 import de.gematik.demis.lvs.common.fhir.NotificationHelper;
 import de.gematik.demis.lvs.common.validation.NotificationScenarioValidationService;
+import de.gematik.demis.lvs.common.validation.NotificationValidationService;
 import de.gematik.demis.lvs.labnotification.fhirpath.LaboratoryScenario;
 import java.util.Optional;
 import org.hl7.fhir.r4.model.Bundle;
@@ -58,7 +59,7 @@ class LaboratoryNotificationValidationServiceTest {
   private NotificationScenarioValidationService<LaboratoryScenario> scenarioService;
   private FhirParser fhirParser;
 
-  private LaboratoryNotificationValidationService service;
+  private NotificationValidationService<LaboratoryScenario> service;
 
   @Nested
   class FhirPathValidationInResponseActive {
@@ -69,8 +70,7 @@ class LaboratoryNotificationValidationServiceTest {
       scenarioService = mock(NotificationScenarioValidationService.class);
       fhirParser = mock(FhirParser.class);
       service =
-          new LaboratoryNotificationValidationService(
-              basicService, scenarioService, true, fhirParser);
+          new NotificationValidationService<>(basicService, scenarioService, true, fhirParser);
     }
 
     @Test
@@ -170,8 +170,7 @@ class LaboratoryNotificationValidationServiceTest {
       scenarioService = mock(NotificationScenarioValidationService.class);
       fhirParser = mock(FhirParser.class);
       service =
-          new LaboratoryNotificationValidationService(
-              basicService, scenarioService, false, fhirParser);
+          new NotificationValidationService<>(basicService, scenarioService, false, fhirParser);
     }
 
     @Test
@@ -193,7 +192,7 @@ class LaboratoryNotificationValidationServiceTest {
         String result = service.validate("raw", MediaType.APPLICATION_JSON, "principal");
 
         assertThat(result).isEmpty();
-        verify(basicService).validate(bundle);
+        verify(basicService).validate("raw", MediaType.APPLICATION_JSON);
         verify(scenarioService)
             .getValidScenariosForNotification("raw", MediaType.APPLICATION_JSON, "principal");
       }
@@ -203,7 +202,9 @@ class LaboratoryNotificationValidationServiceTest {
     void validate_basicFails_scenarioSucceeds_basicExceptionPropagated_andNoComposition() {
       Bundle bundle = new Bundle();
       when(fhirParser.parseBundleOrParameter(anyString(), anyString())).thenReturn(bundle);
-      doThrow(new InternalErrorException("basic fail")).when(basicService).validate(bundle);
+      doThrow(new InternalErrorException("basic fail"))
+          .when(basicService)
+          .validate(anyString(), any());
       when(scenarioService.getValidScenariosForNotification(anyString(), any(), any()))
           .thenReturn("S1");
 
@@ -244,7 +245,9 @@ class LaboratoryNotificationValidationServiceTest {
 
     @Test
     void validate_bothFail_throwsBasicException() {
-      doThrow(new InternalErrorException("basic fail")).when(basicService).validate(any());
+      doThrow(new InternalErrorException("basic fail"))
+          .when(basicService)
+          .validate(anyString(), any());
       Bundle bundle = new Bundle();
       when(scenarioService.getValidScenariosForNotification(anyString(), any(), any()))
           .thenThrow(new LifecycleValidationException());
