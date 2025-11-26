@@ -72,9 +72,7 @@ public class DiseaseNotificationLifecycleValidationCtr {
       @RequestBody @NotBlank final String notification,
       @RequestHeader(name = CONTENT_TYPE) final MediaType mediaType) {
     List<String> validate =
-        List.of(
-            diseaseNotificationLifecycleValidationSrv.validateNotificationRegression(
-                notification, mediaType));
+        List.of(diseaseNotificationLifecycleValidationSrv.validate(notification, mediaType));
     return ResponseEntity.ok().body(validate);
   }
 }

@@ -2,10 +2,14 @@
  
 # Release notes
 
+## Release 1.4.1
+- remove feature flag FEATURE_FLAG_ACCEPTING_ANONYMOUS_NOTIFICATIONS
+- add support for disease follow up notifications
+- add feature flag FEATURE_FLAG_RETURN_DISEASE_FHIRPATH_VALIDATION_IN_RESPONSES
+
 ## Release 1.4.0
-- add fhir path validation for laboratory notifications
 - add feature flag FEATURE_FLAG_FHIRPATH_VALIDATION_ENABLED
-- add feature flag FEATURE_FLAG_RETURN_FHIRPATH_VALIDATION_IN_RESPONSE
+- add feature flag FEATURE_FLAG_RETURN_FHIRPATH_VALIDATION_IN_RESPONSES
 - remove feature flag FEATURE_FLAG_NOTIFICATIONS_7_3
 - updated dependencies
 - bump spring parent to 2.14.2

@@ -26,7 +26,6 @@ package de.gematik.demis.lvs.labnotification.validation;
  * #L%
  */
 
-import static de.gematik.demis.lvs.common.exception.ExceptionMessages.EXCEPTION_MESSAGE_ANONYMOUS_UNSUPPORTED;
 import static de.gematik.demis.lvs.common.exception.ExceptionMessages.EXCEPTION_MESSAGE_DIAGNOSTIC_REPORT_UNKNOWN;
 import static de.gematik.demis.lvs.common.exception.ExceptionMessages.EXCEPTION_MESSAGE_MISSING_STATUS;
 import static de.gematik.demis.lvs.common.fhir.NotificationHelper.ANONYMOUS_LABORATORY_NOTIFICATION_PROFILE;
@@ -35,36 +34,30 @@ import ca.uhn.fhir.rest.server.exceptions.InternalErrorException;
 import de.gematik.demis.fhirparserlibrary.FhirParser;
 import de.gematik.demis.lvs.common.exception.LifecycleValidationException;
 import de.gematik.demis.lvs.common.fhir.NotificationHelper;
+import de.gematik.demis.lvs.common.validation.NotifcationBasicValidator;
 import de.gematik.demis.lvs.labnotification.definitions.PathogenDetectionInterpretation;
 import java.util.List;
 import java.util.Optional;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.hl7.fhir.r4.model.*;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Service;
 
 /** Service validating the lifecycle of Laboratory Notifications. */
 @Service
 @Slf4j
-public class NotificationBasicValidationService {
+@RequiredArgsConstructor
+public class NotificationBasicValidationService implements NotifcationBasicValidator {
 
-  private final boolean isAcceptingAnonymousNotifications;
   private final FhirParser fhirParser;
 
-  public NotificationBasicValidationService(
-      final FhirParser fhirParser,
-      @Value("${feature.flag.accepting_anonymous_notifications:false}")
-          final boolean isAcceptingAnonymousNotifications) {
-    this.isAcceptingAnonymousNotifications = isAcceptingAnonymousNotifications;
-    this.fhirParser = fhirParser;
-  }
-
-  public void validate(final String bundle, final MediaType mediaType) {
+  public String validate(final String bundle, final MediaType mediaType) {
     final var contentType =
         MediaType.parseMediaType(mediaType.getType() + "/" + mediaType.getSubtype());
     final Bundle fhirMessage = fhirParser.parseBundleOrParameter(bundle, contentType.getSubtype());
     validate(fhirMessage);
+    return "";
   }
 
   public void validate(final Bundle bundle) {
@@ -81,9 +74,6 @@ public class NotificationBasicValidationService {
     final Composition composition = getComposition(bundle);
     final boolean isAnonymous =
         composition.getMeta().hasProfile(ANONYMOUS_LABORATORY_NOTIFICATION_PROFILE);
-    if (isAnonymous && !isAcceptingAnonymousNotifications) {
-      throw new LifecycleValidationException(EXCEPTION_MESSAGE_ANONYMOUS_UNSUPPORTED);
-    }
 
     final DiagnosticReport diagnosticReport = getDiagnosticReport(composition);
     final Composition.CompositionStatus status = composition.getStatus();

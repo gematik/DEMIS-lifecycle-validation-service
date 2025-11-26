@@ -49,6 +49,7 @@ disease:
   config: classpath:diseaseConfiguration.json
   config-show-all-scenario-passed: true
   fhir-path-data: configuration/diseaseScenarios.json
+  key-to-fhir-path-data: configuration/keyToFhirPath.json
 
 # laboratory configuration
 laboratory:
@@ -58,9 +59,9 @@ laboratory:
 
 feature:
   flag:
-    accepting_anonymous_notifications: false
     fhirpath.validation.enabled: false
     return.fhirpath.validation.in.responses: false
+    return.disease.fhirpath.validation.in.responses: false
 
 feign:
   client:

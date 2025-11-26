@@ -58,7 +58,19 @@
           }
         ],
         "title": "Meldung gemäß §6 Absatz 1, 2 IfSG",
-        "section": [
+        "relatesTo" : [
+                {
+                  "code" : "appends" ,
+                  "targetReference" : {
+                      "type" : "Composition" ,
+                      "identifier" : {
+                          "system" : "https://demis.rki.de/fhir/NamingSystem/NotificationId" ,
+                          "value" : "92d99f62-fe4f-4337-b833-351751db12dc"
+                        }
+                    }
+                }
+              ] ,
+            "section" : [
           {
             "title": "disease",
             "code": {
@@ -120,7 +132,7 @@
         "id": "59949e30-a8ab-4c1e-8f46-4a154d581be8",
         "meta": {
           "profile": [
-            "https://demis.rki.de/fhir/StructureDefinition/NotifiedPerson"
+            "https://demis.rki.de/fhir/StructureDefinition/NotifiedPersonAnonymous"
           ]
         },
         "name": [
@@ -194,7 +206,7 @@
           "coding": [
             {
               "system": "http://terminology.hl7.org/CodeSystem/condition-ver-status",
-              "code": "confirmed"
+              "code": "unconfirmed"
             }
           ]
         },

@@ -1,4 +1,4 @@
-package de.gematik.demis.lvs.disease.fhirpath;
+package de.gematik.demis.lvs.common.validation;
 
 /*-
  * #%L
@@ -26,22 +26,8 @@ package de.gematik.demis.lvs.disease.fhirpath;
  * #L%
  */
 
-import jakarta.annotation.PostConstruct;
-import jakarta.validation.constraints.NotEmpty;
-import lombok.extern.slf4j.Slf4j;
-import org.springframework.boot.context.properties.ConfigurationProperties;
-import org.springframework.validation.annotation.Validated;
+import org.springframework.http.MediaType;
 
-@ConfigurationProperties(prefix = "disease")
-@Validated
-@Slf4j
-public record DiseaseConfigurationProperties(
-    @NotEmpty String fhirPathData,
-    @NotEmpty String keyToFhirPathData,
-    Boolean configShowAllScenarioPassed) {
-
-  @PostConstruct
-  void log() {
-    log.info("Disease Configuration " + this);
-  }
+public interface NotifcationBasicValidator {
+  String validate(String notification, MediaType mediaType);
 }

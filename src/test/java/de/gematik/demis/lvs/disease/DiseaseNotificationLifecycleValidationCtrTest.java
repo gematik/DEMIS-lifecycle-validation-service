@@ -54,6 +54,7 @@ import org.springframework.test.web.servlet.MockMvc;
 @TestPropertySource(
     properties = {
       "feature.flag.fhirpath.validation.enabled=true",
+      "feature.flag.return.disease.fhirpath.validation.in.responses=true"
     })
 class DiseaseNotificationLifecycleValidationCtrTest {
 
@@ -71,7 +72,7 @@ class DiseaseNotificationLifecycleValidationCtrTest {
 
     String notification =
         Files.readString(
-            Path.of("src/test/resources/notifications/disease/scenarioExamples/S_IM_V.json"));
+            Path.of("src/test/resources/notifications/disease/scenarioExamples/S_FM_V2V-11.json"));
 
     mockMvc
         .perform(
@@ -79,7 +80,7 @@ class DiseaseNotificationLifecycleValidationCtrTest {
                 .header("Content-Type", "application/json")
                 .content(notification))
         .andExpect(status().isOk())
-        .andExpect(content().string("S_IM_V"))
+        .andExpect(content().string("S_FM_V2V"))
         .andReturn();
   }
 
@@ -89,7 +90,7 @@ class DiseaseNotificationLifecycleValidationCtrTest {
     String notification =
         Files.readString(
             Path.of(
-                "src/test/resources/notifications/disease/scenarioExamples/S_IM_V_not_valid.json"));
+                "src/test/resources/notifications/disease/scenarioExamples/S_FM_V2V_not_valid.json"));
 
     mockMvc
         .perform(

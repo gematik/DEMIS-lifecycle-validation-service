@@ -40,8 +40,8 @@ import de.gematik.demis.lvs.common.exception.LifecycleValidationException;
 import de.gematik.demis.lvs.common.externalchecks.AdditionalOperationExecuter;
 import de.gematik.demis.lvs.common.fhirpath.FhirPathExecutor;
 import de.gematik.demis.lvs.common.fhirpath.Scenario;
+import de.gematik.demis.lvs.common.fhirpath.ScenarioLoader;
 import de.gematik.demis.lvs.common.validation.NotificationScenarioValidationService;
-import de.gematik.demis.lvs.labnotification.fhirpath.LaboratoryConfiguration;
 import de.gematik.demis.lvs.labnotification.fhirpath.LaboratoryConfigurationProperties;
 import de.gematik.demis.lvs.labnotification.fhirpath.LaboratoryScenario;
 import de.gematik.demis.lvs.metrics.ValidationMetrics;
@@ -87,11 +87,12 @@ class NotificationScenarioValidationServiceTest {
 
   @BeforeEach
   void setup() {
-    LaboratoryConfiguration configuration = new LaboratoryConfiguration();
     LaboratoryConfigurationProperties properties =
         new LaboratoryConfigurationProperties(
             "configuration/laboratoryScenarios.json", "configuration/keyToFhirPath.json", true);
-    List<LaboratoryScenario> scenarios = configuration.loadLaboratoryScenarios(properties);
+    List<LaboratoryScenario> scenarios =
+        ScenarioLoader.loadScenarios(
+            properties.fhirPathData(), properties.keyToFhirPathData(), LaboratoryScenario[].class);
 
     notificationScenarioValidationService =
         new NotificationScenarioValidationService<>(
@@ -162,11 +163,12 @@ class NotificationScenarioValidationServiceTest {
   void shouldThrowLifecycleValidationException() {
     String validJson = "{\"resourceType\":\"Bundle\"}";
 
-    LaboratoryConfiguration configuration = new LaboratoryConfiguration();
     LaboratoryConfigurationProperties properties =
         new LaboratoryConfigurationProperties(
             "configuration/laboratoryScenarios.json", "configuration/keyToFhirPath.json", true);
-    List<LaboratoryScenario> scenarios = configuration.loadLaboratoryScenarios(properties);
+    List<LaboratoryScenario> scenarios =
+        ScenarioLoader.loadScenarios(
+            properties.fhirPathData(), properties.keyToFhirPathData(), LaboratoryScenario[].class);
 
     ValidationMetrics validationMetrics = mock(ValidationMetrics.class);
     notificationScenarioValidationService =

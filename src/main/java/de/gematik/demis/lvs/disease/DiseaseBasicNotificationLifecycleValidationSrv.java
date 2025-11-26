@@ -31,6 +31,7 @@ import static de.gematik.demis.lvs.disease.NotificationData.extractRelevantData;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import de.gematik.demis.fhirparserlibrary.FhirParser;
 import de.gematik.demis.lvs.common.exception.LifecycleValidationException;
+import de.gematik.demis.lvs.common.validation.NotifcationBasicValidator;
 import de.gematik.demis.lvs.disease.configmodel.Scenario;
 import jakarta.annotation.PostConstruct;
 import java.io.IOException;
@@ -43,7 +44,7 @@ import org.springframework.stereotype.Service;
 
 @Service
 @Slf4j
-public class DiseaseBasicNotificationLifecycleValidationSrv {
+public class DiseaseBasicNotificationLifecycleValidationSrv implements NotifcationBasicValidator {
 
   public static final String NO_VALID_LIFECYCLE_SCENARIO_FOUND =
       "No valid lifecycle scenario found";
@@ -78,7 +79,7 @@ public class DiseaseBasicNotificationLifecycleValidationSrv {
    * @return
    */
   @Deprecated(forRemoval = true)
-  public String validateNotificationRegression(String notificationString, MediaType mediaType) {
+  public String validate(String notificationString, MediaType mediaType) {
     Bundle notification = parse(notificationString, mediaType);
     NotificationData data = extractRelevantData(notification);
     return checkScenarios(data);
