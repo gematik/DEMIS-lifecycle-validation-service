@@ -2,7 +2,7 @@ package de.gematik.demis.lvs.common.codemapping;
 
 /*-
  * #%L
- * lifecycle-validation-service
+ * notification-processing-service
  * %%
  * Copyright (C) 2025 - 2026 gematik GmbH
  * %%
@@ -27,27 +27,25 @@ package de.gematik.demis.lvs.common.codemapping;
  * #L%
  */
 
-import com.github.benmanes.caffeine.cache.Caffeine;
-import java.util.List;
-import org.springframework.cache.CacheManager;
-import org.springframework.cache.annotation.EnableCaching;
-import org.springframework.cache.caffeine.CaffeineCache;
-import org.springframework.cache.support.SimpleCacheManager;
+import de.gematik.demis.service.base.clients.mapping.CodeMappingAutoConfiguration;
+import jakarta.annotation.Nullable;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Import;
 
 @Configuration
-@EnableCaching
-class CodeMappingCacheConfig {
+@Slf4j
+@Import(CodeMappingAutoConfiguration.class)
+class CodeMappingServiceConfiguration {
 
   @Bean
-  CacheManager codeMappingCacheManager() {
-    CaffeineCache codeToSurvNet =
-        new CaffeineCache(
-            "codeToSurvNet", Caffeine.newBuilder().maximumSize(40_000).recordStats().build());
-
-    SimpleCacheManager manager = new SimpleCacheManager();
-    manager.setCaches(List.of(codeToSurvNet));
-    return manager;
+  SwitchingCodeMappingService switchingCodeMappingService(
+      final LegacyCodeMappingService legacyService,
+      @Nullable
+          final de.gematik.demis.service.base.clients.mapping.CodeMappingService serviceBaseService,
+      @Value("${feature.flag.codemapping.service.base}") final boolean serviceBaseEnabled) {
+    return new SwitchingCodeMappingService(legacyService, serviceBaseService, serviceBaseEnabled);
   }
 }

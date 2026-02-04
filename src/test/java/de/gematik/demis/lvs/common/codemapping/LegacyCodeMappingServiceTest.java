@@ -4,7 +4,7 @@ package de.gematik.demis.lvs.common.codemapping;
  * #%L
  * lifecycle-validation-service
  * %%
- * Copyright (C) 2025 gematik GmbH
+ * Copyright (C) 2025 - 2026 gematik GmbH
  * %%
  * Licensed under the EUPL, Version 1.2 or - as soon they will be approved by the
  * European Commission – subsequent versions of the EUPL (the "Licence").
@@ -22,7 +22,8 @@ package de.gematik.demis.lvs.common.codemapping;
  *
  * *******
  *
- * For additional notes and disclaimer from gematik and in case of changes by gematik find details in the "Readme" file.
+ * For additional notes and disclaimer from gematik and in case of changes by gematik,
+ * find details in the "Readme" file.
  * #L%
  */
 
@@ -42,13 +43,13 @@ import org.springframework.cache.Cache;
 import org.springframework.cache.CacheManager;
 
 @ExtendWith(MockitoExtension.class)
-class CodeMappingServiceTest {
+class LegacyCodeMappingServiceTest {
 
   @Mock private FutsClient futsClient;
   @Mock private CacheManager cacheManager;
   @Mock private Cache cache;
 
-  private CodeMappingService codeMappingService;
+  private LegacyCodeMappingService legacyCodeMappingService;
 
   private final Map<String, String> labMap = new HashMap<>();
   private final Map<String, String> diseaseMap = new HashMap<>();
@@ -58,7 +59,7 @@ class CodeMappingServiceTest {
     labMap.clear();
     diseaseMap.clear();
     lenient().when(cacheManager.getCache(anyString())).thenReturn(cache);
-    codeMappingService = new CodeMappingService(futsClient, cacheManager);
+    legacyCodeMappingService = new LegacyCodeMappingService(futsClient, cacheManager);
   }
 
   @Test
@@ -69,9 +70,9 @@ class CodeMappingServiceTest {
     when(futsClient.getConceptMap("NotificationDiseaseCategoryToTransmissionCategory"))
         .thenReturn(diseaseMap);
 
-    assertThat(codeMappingService.getSurvNetCode("LAB1")).isEqualTo("SN1");
-    assertThat(codeMappingService.getSurvNetCode("DIS1")).isEqualTo("SN2");
-    assertThat(codeMappingService.getSurvNetCode("UNKNOWN")).isNull();
+    assertThat(legacyCodeMappingService.getSurvNetCode("LAB1")).isEqualTo("SN1");
+    assertThat(legacyCodeMappingService.getSurvNetCode("DIS1")).isEqualTo("SN2");
+    assertThat(legacyCodeMappingService.getSurvNetCode("UNKNOWN")).isNull();
     verify(futsClient, times(1)).getConceptMap("NotificationCategoryToTransmissionCategory");
     verify(futsClient, times(1)).getConceptMap("NotificationDiseaseCategoryToTransmissionCategory");
   }
@@ -79,8 +80,8 @@ class CodeMappingServiceTest {
   @Test
   void testReloadCachesWithEmptyMaps() {
     when(futsClient.getConceptMap(anyString())).thenReturn(new HashMap<>());
-    codeMappingService.reloadCaches();
-    assertThat(codeMappingService.getSurvNetCode("ANY")).isNull();
+    legacyCodeMappingService.reloadCaches();
+    assertThat(legacyCodeMappingService.getSurvNetCode("ANY")).isNull();
   }
 
   @Test
@@ -89,7 +90,7 @@ class CodeMappingServiceTest {
     when(futsClient.getConceptMap("NotificationCategoryToTransmissionCategory")).thenReturn(labMap);
     when(futsClient.getConceptMap("NotificationDiseaseCategoryToTransmissionCategory"))
         .thenReturn(new HashMap<>());
-    codeMappingService.reloadCaches();
+    legacyCodeMappingService.reloadCaches();
     verify(cacheManager, atLeastOnce()).getCache(anyString());
     verify(cache, atLeastOnce()).clear();
     verify(cache, atLeastOnce()).put("LAB1", "SN1");
@@ -99,7 +100,7 @@ class CodeMappingServiceTest {
   void shouldHandleRuntimeExceptions() {
     when(futsClient.getConceptMap("NotificationCategoryToTransmissionCategory"))
         .thenThrow(new RuntimeException("some runtime exception"));
-    assertThatThrownBy(() -> codeMappingService.reloadCaches())
+    assertThatThrownBy(() -> legacyCodeMappingService.reloadCaches())
         .isInstanceOf(RuntimeException.class)
         .hasMessage("some runtime exception");
   }
@@ -109,6 +110,6 @@ class CodeMappingServiceTest {
     when(futsClient.getConceptMap("NotificationCategoryToTransmissionCategory")).thenReturn(null);
     when(futsClient.getConceptMap("NotificationDiseaseCategoryToTransmissionCategory"))
         .thenReturn(null);
-    assertDoesNotThrow(() -> codeMappingService.reloadCaches());
+    assertDoesNotThrow(() -> legacyCodeMappingService.reloadCaches());
   }
 }

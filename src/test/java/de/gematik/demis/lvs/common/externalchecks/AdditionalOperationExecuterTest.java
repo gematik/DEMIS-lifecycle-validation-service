@@ -4,7 +4,7 @@ package de.gematik.demis.lvs.common.externalchecks;
  * #%L
  * lifecycle-validation-service
  * %%
- * Copyright (C) 2025 gematik GmbH
+ * Copyright (C) 2025 - 2026 gematik GmbH
  * %%
  * Licensed under the EUPL, Version 1.2 or - as soon they will be approved by the
  * European Commission – subsequent versions of the EUPL (the "Licence").
@@ -22,7 +22,8 @@ package de.gematik.demis.lvs.common.externalchecks;
  *
  * *******
  *
- * For additional notes and disclaimer from gematik and in case of changes by gematik find details in the "Readme" file.
+ * For additional notes and disclaimer from gematik and in case of changes by gematik,
+ * find details in the "Readme" file.
  * #L%
  */
 
@@ -30,7 +31,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 import ca.uhn.fhir.context.FhirContext;
 import ca.uhn.fhir.fhirpath.IFhirPath;
-import de.gematik.demis.lvs.common.codemapping.CodeMappingService;
+import de.gematik.demis.lvs.common.codemapping.SwitchingCodeMappingService;
 import de.gematik.demis.lvs.common.destination.DestinationLookupServiceClient;
 import de.gematik.demis.lvs.disease.fhirpath.DiseaseScenario;
 import de.gematik.demis.lvs.labnotification.fhirpath.LaboratoryScenario;
@@ -42,7 +43,7 @@ import org.mockito.Mock;
 
 class AdditionalOperationExecuterTest {
 
-  @Mock CodeMappingService codeMappingServiceMock;
+  @Mock SwitchingCodeMappingService switchingCodeMappingServiceMock;
 
   @Mock DestinationLookupServiceClient destinationLookupServiceClientMock;
 
@@ -55,7 +56,8 @@ class AdditionalOperationExecuterTest {
     fhirpath = FhirContext.forR4Cached().newFhirPath();
 
     AdditionalOperationExecuter additionalOperationExecuter =
-        new AdditionalOperationExecuter(codeMappingServiceMock, destinationLookupServiceClientMock);
+        new AdditionalOperationExecuter(
+            switchingCodeMappingServiceMock, destinationLookupServiceClientMock);
 
     assertThat(
             additionalOperationExecuter.checkAllExternalChecks(
