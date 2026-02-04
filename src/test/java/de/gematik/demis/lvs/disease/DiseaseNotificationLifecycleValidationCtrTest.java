@@ -4,7 +4,7 @@ package de.gematik.demis.lvs.disease;
  * #%L
  * lifecycle-validation-service
  * %%
- * Copyright (C) 2025 gematik GmbH
+ * Copyright (C) 2025 - 2026 gematik GmbH
  * %%
  * Licensed under the EUPL, Version 1.2 or - as soon they will be approved by the
  * European Commission – subsequent versions of the EUPL (the "Licence").
@@ -22,22 +22,24 @@ package de.gematik.demis.lvs.disease;
  *
  * *******
  *
- * For additional notes and disclaimer from gematik and in case of changes by gematik find details in the "Readme" file.
+ * For additional notes and disclaimer from gematik and in case of changes by gematik,
+ * find details in the "Readme" file.
  * #L%
  */
 
-import static org.mockito.ArgumentMatchers.anyString;
+import static org.mockito.Mockito.verifyNoInteractions;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import de.gematik.demis.lvs.common.codemapping.FutsClient;
+import de.gematik.demis.lvs.common.destination.DestinationLookupServiceClient;
+import de.gematik.demis.lvs.common.destination.NotificationCategoryDTO;
+import de.gematik.demis.service.base.clients.mapping.CodeMappingService;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.util.HashMap;
 import lombok.extern.slf4j.Slf4j;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.actuate.observability.AutoConfigureObservability;
@@ -54,7 +56,8 @@ import org.springframework.test.web.servlet.MockMvc;
 @TestPropertySource(
     properties = {
       "feature.flag.fhirpath.validation.enabled=true",
-      "feature.flag.return.disease.fhirpath.validation.in.responses=true"
+      "feature.flag.return.disease.fhirpath.validation.in.responses=true",
+      "feature.flag.codemapping.service.base=true"
     })
 class DiseaseNotificationLifecycleValidationCtrTest {
 
@@ -62,10 +65,8 @@ class DiseaseNotificationLifecycleValidationCtrTest {
 
   @MockitoBean private FutsClient futsClientMock;
 
-  @BeforeEach
-  void setUp() {
-    when(futsClientMock.getConceptMap(anyString())).thenReturn(new HashMap<>());
-  }
+  @MockitoBean private DestinationLookupServiceClient destinationLookupServiceClientMock;
+  @MockitoBean private CodeMappingService codeMappingServiceMock;
 
   @Test
   void shouldCallDiseaseNotificationLifecycleValidationSrv() throws Exception {
@@ -98,5 +99,30 @@ class DiseaseNotificationLifecycleValidationCtrTest {
                 .header("Content-Type", "application/json")
                 .content(notification))
         .andExpect(status().isUnprocessableEntity());
+  }
+
+  @Test
+  void shouldUseServiceBaseFunctionToMapPathogenCode() throws Exception {
+    String notification =
+        Files.readString(
+            Path.of(
+                "src/test/resources/notifications/disease/scenarioExamples/followUp/S_FM_E2E-11.json"));
+
+    when(destinationLookupServiceClientMock.getNotificationCategory(
+            "92d99f62-fe4f-4337-b833-351751db12dc"))
+        .thenReturn(new NotificationCategoryDTO("band"));
+
+    when(codeMappingServiceMock.mapCode("band")).thenReturn("band");
+
+    mockMvc
+        .perform(
+            post("/disease/$validate")
+                .header("Content-Type", "application/json")
+                .content(notification))
+        .andExpect(status().isOk())
+        .andExpect(content().string("S_FM_E2E_FollowUp"))
+        .andReturn();
+
+    verifyNoInteractions(futsClientMock);
   }
 }

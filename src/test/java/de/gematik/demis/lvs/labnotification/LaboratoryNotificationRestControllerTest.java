@@ -4,7 +4,7 @@ package de.gematik.demis.lvs.labnotification;
  * #%L
  * lifecycle-validation-service
  * %%
- * Copyright (C) 2025 gematik GmbH
+ * Copyright (C) 2025 - 2026 gematik GmbH
  * %%
  * Licensed under the EUPL, Version 1.2 or - as soon they will be approved by the
  * European Commission – subsequent versions of the EUPL (the "Licence").
@@ -22,19 +22,23 @@ package de.gematik.demis.lvs.labnotification;
  *
  * *******
  *
- * For additional notes and disclaimer from gematik and in case of changes by gematik find details in the "Readme" file.
+ * For additional notes and disclaimer from gematik and in case of changes by gematik,
+ * find details in the "Readme" file.
  * #L%
  */
 
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.verifyNoInteractions;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-import de.gematik.demis.lvs.common.codemapping.CodeMappingService;
+import de.gematik.demis.lvs.common.codemapping.LegacyCodeMappingService;
 import de.gematik.demis.lvs.common.destination.DestinationLookupServiceClient;
+import de.gematik.demis.lvs.common.destination.NotificationCategoryDTO;
+import de.gematik.demis.service.base.clients.mapping.CodeMappingService;
 import feign.FeignException;
 import feign.Request;
 import java.nio.file.Files;
@@ -58,12 +62,15 @@ import org.springframework.test.web.servlet.MockMvc;
     properties = {
       "feature.flag.fhirpath.validation.enabled=true",
       "feature.flag.return.fhirpath.validation.in.responses=true",
+      "feature.flag.codemapping.service.base=true",
       "lvs.client.futs.address=http://localhost:9999"
     })
 class LaboratoryNotificationRestControllerTest {
   @Autowired private MockMvc mockMvc;
 
   @MockitoBean DestinationLookupServiceClient destinationLookupServiceClientMock;
+
+  @MockitoBean LegacyCodeMappingService legacyCodeMappingServiceMock;
 
   @MockitoBean CodeMappingService codeMappingServiceMock;
 
@@ -82,8 +89,6 @@ class LaboratoryNotificationRestControllerTest {
                 mock(Request.class),
                 body,
                 Collections.emptyMap()));
-
-    when(codeMappingServiceMock.getSurvNetCode("cvdp")).thenReturn("cvd");
 
     mockMvc
         .perform(
@@ -111,13 +116,35 @@ class LaboratoryNotificationRestControllerTest {
                 body,
                 Collections.emptyMap()));
 
-    when(codeMappingServiceMock.getSurvNetCode("cvdp")).thenReturn("cvd");
-
     mockMvc
         .perform(
             post("/laboratory/$validate")
                 .header("Content-Type", "application/json")
                 .content(notification))
         .andExpect(status().isUnprocessableEntity());
+  }
+
+  @Test
+  void shouldUseServiceBaseFunctionToMapPathogenCode() throws Exception {
+    String notification =
+        Files.readString(
+            Path.of("src/test/resources/notifications/laboratory/scenarioExamples/S2C.json"));
+
+    when(destinationLookupServiceClientMock.getNotificationCategory(
+            "92d99f62-fe4f-4337-b833-351751db12dc"))
+        .thenReturn(new NotificationCategoryDTO("cvdp"));
+
+    when(codeMappingServiceMock.mapCode("cvdp")).thenReturn("cvd");
+
+    mockMvc
+        .perform(
+            post("/laboratory/$validate")
+                .header("Content-Type", "application/json")
+                .content(notification))
+        .andExpect(status().isOk())
+        .andExpect(content().string("2C"))
+        .andReturn();
+
+    verifyNoInteractions(legacyCodeMappingServiceMock);
   }
 }

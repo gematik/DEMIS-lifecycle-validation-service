@@ -51,6 +51,7 @@ disease:
   fhir-path-data: configuration/diseaseScenarios.json
   key-to-fhir-path-data: configuration/keyToFhirPath.json
 
+
 # laboratory configuration
 laboratory:
   config-show-all-scenario-passed: true
@@ -62,6 +63,20 @@ feature:
     fhirpath.validation.enabled: false
     return.fhirpath.validation.in.responses: false
     return.disease.fhirpath.validation.in.responses: false
+    codemapping.service.base: false
+
+demis:
+  codemapping:
+    enabled: ${feature.flag.codemapping.service.base}
+    cache-reload-cron: ${DEMIS_CODEMAPPING_CACHE_RELOAD_CRON:0 0/30 * * * *}
+    client:
+      base-url: ${DEMIS_CODEMAPPING_BASE_URL:http://futs.demis.svc.cluster.local}
+      context-path: ${DEMIS_NETWORK_FUTS_CONTEXT_PATH:/fhir-ui-data-model-translation/}
+    concept-maps:
+      - NotificationDiseaseCategoryToTransmissionCategory
+      - NotificationCategoryToTransmissionCategory
+      - NotificationDiseaseCategoryNonNominalToTransmissionCategory
+      - NotificationCategoryNonNominalToTransmissionCategory
 
 feign:
   client:

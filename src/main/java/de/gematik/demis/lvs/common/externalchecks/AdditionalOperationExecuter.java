@@ -4,7 +4,7 @@ package de.gematik.demis.lvs.common.externalchecks;
  * #%L
  * lifecycle-validation-service
  * %%
- * Copyright (C) 2025 gematik GmbH
+ * Copyright (C) 2025 - 2026 gematik GmbH
  * %%
  * Licensed under the EUPL, Version 1.2 or - as soon they will be approved by the
  * European Commission – subsequent versions of the EUPL (the "Licence").
@@ -22,14 +22,15 @@ package de.gematik.demis.lvs.common.externalchecks;
  *
  * *******
  *
- * For additional notes and disclaimer from gematik and in case of changes by gematik find details in the "Readme" file.
+ * For additional notes and disclaimer from gematik and in case of changes by gematik,
+ * find details in the "Readme" file.
  * #L%
  */
 
 import static de.gematik.demis.lvs.common.exception.ExceptionMessages.EXCEPTION_MESSAGE_NOTIFICATION_CATEGORY_MISMATCH;
 
 import ca.uhn.fhir.fhirpath.IFhirPath;
-import de.gematik.demis.lvs.common.codemapping.CodeMappingService;
+import de.gematik.demis.lvs.common.codemapping.SwitchingCodeMappingService;
 import de.gematik.demis.lvs.common.destination.DestinationLookupServiceClient;
 import de.gematik.demis.lvs.common.exception.LifecycleValidationException;
 import de.gematik.demis.lvs.common.fhirpath.Scenario;
@@ -58,7 +59,7 @@ public class AdditionalOperationExecuter {
   public static final String RELATES_TO_ID = "relatesToId";
   public static final String HAS_TO_EXIST = "hasToExist";
   public static final String NOTIFICATION_CATEGORY = "notificationCategory";
-  private final CodeMappingService codeMappingService;
+  private final SwitchingCodeMappingService switchingCodeMappingService;
   private final DestinationLookupServiceClient destinationLookupServiceClient;
 
   public boolean checkAllExternalChecks(
@@ -134,14 +135,14 @@ public class AdditionalOperationExecuter {
       final Map<String, Object> inputs,
       final String notificationCategoryFromDLS) {
     final String mappedCategoryCodeFromDLS =
-        codeMappingService.getSurvNetCode(notificationCategoryFromDLS);
+        switchingCodeMappingService.mapCode(notificationCategoryFromDLS);
     final String notificationCategoryPath = (String) inputs.get(NOTIFICATION_CATEGORY);
     final String notificationCategory =
         fhirPath
             .evaluate(notification, notificationCategoryPath, StringType.class)
             .getFirst()
             .getValue();
-    final String mappedCategoryCode = codeMappingService.getSurvNetCode(notificationCategory);
+    final String mappedCategoryCode = switchingCodeMappingService.mapCode(notificationCategory);
     if (!mappedCategoryCode.equals(mappedCategoryCodeFromDLS)) {
       throw new LifecycleValidationException(EXCEPTION_MESSAGE_NOTIFICATION_CATEGORY_MISMATCH);
     }

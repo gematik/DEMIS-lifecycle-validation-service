@@ -36,6 +36,7 @@ customEnvVars:
   FEATURE_FLAG_FHIRPATH_VALIDATION_ENABLED: "false"
   FEATURE_FLAG_RETURN_FHIRPATH_VALIDATION_IN_RESPONSES: "false"
   FEATURE_FLAG_RETURN_DISEASE_FHIRPATH_VALIDATION_IN_RESPONSES: "false"
+  FEATURE_FLAG_CODEMAPPING_SERVICE_BASE: "false"
 
 # Define custom Container Entrypoint and Arguments (e.g. JVM Tuning)
 # If not given, the Entrypoint defined in Dockerfile will be used
