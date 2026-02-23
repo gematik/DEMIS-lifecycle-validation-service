@@ -78,13 +78,14 @@ public class LifecycleValidationController {
     if (notificationType.equals("disease")) {
       return ResponseEntity.ok()
           .body(
-              diseaseNotificationValidationService.validate(notification, mediaType, principalId));
+              diseaseNotificationValidationService.validate(
+                  notification, mediaType, principalId, notificationType));
     }
     if (notificationType.equals("laboratory")) {
       return ResponseEntity.ok()
           .body(
               laboratoryNotificationValidationService.validate(
-                  notification, mediaType, principalId));
+                  notification, mediaType, principalId, notificationType));
     }
 
     throw new IllegalArgumentException("Invalid or unknown notification type");

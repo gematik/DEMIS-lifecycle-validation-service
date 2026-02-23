@@ -60,7 +60,7 @@ class LaboratoryNotificationRestControllerRegressionTest {
 
     String notification =
         Files.readString(
-            Path.of("src/test/resources/notifications/laboratory/scenarioExamples/S1.json"));
+            Path.of("src/test/resources/notifications/laboratory/scenarioExamples/M_POS.json"));
 
     mockMvc
         .perform(
@@ -77,7 +77,8 @@ class LaboratoryNotificationRestControllerRegressionTest {
 
     String notification =
         Files.readString(
-            Path.of("src/test/resources/notifications/laboratory/InvalidNotification.json"));
+            Path.of(
+                "src/test/resources/notifications/laboratory/scenarioExamples/invalid/IM_NEG.json"));
 
     mockMvc
         .perform(

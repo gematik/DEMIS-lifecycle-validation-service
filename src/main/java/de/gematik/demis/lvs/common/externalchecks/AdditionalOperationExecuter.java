@@ -55,8 +55,6 @@ import org.springframework.stereotype.Service;
 @RequiredArgsConstructor
 public class AdditionalOperationExecuter {
 
-  public static final String NOTIFICATION_ID = "notificationId";
-  public static final String RELATES_TO_ID = "relatesToId";
   public static final String HAS_TO_EXIST = "hasToExist";
   public static final String NOTIFICATION_CATEGORY = "notificationCategory";
   private final SwitchingCodeMappingService switchingCodeMappingService;
@@ -76,13 +74,9 @@ public class AdditionalOperationExecuter {
       final IFhirPath fhirPath) {
     final Map<String, Object> inputs = check.getInputs();
     return switch (check.getType()) {
-      case NOTIFICATION_ID_CATEGORY_MAPPING -> {
-        log.debug("running category check with notification id");
-        yield checkNotificationCategoryWithNotificationIdAndDLSData(inputs, notification, fhirPath);
-      }
-      case RELATES_TO_ID_CATEGORY_MAPPING -> {
-        log.debug("running category check with relatesTo id");
-        yield checkNotificationCategoryWithRelatesToIdAndDLSData(inputs, notification, fhirPath);
+      case CATEGORY_MAPPING -> {
+        log.debug("running category check with id");
+        yield checkNotificationCategoryWithIdDLSData(inputs, notification, fhirPath);
       }
       case NOTIFICATION_ID_NOT_EXISTING -> {
         log.debug("not existing check");
@@ -102,25 +96,10 @@ public class AdditionalOperationExecuter {
    * @param fhirPath
    * @return
    */
-  private boolean checkNotificationCategoryWithNotificationIdAndDLSData(
+  private boolean checkNotificationCategoryWithIdDLSData(
       final Map<String, Object> inputs, final Bundle notification, final IFhirPath fhirPath) {
-    final String notificationId = getIdFromBundle(notification, inputs, fhirPath, NOTIFICATION_ID);
-    final String notificationCategoryFromDLS = getNotificationCategoryFromDLS(notificationId);
-    return notificationCategoryFromDLS == null
-        || compareMappedNotificationCategories(
-            notification, fhirPath, inputs, notificationCategoryFromDLS);
-  }
-
-  /**
-   * @param inputs
-   * @param notification
-   * @param fhirPath
-   * @return
-   */
-  private boolean checkNotificationCategoryWithRelatesToIdAndDLSData(
-      final Map<String, Object> inputs, final Bundle notification, final IFhirPath fhirPath) {
-    final String relatesToId = getIdFromBundle(notification, inputs, fhirPath, RELATES_TO_ID);
-    boolean hasToExist = (boolean) inputs.get(HAS_TO_EXIST);
+    final String relatesToId = getIdFromBundle(notification, inputs, fhirPath);
+    boolean hasToExist = (boolean) Optional.ofNullable(inputs.get(HAS_TO_EXIST)).orElse(false);
     final String notificationCategoryFromDLS = getNotificationCategoryFromDLS(relatesToId);
     if (notificationCategoryFromDLS == null) {
       return !hasToExist;
@@ -157,7 +136,7 @@ public class AdditionalOperationExecuter {
    */
   private boolean checkNotificationIdDoesNotExist(
       final Map<String, Object> inputs, final Bundle notification, final IFhirPath fhirPath) {
-    final String notificationId = getIdFromBundle(notification, inputs, fhirPath, NOTIFICATION_ID);
+    final String notificationId = getIdFromBundle(notification, inputs, fhirPath);
     return getNotificationCategoryFromDLS(notificationId) == null;
   }
 
@@ -187,15 +166,11 @@ public class AdditionalOperationExecuter {
    * @param notification
    * @param inputs
    * @param fhirPath
-   * @param idType
    * @return
    */
   private String getIdFromBundle(
-      final Bundle notification,
-      final Map<String, Object> inputs,
-      final IFhirPath fhirPath,
-      final String idType) {
-    final String notificationIdPath = (String) inputs.get(idType);
+      final Bundle notification, final Map<String, Object> inputs, final IFhirPath fhirPath) {
+    final String notificationIdPath = (String) inputs.get("id");
     final Optional<StringType> id =
         fhirPath.evaluate(notification, notificationIdPath, StringType.class).stream().findFirst();
     return id.map(PrimitiveType::getValue).orElse(null);

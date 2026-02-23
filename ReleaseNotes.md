@@ -2,6 +2,13 @@
  
 # Release notes
 
+## Release 1.4.3
+- updated spring-parent to 2.14.20
+- added obligatory comparison of notification category for supplementary disease notifications
+- added obligatory comparison of notification category for nominal negative laboratory notifications 
+- removed validation of Composition and DiagnosticReport status for laboratory scenarios
+- enhanced notification validation service with metrics tracking for disease and laboratory notifications
+
 ## Release 1.4.2
 - added feature flag FEATURE_FLAG_CODEMAPPING_SERVICE_BASE
 - added use of service base client for code mapping connection

@@ -34,12 +34,12 @@ import static org.mockito.ArgumentMatchers.*;
 import static org.mockito.Mockito.*;
 
 import ca.uhn.fhir.rest.server.exceptions.InternalErrorException;
-import de.gematik.demis.fhirparserlibrary.FhirParser;
 import de.gematik.demis.lvs.common.exception.LifecycleValidationException;
 import de.gematik.demis.lvs.common.fhir.NotificationHelper;
 import de.gematik.demis.lvs.common.validation.NotificationScenarioValidationService;
 import de.gematik.demis.lvs.common.validation.NotificationValidationService;
 import de.gematik.demis.lvs.labnotification.fhirpath.LaboratoryScenario;
+import de.gematik.demis.lvs.metrics.ValidationMetrics;
 import java.util.Optional;
 import org.hl7.fhir.r4.model.Bundle;
 import org.hl7.fhir.r4.model.Composition;
@@ -58,7 +58,7 @@ class LaboratoryNotificationValidationServiceTest {
 
   private NotificationBasicValidationService basicService;
   private NotificationScenarioValidationService<LaboratoryScenario> scenarioService;
-  private FhirParser fhirParser;
+  private ValidationMetrics validationMetrics;
 
   private NotificationValidationService<LaboratoryScenario> service;
 
@@ -69,15 +69,15 @@ class LaboratoryNotificationValidationServiceTest {
     void setUp() {
       basicService = mock(NotificationBasicValidationService.class);
       scenarioService = mock(NotificationScenarioValidationService.class);
-      fhirParser = mock(FhirParser.class);
+      validationMetrics = mock(ValidationMetrics.class);
       service =
-          new NotificationValidationService<>(basicService, scenarioService, true, fhirParser);
+          new NotificationValidationService<>(
+              basicService, scenarioService, true, validationMetrics);
     }
 
     @Test
     void validate_successBoth_validScenariosReturned_andNotificationIdExtracted() {
       Bundle bundle = new Bundle();
-      when(fhirParser.parseBundleOrParameter(anyString(), anyString())).thenReturn(bundle);
       when(scenarioService.getValidScenariosForNotification(
               "raw", MediaType.APPLICATION_JSON, "principal"))
           .thenReturn("S1");
@@ -90,7 +90,8 @@ class LaboratoryNotificationValidationServiceTest {
             .when(() -> NotificationHelper.extractComposition(bundle))
             .thenReturn(Optional.of(comp));
 
-        String result = service.validate("raw", MediaType.APPLICATION_JSON, "principal");
+        String result =
+            service.validate("raw", MediaType.APPLICATION_JSON, "principal", "laboratory");
 
         assertThat(result).isEqualTo("S1");
         verifyNoInteractions(basicService);
@@ -102,7 +103,6 @@ class LaboratoryNotificationValidationServiceTest {
     @Test
     void validate_withFhirPathValidationDisabled_noBasicValidationInteraction() {
       Bundle bundle = new Bundle();
-      when(fhirParser.parseBundleOrParameter(anyString(), anyString())).thenReturn(bundle);
       when(scenarioService.getValidScenariosForNotification(anyString(), any(), any()))
           .thenReturn("S1");
 
@@ -111,7 +111,8 @@ class LaboratoryNotificationValidationServiceTest {
             .when(() -> NotificationHelper.extractComposition(bundle))
             .thenReturn(Optional.empty());
 
-        final String result = service.validate("raw", MediaType.APPLICATION_JSON, null);
+        final String result =
+            service.validate("raw", MediaType.APPLICATION_JSON, null, "laboratory");
         assertThat(result).isEqualTo("S1");
         verifyNoInteractions(basicService);
       }
@@ -120,7 +121,6 @@ class LaboratoryNotificationValidationServiceTest {
     @Test
     void validate_basicSucceeds_scenarioFails_throwsScenarioException() {
       Bundle bundle = new Bundle();
-      when(fhirParser.parseBundleOrParameter(anyString(), anyString())).thenReturn(bundle);
       // basic succeeds
       LifecycleValidationException scenarioEx = mock(LifecycleValidationException.class);
       when(scenarioService.getValidScenariosForNotification(
@@ -138,7 +138,7 @@ class LaboratoryNotificationValidationServiceTest {
         LifecycleValidationException thrown =
             assertThrows(
                 LifecycleValidationException.class,
-                () -> service.validate("raw", MediaType.APPLICATION_JSON, "senderA"));
+                () -> service.validate("raw", MediaType.APPLICATION_JSON, "senderA", "laboratory"));
         assertThat(thrown).isSameAs(scenarioEx);
       }
     }
@@ -156,7 +156,8 @@ class LaboratoryNotificationValidationServiceTest {
             .when(() -> NotificationHelper.extractComposition(bundle))
             .thenReturn(Optional.empty());
 
-        assertThatThrownBy(() -> service.validate("raw", MediaType.APPLICATION_JSON, "senderB"))
+        assertThatThrownBy(
+                () -> service.validate("raw", MediaType.APPLICATION_JSON, "senderB", "laboratory"))
             .isInstanceOf(LifecycleValidationException.class);
       }
     }
@@ -169,15 +170,16 @@ class LaboratoryNotificationValidationServiceTest {
     void setUp() {
       basicService = mock(NotificationBasicValidationService.class);
       scenarioService = mock(NotificationScenarioValidationService.class);
-      fhirParser = mock(FhirParser.class);
+      validationMetrics = mock(ValidationMetrics.class);
+
       service =
-          new NotificationValidationService<>(basicService, scenarioService, false, fhirParser);
+          new NotificationValidationService<>(
+              basicService, scenarioService, false, validationMetrics);
     }
 
     @Test
     void validate_successBoth_validScenarioReturned_andNotificationIdExtracted() {
       Bundle bundle = new Bundle();
-      when(fhirParser.parseBundleOrParameter(anyString(), anyString())).thenReturn(bundle);
       when(scenarioService.getValidScenariosForNotification(
               "raw", MediaType.APPLICATION_JSON, "principal"))
           .thenReturn("S1");
@@ -190,7 +192,8 @@ class LaboratoryNotificationValidationServiceTest {
             .when(() -> NotificationHelper.extractComposition(bundle))
             .thenReturn(Optional.of(comp));
 
-        String result = service.validate("raw", MediaType.APPLICATION_JSON, "principal");
+        String result =
+            service.validate("raw", MediaType.APPLICATION_JSON, "principal", "laboratory");
 
         assertThat(result).isEmpty();
         verify(basicService).validate("raw", MediaType.APPLICATION_JSON);
@@ -202,7 +205,6 @@ class LaboratoryNotificationValidationServiceTest {
     @Test
     void validate_basicFails_scenarioSucceeds_basicExceptionPropagated_andNoComposition() {
       Bundle bundle = new Bundle();
-      when(fhirParser.parseBundleOrParameter(anyString(), anyString())).thenReturn(bundle);
       doThrow(new InternalErrorException("basic fail"))
           .when(basicService)
           .validate(anyString(), any());
@@ -216,14 +218,13 @@ class LaboratoryNotificationValidationServiceTest {
 
         assertThrows(
             InternalErrorException.class,
-            () -> service.validate("raw", MediaType.APPLICATION_JSON, null));
+            () -> service.validate("raw", MediaType.APPLICATION_JSON, null, "laboratory"));
       }
     }
 
     @Test
     void validate_basicSucceeds_scenarioFails_returnsEmptyString() {
       Bundle bundle = new Bundle();
-      when(fhirParser.parseBundleOrParameter(anyString(), anyString())).thenReturn(bundle);
       // basic succeeds
       LifecycleValidationException scenarioEx = mock(LifecycleValidationException.class);
       when(scenarioService.getValidScenariosForNotification(
@@ -238,7 +239,8 @@ class LaboratoryNotificationValidationServiceTest {
             .when(() -> NotificationHelper.extractComposition(bundle))
             .thenReturn(Optional.of(comp));
 
-        final String result = service.validate("raw", MediaType.APPLICATION_JSON, "senderA");
+        final String result =
+            service.validate("raw", MediaType.APPLICATION_JSON, "senderA", "laboratory");
 
         assertThat(result).isEmpty();
       }
@@ -259,7 +261,8 @@ class LaboratoryNotificationValidationServiceTest {
             .when(() -> NotificationHelper.extractComposition(bundle))
             .thenReturn(Optional.empty());
 
-        assertThatThrownBy(() -> service.validate("raw", MediaType.APPLICATION_JSON, "senderA"))
+        assertThatThrownBy(
+                () -> service.validate("raw", MediaType.APPLICATION_JSON, "senderA", "laboratory"))
             .isInstanceOf(InternalErrorException.class);
       }
     }

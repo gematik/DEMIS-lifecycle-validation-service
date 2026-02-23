@@ -28,35 +28,28 @@ package de.gematik.demis.lvs.common.validation;
  */
 
 import ca.uhn.fhir.rest.server.exceptions.InternalErrorException;
-import de.gematik.demis.fhirparserlibrary.FhirParser;
 import de.gematik.demis.lvs.common.exception.LifecycleValidationException;
-import de.gematik.demis.lvs.common.fhir.NotificationHelper;
 import de.gematik.demis.lvs.common.fhirpath.Scenario;
-import java.util.Objects;
-import java.util.Optional;
+import de.gematik.demis.lvs.metrics.ValidationMetrics;
 import javax.annotation.CheckForNull;
-import lombok.extern.slf4j.Slf4j;
-import org.hl7.fhir.r4.model.Bundle;
-import org.hl7.fhir.r4.model.Composition;
 import org.springframework.http.MediaType;
 
-@Slf4j
 public class NotificationValidationService<S extends Scenario> {
 
   private final NotifcationBasicValidator notificationBasicValidationService;
   private final NotificationScenarioValidationService<S> notificationScenarioValidationService;
   private final boolean returnFhirpathValidationInResponse;
-  private final FhirParser fhirParser;
+  private final ValidationMetrics validationMetrics;
 
   public NotificationValidationService(
       final NotifcationBasicValidator notificationBasicValidationService,
       final NotificationScenarioValidationService<S> notificationScenarioValidationService,
       boolean returnFhirpathValidationInResponse,
-      final FhirParser fhirParser) {
+      ValidationMetrics validationMetrics) {
     this.notificationBasicValidationService = notificationBasicValidationService;
     this.notificationScenarioValidationService = notificationScenarioValidationService;
     this.returnFhirpathValidationInResponse = returnFhirpathValidationInResponse;
-    this.fhirParser = fhirParser;
+    this.validationMetrics = validationMetrics;
   }
 
   /**
@@ -70,7 +63,8 @@ public class NotificationValidationService<S extends Scenario> {
   public String validate(
       final String notification,
       final MediaType mediaType,
-      @CheckForNull final String principalId) {
+      @CheckForNull final String principalId,
+      final String notificationType) {
     String validScenario = null;
 
     RuntimeException basicValidationException = null;
@@ -78,8 +72,6 @@ public class NotificationValidationService<S extends Scenario> {
 
     LifecycleValidationException scenarioValidationException = null;
     boolean successfulScenarioValidation = false;
-
-    final Bundle fhirMessage = parseStringToBundle(notification, mediaType);
 
     if (!returnFhirpathValidationInResponse) {
       try {
@@ -99,10 +91,8 @@ public class NotificationValidationService<S extends Scenario> {
       scenarioValidationException = e;
     }
 
-    if (!returnFhirpathValidationInResponse
-        && (successfulBasicValidation != successfulScenarioValidation)) {
-      logBasicAndScenarioValidationDifference(
-          principalId, fhirMessage, successfulBasicValidation, successfulScenarioValidation);
+    if (!returnFhirpathValidationInResponse) {
+      createMetric(notificationType, successfulBasicValidation, successfulScenarioValidation);
     }
 
     if (returnFhirpathValidationInResponse) {
@@ -118,33 +108,16 @@ public class NotificationValidationService<S extends Scenario> {
     return "";
   }
 
-  private void logBasicAndScenarioValidationDifference(
-      String principalId,
-      Bundle fhirMessage,
+  private void createMetric(
+      String notificationType,
       boolean successfulBasicValidation,
       boolean successfulScenarioValidation) {
-    log.info(
-        "Outcome of basic and scenario validation don't match for notification with id {} from sender {}.",
-        getNotificationId(fhirMessage),
-        Objects.requireNonNullElse(principalId, "<unknown>"));
-    log.info(
-        "Basic validation: {}, scenario validation: {}",
-        successfulBasicValidation ? "success" : "failed",
-        successfulScenarioValidation ? "success" : "failed");
-  }
-
-  private Bundle parseStringToBundle(String notification, MediaType mediaType) {
-    final var contentType =
-        MediaType.parseMediaType(mediaType.getType() + "/" + mediaType.getSubtype());
-    return fhirParser.parseBundleOrParameter(notification, contentType.getSubtype());
-  }
-
-  private String getNotificationId(final Bundle bundle) {
-    String notificationId = "<unknown>";
-    final Optional<Composition> composition = NotificationHelper.extractComposition(bundle);
-    if (composition.isPresent()) {
-      notificationId = composition.get().getIdentifier().getValue();
+    if (notificationType.equals("laboratory")) {
+      validationMetrics.countLabValResult(
+          successfulBasicValidation == successfulScenarioValidation);
+    } else {
+      validationMetrics.countDisValResult(
+          successfulBasicValidation == successfulScenarioValidation);
     }
-    return notificationId;
   }
 }

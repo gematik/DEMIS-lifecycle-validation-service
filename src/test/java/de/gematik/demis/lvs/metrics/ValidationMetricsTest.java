@@ -94,4 +94,44 @@ class ValidationMetricsTest {
         .counter("validation_error_type", "principal_id", sender, "error_type", errorType);
     verify(counter).increment();
   }
+
+  @Test
+  void countLabValResult_shouldIncrementEqualCounter() {
+    when(meterRegistry.counter("counter_lab_val_result_equal")).thenReturn(counter);
+
+    validationMetrics.countLabValResult(true);
+
+    verify(meterRegistry).counter("counter_lab_val_result_equal");
+    verify(counter).increment();
+  }
+
+  @Test
+  void countLabValResult_shouldIncrementNotEqualCounter() {
+    when(meterRegistry.counter("counter_lab_val_result_not_equal")).thenReturn(counter);
+
+    validationMetrics.countLabValResult(false);
+
+    verify(meterRegistry).counter("counter_lab_val_result_not_equal");
+    verify(counter).increment();
+  }
+
+  @Test
+  void countDisValResult_shouldIncrementEqualCounter() {
+    when(meterRegistry.counter("counter_dis_val_result_equal")).thenReturn(counter);
+
+    validationMetrics.countDisValResult(true);
+
+    verify(meterRegistry).counter("counter_dis_val_result_equal");
+    verify(counter).increment();
+  }
+
+  @Test
+  void countDisValResult_shouldIncrementNotEqualCounter() {
+    when(meterRegistry.counter("counter_dis_val_result_not_equal")).thenReturn(counter);
+
+    validationMetrics.countDisValResult(false);
+
+    verify(meterRegistry).counter("counter_dis_val_result_not_equal");
+    verify(counter).increment();
+  }
 }

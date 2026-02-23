@@ -31,6 +31,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
@@ -80,10 +81,26 @@ class NotificationScenarioValidationServiceTest {
 
   static Stream<Arguments> scenarioNames() {
     return Stream.of(
-        Arguments.of("src/test/resources/notifications/laboratory/scenarioExamples/S1.json", "1"),
-        Arguments.of("src/test/resources/notifications/laboratory/scenarioExamples/S2A.json", "2A"),
         Arguments.of(
-            "src/test/resources/notifications/laboratory/scenarioExamples/S2B.json", "2B"));
+            "src/test/resources/notifications/laboratory/scenarioExamples/M_POS.json", "M_POS"),
+        Arguments.of(
+            "src/test/resources/notifications/laboratory/scenarioExamples/FM_NEG.json", "EM_NEG"),
+        Arguments.of(
+            "src/test/resources/notifications/laboratory/scenarioExamples/aFM_POS.json", "aFM_POS"),
+        Arguments.of(
+            "src/test/resources/notifications/laboratory/scenarioExamples/aFM_NEG.json", "aFM_NEG"),
+        Arguments.of(
+            "src/test/resources/notifications/laboratory/scenarioExamples/EM_NEG.json", "EM_NEG"),
+        Arguments.of(
+            "src/test/resources/notifications/laboratory/scenarioExamples/IM_NEG_CVDP.json",
+            "IM_NEG_CVDP"));
+  }
+
+  static Stream<String> scenarioNamesInvalid() {
+    return Stream.of(
+        "src/test/resources/notifications/laboratory/scenarioExamples/invalid/IM_NEG.json",
+        "src/test/resources/notifications/laboratory/scenarioExamples/invalid/IM_NEG-otherCategoryThanCvdp.json",
+        "src/test/resources/notifications/laboratory/scenarioExamples/invalid/IM_NEG_CVDP-withRelatesTo.json");
   }
 
   @BeforeEach
@@ -118,6 +135,22 @@ class NotificationScenarioValidationServiceTest {
         notificationScenarioValidationService.getValidScenariosForNotification(
             notification, MediaType.APPLICATION_JSON, null);
     assertThat(validatedScenario).isEqualTo(expectedScenarios);
+  }
+
+  @SneakyThrows
+  @ParameterizedTest
+  @MethodSource("scenarioNamesInvalid")
+  void shouldThrowLifecycleValidationErrorForEachExample(String notificationPath) {
+
+    final String notification = Files.readString(Path.of(notificationPath));
+
+    assertThatThrownBy(
+            () ->
+                notificationScenarioValidationService.getValidScenariosForNotification(
+                    notification, MediaType.APPLICATION_JSON, null))
+        .hasMessageContaining("No valid lifecycle scenario found");
+
+    verify(additionalOperationExecuter, never()).checkAllExternalChecks(any(), any(), any());
   }
 
   @ParameterizedTest

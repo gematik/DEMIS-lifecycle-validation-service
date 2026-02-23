@@ -27,6 +27,7 @@ package de.gematik.demis.lvs.disease;
  * #L%
  */
 
+import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.verifyNoInteractions;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
@@ -75,6 +76,11 @@ class DiseaseNotificationLifecycleValidationCtrTest {
         Files.readString(
             Path.of("src/test/resources/notifications/disease/scenarioExamples/S_FM_V2V-11.json"));
 
+    when(destinationLookupServiceClientMock.getNotificationCategory(anyString()))
+        .thenReturn(new NotificationCategoryDTO("band"));
+
+    when(codeMappingServiceMock.mapCode("band")).thenReturn("ban");
+
     mockMvc
         .perform(
             post("/disease/$validate")
@@ -112,7 +118,7 @@ class DiseaseNotificationLifecycleValidationCtrTest {
             "92d99f62-fe4f-4337-b833-351751db12dc"))
         .thenReturn(new NotificationCategoryDTO("band"));
 
-    when(codeMappingServiceMock.mapCode("band")).thenReturn("band");
+    when(codeMappingServiceMock.mapCode("band")).thenReturn("ban");
 
     mockMvc
         .perform(

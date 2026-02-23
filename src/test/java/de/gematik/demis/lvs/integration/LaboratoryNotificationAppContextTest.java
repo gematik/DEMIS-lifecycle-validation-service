@@ -162,11 +162,11 @@ class LaboratoryNotificationAppContextTest {
   }
 
   @Test
-  void expect422OnInvalidLaboratoryNotificationNotParseable() {
+  void expect422OnInvalidLaboratoryNotification() {
     // GIVEN a Valid Laboratory Notification is loaded
     final var notification =
         FileLoaderHelper.loadResourceFile(
-            "src/test/resources/notifications/laboratory/InvalidNotification.json");
+            "src/test/resources/notifications/laboratory/scenarioExamples/invalid/IM_NEG.json");
     // WHEN it is sent to the Service
     // THEN the response of the server is 422
     final var result =

@@ -1,27 +1,27 @@
 { 
   "resourceType" : "Bundle" ,
   "meta" : {
-      "lastUpdated" : "2021-03-04T20:16:01.000+01:00" ,
+      "lastUpdated" : "2021-03-06T01:57:01.000+01:00" ,
       "profile" : [ "https://demis.rki.de/fhir/StructureDefinition/NotificationBundleLaboratory" ]
     } ,
   "identifier" : {
       "system" : "https://demis.rki.de/fhir/NamingSystem/NotificationBundleId" ,
-      "value" : "a39e99a9-5ca8-3428-bf5b-5a55113cebdc"
+      "value" : "146c776f-18dc-3d55-bf2f-3aaaaed274c7"
     } ,
   "type" : "document" ,
-  "timestamp" : "2021-03-04T20:16:01.000+01:00" ,
+  "timestamp" : "2021-03-06T01:57:01.000+01:00" ,
   "entry" : [ 
       { 
-        "fullUrl" : "urn:uuid:c801475f-1313-3be5-80f6-2479dc5ccd5a" ,
+        "fullUrl" : "urn:uuid:a664b995-ada6-3828-93f5-625b6994631c" ,
         "resource" : {
             "resourceType" : "Composition" ,
-            "id" : "c801475f-1313-3be5-80f6-2479dc5ccd5a" ,
+            "id" : "a664b995-ada6-3828-93f5-625b6994631c" ,
             "meta" : {"profile" : [ "https://demis.rki.de/fhir/StructureDefinition/NotificationLaboratory" ] } ,
             "identifier" : {
                 "system" : "https://demis.rki.de/fhir/NamingSystem/NotificationId" ,
-                "value" : "e8d8cc43-32c2-4f93-8eaf-b2f3e6deb2a9"
+                "value" : "12345"
               } ,
-            "status" : "amended" ,
+            "status" : "final" ,
             "type" : {
                 "coding" : [ 
                     { 
@@ -42,12 +42,24 @@
                     ]
                 }
               ] ,
-            "subject" : {"reference" : "urn:uuid:d6c5dac9-9f05-3785-ac0a-7e8469e18ff1" } ,
-            "date" : "2021-03-04T20:16:00.000+01:00" ,
+            "subject" : {"reference" : "urn:uuid:42cd751c-dd12-3c1c-b200-7e5a737e6741" } ,
+            "date" : "2021-03-06T01:57:00.000+01:00" ,
             "author" : [ 
-                { "reference" : "urn:uuid:c302b4af-3f61-3ec3-8f8e-90517f29fead" }
+                { "reference" : "urn:uuid:a570464b-d4b4-3ff5-b54b-c17f4324f023" }
               ] ,
             "title" : "Erregernachweismeldung" ,
+            "relatesTo" : [ 
+                { 
+                  "code" : "appends" ,
+                  "targetReference" : {
+                      "type" : "Composition" ,
+                      "identifier" : {
+                          "system" : "https://demis.rki.de/fhir/NamingSystem/NotificationId" ,
+                          "value" : "12345"
+                        }
+                    }
+                }
+              ] ,
             "section" : [ 
                 { 
                   "code" : {
@@ -60,17 +72,17 @@
                         ]
                     } ,
                   "entry" : [ 
-                      { "reference" : "urn:uuid:2a19638c-16ca-3b3d-8fbe-adac6de5e039" }
+                      { "reference" : "urn:uuid:e6587932-cb59-3dfc-884a-deaa56349acf" }
                     ]
                 }
               ]
           }
       } ,
       { 
-        "fullUrl" : "urn:uuid:d6c5dac9-9f05-3785-ac0a-7e8469e18ff1" ,
+        "fullUrl" : "urn:uuid:42cd751c-dd12-3c1c-b200-7e5a737e6741" ,
         "resource" : {
             "resourceType" : "Patient" ,
-            "id" : "d6c5dac9-9f05-3785-ac0a-7e8469e18ff1" ,
+            "id" : "42cd751c-dd12-3c1c-b200-7e5a737e6741" ,
             "meta" : {"profile" : [ "https://demis.rki.de/fhir/StructureDefinition/NotifiedPerson" ] } ,
             "name" : [ 
                 { 
@@ -101,28 +113,28 @@
           }
       } ,
       { 
-        "fullUrl" : "urn:uuid:c302b4af-3f61-3ec3-8f8e-90517f29fead" ,
+        "fullUrl" : "urn:uuid:a570464b-d4b4-3ff5-b54b-c17f4324f023" ,
         "resource" : {
             "resourceType" : "PractitionerRole" ,
-            "id" : "c302b4af-3f61-3ec3-8f8e-90517f29fead" ,
+            "id" : "a570464b-d4b4-3ff5-b54b-c17f4324f023" ,
             "meta" : {"profile" : [ "https://demis.rki.de/fhir/StructureDefinition/NotifierRole" ] } ,
-            "organization" : {"reference" : "urn:uuid:9dfe52a6-cf39-3dce-b225-51f0ac2460fe" }
+            "organization" : {"reference" : "urn:uuid:293a5cfd-d518-31e3-87ab-83e7fcefb559" }
           }
       } ,
       { 
-        "fullUrl" : "urn:uuid:9dfe52a6-cf39-3dce-b225-51f0ac2460fe" ,
+        "fullUrl" : "urn:uuid:293a5cfd-d518-31e3-87ab-83e7fcefb559" ,
         "resource" : {
             "resourceType" : "Organization" ,
-            "id" : "9dfe52a6-cf39-3dce-b225-51f0ac2460fe" ,
+            "id" : "293a5cfd-d518-31e3-87ab-83e7fcefb559" ,
             "meta" : {"profile" : [ "https://demis.rki.de/fhir/StructureDefinition/NotifierFacility" ] } ,
             "identifier" : [ 
                 { 
                   "system" : "https://demis.rki.de/fhir/NamingSystem/DemisParticipantId" ,
-                  "value" : "12345"
+                  "value" : "54321"
                 } ,
                 { 
                   "system" : "https://fhir.kbv.de/NamingSystem/KBV_NS_Base_BSNR" ,
-                  "value" : "987654300"
+                  "value" : "987654400"
                 }
               ] ,
             "type" : [ 
@@ -134,6 +146,45 @@
                         "display" : "Erregerdiagnostische Untersuchungsstelle"
                       }
                     ]
+                }
+              ] ,
+            "name" : "Sekundärlabor" ,
+            "telecom" : [ 
+                { 
+                  "system" : "phone" ,
+                  "value" : "0308765432109" ,
+                  "use" : "work"
+                }
+              ] ,
+            "address" : [ 
+                { 
+                  "line" : [ "Andersallee 999" ] ,
+                  "city" : "Berlin" ,
+                  "postalCode" : "13055" ,
+                  "country" : "DE"
+                }
+              ]
+          }
+      } ,
+      { 
+        "fullUrl" : "urn:uuid:8146626f-bcd9-37a7-ae38-eb8ce76c6a45" ,
+        "resource" : {
+            "resourceType" : "PractitionerRole" ,
+            "id" : "8146626f-bcd9-37a7-ae38-eb8ce76c6a45" ,
+            "meta" : {"profile" : [ "https://demis.rki.de/fhir/StructureDefinition/SubmittingRole" ] } ,
+            "organization" : {"reference" : "urn:uuid:e6008cf2-5738-36a8-b181-18043e152fef" }
+          }
+      } ,
+      { 
+        "fullUrl" : "urn:uuid:e6008cf2-5738-36a8-b181-18043e152fef" ,
+        "resource" : {
+            "resourceType" : "Organization" ,
+            "id" : "e6008cf2-5738-36a8-b181-18043e152fef" ,
+            "meta" : {"profile" : [ "https://demis.rki.de/fhir/StructureDefinition/SubmittingFacility" ] } ,
+            "identifier" : [ 
+                { 
+                  "system" : "https://fhir.kbv.de/NamingSystem/KBV_NS_Base_BSNR" ,
+                  "value" : "876543210"
                 }
               ] ,
             "name" : "Primärlabor" ,
@@ -155,60 +206,21 @@
           }
       } ,
       { 
-        "fullUrl" : "urn:uuid:d353d3f5-185d-388c-b266-a5f22e8e1b47" ,
-        "resource" : {
-            "resourceType" : "PractitionerRole" ,
-            "id" : "d353d3f5-185d-388c-b266-a5f22e8e1b47" ,
-            "meta" : {"profile" : [ "https://demis.rki.de/fhir/StructureDefinition/SubmittingRole" ] } ,
-            "organization" : {"reference" : "urn:uuid:a6d956fa-2151-3fe4-9cfa-4b25deada2be" }
-          }
-      } ,
-      { 
-        "fullUrl" : "urn:uuid:a6d956fa-2151-3fe4-9cfa-4b25deada2be" ,
-        "resource" : {
-            "resourceType" : "Organization" ,
-            "id" : "a6d956fa-2151-3fe4-9cfa-4b25deada2be" ,
-            "meta" : {"profile" : [ "https://demis.rki.de/fhir/StructureDefinition/SubmittingFacility" ] } ,
-            "identifier" : [ 
-                { 
-                  "system" : "https://fhir.kbv.de/NamingSystem/KBV_NS_Base_BSNR" ,
-                  "value" : "123456780"
-                }
-              ] ,
-            "name" : "Einsendepraxis ABC" ,
-            "telecom" : [ 
-                { 
-                  "system" : "phone" ,
-                  "value" : "030 1234567890" ,
-                  "use" : "work"
-                }
-              ] ,
-            "address" : [ 
-                { 
-                  "line" : [ "Teststr. 123" ] ,
-                  "city" : "Berlin" ,
-                  "postalCode" : "13055" ,
-                  "country" : "DE"
-                }
-              ]
-          }
-      } ,
-      { 
-        "fullUrl" : "urn:uuid:2a19638c-16ca-3b3d-8fbe-adac6de5e039" ,
+        "fullUrl" : "urn:uuid:e6587932-cb59-3dfc-884a-deaa56349acf" ,
         "resource" : {
             "resourceType" : "DiagnosticReport" ,
-            "id" : "2a19638c-16ca-3b3d-8fbe-adac6de5e039" ,
+            "id" : "e6587932-cb59-3dfc-884a-deaa56349acf" ,
             "meta" : {"profile" : [ "https://demis.rki.de/fhir/StructureDefinition/LaboratoryReportCVDP" ] } ,
             "basedOn" : [ 
                 { 
                   "type" : "ServiceRequest" ,
                   "identifier" : {
                       "system" : "https://demis.rki.de/fhir/NamingSystem/ServiceRequestId" ,
-                      "value" : "2021-000672922"
+                      "value" : "21-327"
                     }
                 }
               ] ,
-            "status" : "amended" ,
+            "status" : "final" ,
             "code" : {
                 "coding" : [ 
                     { 
@@ -218,10 +230,10 @@
                     }
                   ]
               } ,
-            "subject" : {"reference" : "urn:uuid:d6c5dac9-9f05-3785-ac0a-7e8469e18ff1" } ,
-            "issued" : "2021-03-04T20:15:00.000+01:00" ,
+            "subject" : {"reference" : "urn:uuid:42cd751c-dd12-3c1c-b200-7e5a737e6741" } ,
+            "issued" : "2021-03-06T01:56:00.000+01:00" ,
             "result" : [ 
-                { "reference" : "urn:uuid:0ed67ef1-de7f-324e-ae7d-4429d783c941" }
+                { "reference" : "urn:uuid:9141395a-42ce-336c-a670-6be02e800b18" }
               ] ,
             "conclusion" : "Ich bin die textuelle Conclusion ..." ,
             "conclusionCode" : [ 
@@ -229,8 +241,8 @@
                   "coding" : [ 
                       { 
                         "system" : "https://demis.rki.de/fhir/CodeSystem/conclusionCode" ,
-                        "code" : "pathogenDetected" ,
-                        "display" : "Meldepflichtiger Erreger nachgewiesen"
+                        "code" : "pathogenNotDetected" ,
+                        "display" : "Meldepflichtiger Erreger nicht nachgewiesen"
                       }
                     ]
                 }
@@ -238,12 +250,12 @@
           }
       } ,
       { 
-        "fullUrl" : "urn:uuid:0ed67ef1-de7f-324e-ae7d-4429d783c941" ,
+        "fullUrl" : "urn:uuid:9141395a-42ce-336c-a670-6be02e800b18" ,
         "resource" : {
             "resourceType" : "Observation" ,
-            "id" : "0ed67ef1-de7f-324e-ae7d-4429d783c941" ,
+            "id" : "9141395a-42ce-336c-a670-6be02e800b18" ,
             "meta" : {"profile" : [ "https://demis.rki.de/fhir/StructureDefinition/PathogenDetectionCVDP" ] } ,
-            "status" : "amended" ,
+            "status" : "final" ,
             "category" : [ 
                 { 
                   "coding" : [ 
@@ -258,28 +270,20 @@
                 "coding" : [ 
                     { 
                       "system" : "http://loinc.org" ,
-                      "code" : "94660-8" ,
-                      "display" : "SARS-CoV-2 (COVID-19) RNA [Presence] in Serum or Plasma by NAA with probe detection"
+                      "code" : "96741-4" ,
+                      "display" : "SARS-CoV-2 (COVID-19) variant [Type] in Specimen by Sequencing"
                     }
                   ]
               } ,
-            "subject" : {"reference" : "urn:uuid:d6c5dac9-9f05-3785-ac0a-7e8469e18ff1" } ,
-            "valueCodeableConcept" : {
-                "coding" : [ 
-                    { 
-                      "system" : "http://loinc.org" ,
-                      "code" : "LA11882-0" ,
-                      "display" : "Detected"
-                    }
-                  ]
-              } ,
+            "subject" : {"reference" : "urn:uuid:42cd751c-dd12-3c1c-b200-7e5a737e6741" } ,
+            "valueString" : "#B.1.1.7" ,
             "interpretation" : [ 
                 { 
                   "coding" : [ 
                       { 
                         "system" : "http://terminology.hl7.org/CodeSystem/v3-ObservationInterpretation" ,
-                        "code" : "POS" ,
-                        "display" : "Positive"
+                        "code" : "NEG" ,
+                        "display" : "Negative"
                       }
                     ]
                 }
@@ -291,19 +295,19 @@
                 "coding" : [ 
                     { 
                       "system" : "http://snomed.info/sct" ,
-                      "code" : "398545005" ,
-                      "display" : "Nucleic acid assay (procedure)"
+                      "code" : "117040002" ,
+                      "display" : "Nucleic acid sequencing (procedure)"
                     }
                   ]
               } ,
-            "specimen" : {"reference" : "urn:uuid:c0859fe5-44d8-35eb-aae9-6c2a257872bf" }
+            "specimen" : {"reference" : "urn:uuid:6dcdea7e-a3dd-3e48-8acc-639e0ffc3ca4" }
           }
       } ,
       { 
-        "fullUrl" : "urn:uuid:c0859fe5-44d8-35eb-aae9-6c2a257872bf" ,
+        "fullUrl" : "urn:uuid:6dcdea7e-a3dd-3e48-8acc-639e0ffc3ca4" ,
         "resource" : {
             "resourceType" : "Specimen" ,
-            "id" : "c0859fe5-44d8-35eb-aae9-6c2a257872bf" ,
+            "id" : "6dcdea7e-a3dd-3e48-8acc-639e0ffc3ca4" ,
             "meta" : {"profile" : [ "https://demis.rki.de/fhir/StructureDefinition/SpecimenCVDP" ] } ,
             "status" : "available" ,
             "type" : {
@@ -315,14 +319,24 @@
                     }
                   ]
               } ,
-            "subject" : {"reference" : "urn:uuid:d6c5dac9-9f05-3785-ac0a-7e8469e18ff1" } ,
-            "receivedTime" : "2021-03-04T15:40:00.000+01:00" ,
+            "subject" : {"reference" : "urn:uuid:42cd751c-dd12-3c1c-b200-7e5a737e6741" } ,
+            "receivedTime" : "2021-03-05T06:20:00.000+01:00" ,
             "collection" : {
-                "collector" : {"reference" : "urn:uuid:d353d3f5-185d-388c-b266-a5f22e8e1b47" } ,
+                "collector" : {"reference" : "urn:uuid:8146626f-bcd9-37a7-ae38-eb8ce76c6a45" } ,
                 "collectedDateTime" : "2021-03-04T09:50:00.000+01:00"
               } ,
+            "processing" : [ 
+                { 
+                  "extension" : [ 
+                      { 
+                        "url" : "https://demis.rki.de/fhir/StructureDefinition/TransactionID" ,
+                        "valueString" : "IGS-12345-CVDP-1298e3c2-1c3a-439d-b0dd-f37426d25db7"
+                      }
+                    ]
+                }
+              ] ,
             "note" : [ 
-                { "text" : "Weitere Tests nicht möglich" }
+                { "text" : "Ich bin eine interessante Zusatzinformation ..." }
               ]
           }
       }

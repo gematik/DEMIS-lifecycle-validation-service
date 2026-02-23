@@ -78,7 +78,7 @@ class LaboratoryNotificationRestControllerTest {
   void shouldCallLaboratoryNotificationLifecycleValidationSrv() throws Exception {
     String notification =
         Files.readString(
-            Path.of("src/test/resources/notifications/laboratory/scenarioExamples/S1.json"));
+            Path.of("src/test/resources/notifications/laboratory/scenarioExamples/M_POS.json"));
 
     byte[] body = new byte[] {};
     when(destinationLookupServiceClientMock.getNotificationCategory(anyString()))
@@ -96,7 +96,7 @@ class LaboratoryNotificationRestControllerTest {
                 .header("Content-Type", "application/json")
                 .content(notification))
         .andExpect(status().isOk())
-        .andExpect(content().string("1"))
+        .andExpect(content().string("M_POS"))
         .andReturn();
   }
 
@@ -104,17 +104,8 @@ class LaboratoryNotificationRestControllerTest {
   void shouldReturnErrorForNotValid() throws Exception {
     String notification =
         Files.readString(
-            Path.of("src/test/resources/notifications/laboratory/InvalidNotification.json"));
-
-    byte[] body = new byte[] {};
-    when(destinationLookupServiceClientMock.getNotificationCategory(anyString()))
-        .thenThrow(
-            new FeignException.FeignClientException(
-                404,
-                "mocked Exception for S1 Test",
-                mock(Request.class),
-                body,
-                Collections.emptyMap()));
+            Path.of(
+                "src/test/resources/notifications/laboratory/scenarioExamples/invalid/IM_NEG.json"));
 
     mockMvc
         .perform(
@@ -128,7 +119,7 @@ class LaboratoryNotificationRestControllerTest {
   void shouldUseServiceBaseFunctionToMapPathogenCode() throws Exception {
     String notification =
         Files.readString(
-            Path.of("src/test/resources/notifications/laboratory/scenarioExamples/S2C.json"));
+            Path.of("src/test/resources/notifications/laboratory/scenarioExamples/aFM_POS.json"));
 
     when(destinationLookupServiceClientMock.getNotificationCategory(
             "92d99f62-fe4f-4337-b833-351751db12dc"))
@@ -142,7 +133,7 @@ class LaboratoryNotificationRestControllerTest {
                 .header("Content-Type", "application/json")
                 .content(notification))
         .andExpect(status().isOk())
-        .andExpect(content().string("2C"))
+        .andExpect(content().string("aFM_POS"))
         .andReturn();
 
     verifyNoInteractions(legacyCodeMappingServiceMock);

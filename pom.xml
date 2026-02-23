@@ -8,7 +8,7 @@
     <relativePath></relativePath><!-- lookup parent from repository -->
   </parent>
   <artifactId>lifecycle-validation-service</artifactId>
-  <version>1.4.2-SNAPSHOT</version>
+  <version>1.4.3-SNAPSHOT</version>
   <name>lifecycle-validation-service</name>
   <packaging>jar</packaging>
   <description>Lifecycle Validation Service for FHIR Notifications</description>

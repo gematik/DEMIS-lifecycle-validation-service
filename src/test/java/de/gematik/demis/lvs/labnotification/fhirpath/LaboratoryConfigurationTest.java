@@ -44,7 +44,7 @@ class LaboratoryConfigurationTest {
             properties.fhirPathData(), properties.keyToFhirPathData(), LaboratoryScenario[].class);
     assertThat(scenarios.getFirst().getFhirPathExpression().getFirst().getFhirPath())
         .isEqualTo(
-            "Bundle.entry.resource.where($this is Patient).meta.where(profile = 'https://demis.rki.de/fhir/StructureDefinition/NotifiedPerson').exists()");
+            "Bundle.where(meta.profile = 'https://demis.rki.de/fhir/StructureDefinition/NotificationBundleLaboratoryNegative').empty()");
     assertThat(scenarios.getLast().getFhirPathExpression().getFirst().getFhirPath())
         .isEqualTo(
             "Bundle.where(meta.profile = 'https://demis.rki.de/fhir/StructureDefinition/NotificationBundleLaboratoryNegative').exists()");

@@ -286,7 +286,7 @@
                   "coding": [
                     {
                       "system": "https://demis.rki.de/fhir/CodeSystem/conclusionCode",
-                      "code": "pathogenDetected",
+                      "code": "pathogenNotDetected",
                       "display": "Meldepflichtiger Erreger nachgewiesen"
                     }
                   ]
