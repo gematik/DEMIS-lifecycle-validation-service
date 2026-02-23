@@ -27,7 +27,7 @@
         },
         "identifier": {
           "system": "https://demis.rki.de/fhir/NamingSystem/NotificationId",
-          "value": "4670647a-b2cc-4b26-91f5-b2060b80d8c5"
+          "value": "2693612f-847d-4dd8-becc-16a7da0bb453"
         },
         "status": "final",
         "type": {

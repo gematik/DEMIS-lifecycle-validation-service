@@ -6,16 +6,16 @@
     } ,
   "identifier" : {
       "system" : "https://demis.rki.de/fhir/NamingSystem/NotificationBundleId" ,
-      "value" : "31f92f50-d478-3942-9337-1dd4ca829cea"
+      "value" : "925ccab9-b22c-3a95-b209-2cd46cabfa78"
     } ,
   "type" : "document" ,
   "timestamp" : "2021-03-04T20:16:01.000+01:00" ,
   "entry" : [ 
       { 
-        "fullUrl" : "urn:uuid:d73357e9-7dc8-30c8-ad92-16aea0b5e201" ,
+        "fullUrl" : "urn:uuid:b578c956-0645-339c-b0d1-1e43cabd2e9c" ,
         "resource" : {
             "resourceType" : "Composition" ,
-            "id" : "d73357e9-7dc8-30c8-ad92-16aea0b5e201" ,
+            "id" : "b578c956-0645-339c-b0d1-1e43cabd2e9c" ,
             "meta" : {"profile" : [ "https://demis.rki.de/fhir/StructureDefinition/NotificationLaboratory" ] } ,
             "identifier" : {
                 "system" : "https://demis.rki.de/fhir/NamingSystem/NotificationId" ,
@@ -42,12 +42,24 @@
                     ]
                 }
               ] ,
-            "subject" : {"reference" : "urn:uuid:01a3762a-c18f-32d7-ab91-2a9bad45e65f" } ,
+            "subject" : {"reference" : "urn:uuid:384625bb-847b-35e3-9396-c27c3505a4b3" } ,
             "date" : "2021-03-04T20:16:00.000+01:00" ,
             "author" : [ 
-                { "reference" : "urn:uuid:d774e8de-5e61-3e2e-a8fb-aa28641578bd" }
+                { "reference" : "urn:uuid:59c1e927-ad1b-3607-ac0d-cb0e350784c6" }
               ] ,
             "title" : "Erregernachweismeldung" ,
+            "relatesTo" : [
+              {
+                "code" : "appends" ,
+                "targetReference" : {
+                  "type" : "Composition" ,
+                  "identifier" : {
+                    "system" : "https://demis.rki.de/fhir/NamingSystem/NotificationId" ,
+                    "value" : "92d99f62-fe4f-4337-b833-351751db12dc"
+                  }
+                }
+              }
+            ],
             "section" : [ 
                 { 
                   "code" : {
@@ -60,17 +72,17 @@
                         ]
                     } ,
                   "entry" : [ 
-                      { "reference" : "urn:uuid:073618dc-898a-3de2-91c2-4e42144c0964" }
+                      { "reference" : "urn:uuid:09155d22-2fe4-3034-9950-4782aee7db2a" }
                     ]
                 }
               ]
           }
       } ,
       { 
-        "fullUrl" : "urn:uuid:01a3762a-c18f-32d7-ab91-2a9bad45e65f" ,
+        "fullUrl" : "urn:uuid:384625bb-847b-35e3-9396-c27c3505a4b3" ,
         "resource" : {
             "resourceType" : "Patient" ,
-            "id" : "01a3762a-c18f-32d7-ab91-2a9bad45e65f" ,
+            "id" : "384625bb-847b-35e3-9396-c27c3505a4b3" ,
             "meta" : {"profile" : [ "https://demis.rki.de/fhir/StructureDefinition/NotifiedPerson" ] } ,
             "name" : [ 
                 { 
@@ -101,19 +113,19 @@
           }
       } ,
       { 
-        "fullUrl" : "urn:uuid:d774e8de-5e61-3e2e-a8fb-aa28641578bd" ,
+        "fullUrl" : "urn:uuid:59c1e927-ad1b-3607-ac0d-cb0e350784c6" ,
         "resource" : {
             "resourceType" : "PractitionerRole" ,
-            "id" : "d774e8de-5e61-3e2e-a8fb-aa28641578bd" ,
+            "id" : "59c1e927-ad1b-3607-ac0d-cb0e350784c6" ,
             "meta" : {"profile" : [ "https://demis.rki.de/fhir/StructureDefinition/NotifierRole" ] } ,
-            "organization" : {"reference" : "urn:uuid:035b7f76-40cf-3509-9d33-06b4df1e1972" }
+            "organization" : {"reference" : "urn:uuid:6e42ae2b-cb9a-3ab5-8bf2-e4fb16d93a15" }
           }
       } ,
       { 
-        "fullUrl" : "urn:uuid:035b7f76-40cf-3509-9d33-06b4df1e1972" ,
+        "fullUrl" : "urn:uuid:6e42ae2b-cb9a-3ab5-8bf2-e4fb16d93a15" ,
         "resource" : {
             "resourceType" : "Organization" ,
-            "id" : "035b7f76-40cf-3509-9d33-06b4df1e1972" ,
+            "id" : "6e42ae2b-cb9a-3ab5-8bf2-e4fb16d93a15" ,
             "meta" : {"profile" : [ "https://demis.rki.de/fhir/StructureDefinition/NotifierFacility" ] } ,
             "identifier" : [ 
                 { 
@@ -155,19 +167,19 @@
           }
       } ,
       { 
-        "fullUrl" : "urn:uuid:2b9d64aa-cc2b-3efa-aac9-87ba9403d114" ,
+        "fullUrl" : "urn:uuid:9e84a0e7-bda3-34b2-b0ce-fcf05c34e460" ,
         "resource" : {
             "resourceType" : "PractitionerRole" ,
-            "id" : "2b9d64aa-cc2b-3efa-aac9-87ba9403d114" ,
+            "id" : "9e84a0e7-bda3-34b2-b0ce-fcf05c34e460" ,
             "meta" : {"profile" : [ "https://demis.rki.de/fhir/StructureDefinition/SubmittingRole" ] } ,
-            "organization" : {"reference" : "urn:uuid:bfafce8f-bcac-3302-b299-8ee759c745ba" }
+            "organization" : {"reference" : "urn:uuid:11288c2d-baf7-3453-acc5-655c3c90d6b2" }
           }
       } ,
       { 
-        "fullUrl" : "urn:uuid:bfafce8f-bcac-3302-b299-8ee759c745ba" ,
+        "fullUrl" : "urn:uuid:11288c2d-baf7-3453-acc5-655c3c90d6b2" ,
         "resource" : {
             "resourceType" : "Organization" ,
-            "id" : "bfafce8f-bcac-3302-b299-8ee759c745ba" ,
+            "id" : "11288c2d-baf7-3453-acc5-655c3c90d6b2" ,
             "meta" : {"profile" : [ "https://demis.rki.de/fhir/StructureDefinition/SubmittingFacility" ] } ,
             "identifier" : [ 
                 { 
@@ -194,10 +206,10 @@
           }
       } ,
       { 
-        "fullUrl" : "urn:uuid:073618dc-898a-3de2-91c2-4e42144c0964" ,
+        "fullUrl" : "urn:uuid:09155d22-2fe4-3034-9950-4782aee7db2a" ,
         "resource" : {
             "resourceType" : "DiagnosticReport" ,
-            "id" : "073618dc-898a-3de2-91c2-4e42144c0964" ,
+            "id" : "09155d22-2fe4-3034-9950-4782aee7db2a" ,
             "meta" : {"profile" : [ "https://demis.rki.de/fhir/StructureDefinition/LaboratoryReportCVDP" ] } ,
             "basedOn" : [ 
                 { 
@@ -218,10 +230,10 @@
                     }
                   ]
               } ,
-            "subject" : {"reference" : "urn:uuid:01a3762a-c18f-32d7-ab91-2a9bad45e65f" } ,
+            "subject" : {"reference" : "urn:uuid:384625bb-847b-35e3-9396-c27c3505a4b3" } ,
             "issued" : "2021-03-04T20:15:00.000+01:00" ,
             "result" : [ 
-                { "reference" : "urn:uuid:c7b96063-6369-379b-ae32-4d3436ca1e0a" }
+                { "reference" : "urn:uuid:83145109-6194-3c52-a3c0-954ae8275e2d" }
               ] ,
             "conclusion" : "Ich bin die textuelle Conclusion ..." ,
             "conclusionCode" : [ 
@@ -238,10 +250,10 @@
           }
       } ,
       { 
-        "fullUrl" : "urn:uuid:c7b96063-6369-379b-ae32-4d3436ca1e0a" ,
+        "fullUrl" : "urn:uuid:83145109-6194-3c52-a3c0-954ae8275e2d" ,
         "resource" : {
             "resourceType" : "Observation" ,
-            "id" : "c7b96063-6369-379b-ae32-4d3436ca1e0a" ,
+            "id" : "83145109-6194-3c52-a3c0-954ae8275e2d" ,
             "meta" : {"profile" : [ "https://demis.rki.de/fhir/StructureDefinition/PathogenDetectionCVDP" ] } ,
             "status" : "final" ,
             "category" : [ 
@@ -263,7 +275,7 @@
                     }
                   ]
               } ,
-            "subject" : {"reference" : "urn:uuid:01a3762a-c18f-32d7-ab91-2a9bad45e65f" } ,
+            "subject" : {"reference" : "urn:uuid:384625bb-847b-35e3-9396-c27c3505a4b3" } ,
             "valueCodeableConcept" : {
                 "coding" : [ 
                     { 
@@ -296,14 +308,14 @@
                     }
                   ]
               } ,
-            "specimen" : {"reference" : "urn:uuid:352d74b8-de7f-3380-affa-07fa8ff6bba4" }
+            "specimen" : {"reference" : "urn:uuid:98bdd1b4-b847-3f2b-837e-2432701130c7" }
           }
       } ,
       { 
-        "fullUrl" : "urn:uuid:352d74b8-de7f-3380-affa-07fa8ff6bba4" ,
+        "fullUrl" : "urn:uuid:98bdd1b4-b847-3f2b-837e-2432701130c7" ,
         "resource" : {
             "resourceType" : "Specimen" ,
-            "id" : "352d74b8-de7f-3380-affa-07fa8ff6bba4" ,
+            "id" : "98bdd1b4-b847-3f2b-837e-2432701130c7" ,
             "meta" : {"profile" : [ "https://demis.rki.de/fhir/StructureDefinition/SpecimenCVDP" ] } ,
             "status" : "available" ,
             "type" : {
@@ -315,10 +327,10 @@
                     }
                   ]
               } ,
-            "subject" : {"reference" : "urn:uuid:01a3762a-c18f-32d7-ab91-2a9bad45e65f" } ,
+            "subject" : {"reference" : "urn:uuid:384625bb-847b-35e3-9396-c27c3505a4b3" } ,
             "receivedTime" : "2021-03-04T15:40:00.000+01:00" ,
             "collection" : {
-                "collector" : {"reference" : "urn:uuid:2b9d64aa-cc2b-3efa-aac9-87ba9403d114" } ,
+                "collector" : {"reference" : "urn:uuid:9e84a0e7-bda3-34b2-b0ce-fcf05c34e460" } ,
                 "collectedDateTime" : "2021-03-04T09:50:00.000+01:00"
               } ,
             "note" : [ 

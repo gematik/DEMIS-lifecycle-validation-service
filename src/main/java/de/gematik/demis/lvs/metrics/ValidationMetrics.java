@@ -48,11 +48,22 @@ public class ValidationMetrics {
   private static final String TAG_SCENARIO_LIST = "scenario_list";
   private static final String VALIDATION_ERROR_TYPE_METRIC = "validation_error_type";
 
+  private static final String COUNTER_LAB_VAL_RESULT = "counter_lab_val_result";
+  private static final String COUNTER_DIS_VAL_RESULT = "counter_dis_val_result";
+
   private final MeterRegistry meterRegistry;
 
   @PostConstruct
   public void log() {
     log.info("Metrics: {}", COUNTER_VALIDATION);
+  }
+
+  public void countLabValResult(final boolean isEqual) {
+    meterRegistry.counter(COUNTER_LAB_VAL_RESULT + (isEqual ? "_equal" : "_not_equal")).increment();
+  }
+
+  public void countDisValResult(final boolean isEqual) {
+    meterRegistry.counter(COUNTER_DIS_VAL_RESULT + (isEqual ? "_equal" : "_not_equal")).increment();
   }
 
   public void saveScenario(final String scenario) {

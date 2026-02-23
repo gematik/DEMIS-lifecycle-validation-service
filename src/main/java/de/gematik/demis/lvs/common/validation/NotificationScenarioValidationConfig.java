@@ -51,6 +51,12 @@ import org.springframework.context.annotation.Configuration;
 @Configuration
 public class NotificationScenarioValidationConfig {
 
+  private final ValidationMetrics validationMetrics;
+
+  public NotificationScenarioValidationConfig(ValidationMetrics validationMetrics) {
+    this.validationMetrics = validationMetrics;
+  }
+
   @Bean
   public NotificationScenarioValidationService<DiseaseScenario>
       diseaseNotificationScenarioValidationService(
@@ -86,13 +92,12 @@ public class NotificationScenarioValidationConfig {
           NotificationScenarioValidationService<DiseaseScenario>
               notificationScenarioValidationService,
           @Value("${feature.flag.return.disease.fhirpath.validation.in.responses}")
-              boolean returnValidationInResponses,
-          FhirParser fhirParser) {
+              boolean returnValidationInResponses) {
     return new NotificationValidationService<>(
         notificationBasicValidationService,
         notificationScenarioValidationService,
         returnValidationInResponses,
-        fhirParser);
+        validationMetrics);
   }
 
   @Bean
@@ -102,12 +107,11 @@ public class NotificationScenarioValidationConfig {
           NotificationScenarioValidationService<LaboratoryScenario>
               notificationScenarioValidationService,
           @Value("${feature.flag.return.fhirpath.validation.in.responses}")
-              boolean returnValidationInResponses,
-          FhirParser fhirParser) {
+              boolean returnValidationInResponses) {
     return new NotificationValidationService<>(
         notificationBasicValidationService,
         notificationScenarioValidationService,
         returnValidationInResponses,
-        fhirParser);
+        validationMetrics);
   }
 }

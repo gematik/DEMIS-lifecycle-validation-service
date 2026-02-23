@@ -40,7 +40,7 @@ class NotificationTypeDiscernerTest {
   void shouldReturnCorrectType() throws IOException {
     String labNotification =
         Files.readString(
-            Paths.get("src/test/resources/notifications/laboratory/scenarioExamples/S1.json"));
+            Paths.get("src/test/resources/notifications/laboratory/scenarioExamples/M_POS.json"));
     assertThat(NotificationTypeDiscerner.detectNotificationType(labNotification))
         .isEqualTo("laboratory");
 

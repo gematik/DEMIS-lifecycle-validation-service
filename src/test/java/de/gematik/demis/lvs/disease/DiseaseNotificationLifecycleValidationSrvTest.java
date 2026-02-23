@@ -81,8 +81,11 @@ class DiseaseNotificationLifecycleValidationSrvTest {
   static Stream<Arguments> scenarioNames() {
     return Stream.of(
         Arguments.of(
-            "src/test/resources/notifications/disease/scenarioExamples/S_FM_V2V-11.json",
-            "S_FM_V2V"),
+            "src/test/resources/notifications/disease/scenarioExamples/S_FM_V2V-11.json", "S_IM_V"),
+        Arguments.of(
+            "src/test/resources/notifications/disease/scenarioExamples/S_IM_V.json", "S_IM_V"),
+        Arguments.of(
+            "src/test/resources/notifications/disease/scenarioExamples/S_IM_E.json", "S_IM_E"),
         Arguments.of(
             "src/test/resources/notifications/disease/scenarioExamples/S_FM_V2V-12.json",
             "S_FM_V2V"),
@@ -105,8 +108,7 @@ class DiseaseNotificationLifecycleValidationSrvTest {
             "src/test/resources/notifications/disease/scenarioExamples/S_FM_V2I-22.json",
             "S_FM_V2I"),
         Arguments.of(
-            "src/test/resources/notifications/disease/scenarioExamples/S_FM_V2E-11.json",
-            "S_FM_V2E"),
+            "src/test/resources/notifications/disease/scenarioExamples/S_FM_V2E-11.json", "S_IM_E"),
         Arguments.of(
             "src/test/resources/notifications/disease/scenarioExamples/S_FM_V2E-12.json",
             "S_FM_V2E"),
@@ -147,10 +149,10 @@ class DiseaseNotificationLifecycleValidationSrvTest {
             "src/test/resources/notifications/disease/scenarioExamples/S_FM_T2V-2.json",
             "S_FM_T2V"),
         Arguments.of(
-            "src/test/resources/notifications/disease/scenarioExamples/RUND.json", "S_FM_V2E"),
+            "src/test/resources/notifications/disease/scenarioExamples/RUND.json", "S_IM_E"),
         Arguments.of(
             "src/test/resources/notifications/disease/scenarioExamples/no_common_questionnaire.json",
-            "S_FM_V2E"));
+            "S_IM_E"));
   }
 
   @BeforeEach
@@ -235,7 +237,7 @@ class DiseaseNotificationLifecycleValidationSrvTest {
         diseaseNotificationLifecycleValidationSrv.getValidScenariosForNotification(
             diseaseExample, MediaType.APPLICATION_JSON, null);
 
-    assertThat(validate).isEqualTo("S_FM_V2E");
+    assertThat(validate).isEqualTo("S_IM_E");
   }
 
   @ParameterizedTest
@@ -291,7 +293,12 @@ class DiseaseNotificationLifecycleValidationSrvTest {
                     testBundle, MediaType.APPLICATION_JSON, null));
   }
 
+  @Test
   void thatMissingClinicalStatusDoesNotMatterForNominalNotifications() throws IOException {
+    when(additionalOperationExecuter.checkAllExternalChecks(
+            any(Bundle.class), any(DiseaseScenario.class), any(FhirPathR4.class)))
+        .thenReturn(true);
+
     final String testBundleString =
         getString("src/test/resources/notifications/disease/MissingClinicalStatus.json");
     Bundle testBundle =
@@ -311,7 +318,7 @@ class DiseaseNotificationLifecycleValidationSrvTest {
     final String actual =
         diseaseNotificationLifecycleValidationSrv.getValidScenariosForNotification(
             preppedTestBundle, MediaType.APPLICATION_JSON, null);
-    assertThat(actual).isEqualTo("S_FM_E2T-2");
+    assertThat(actual).isEqualTo("S_FM_E2E");
   }
 
   @ParameterizedTest

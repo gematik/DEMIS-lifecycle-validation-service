@@ -121,95 +121,85 @@ class NotificationScenarioValidationServiceIntegrationTest {
   static Stream<Arguments> scenarioNames() {
     return Stream.of(
         Arguments.of(
-            "src/test/resources/notifications/laboratory/scenarioExamples/S1.json",
-            "1",
+            "src/test/resources/notifications/laboratory/scenarioExamples/M_POS.json",
+            "M_POS",
             404,
-            "e8d8cc43-32c2-4f93-8eaf-b2f3e6deb2a9",
+            null,
             null),
         Arguments.of(
-            "src/test/resources/notifications/laboratory/scenarioExamples/S2A.json",
-            "2A",
-            200,
-            "3bc0a462-5088-4f04-b94a-f9b2d3433cfe",
-            null),
-        Arguments.of(
-            "src/test/resources/notifications/laboratory/scenarioExamples/S2B.json",
-            "2B",
+            "src/test/resources/notifications/laboratory/scenarioExamples/FM_NEG.json",
+            "FM_NEG",
             404,
-            "d8091399-f4a9-431e-a81a-c7dc6b5b7e96",
+            null,
             "92d99f62-fe4f-4337-b833-351751db12dc"),
         Arguments.of(
-            "src/test/resources/notifications/laboratory/scenarioExamples/S2C.json",
-            "2C",
+            "src/test/resources/notifications/laboratory/scenarioExamples/aFM_POS.json",
+            "aFM_POS",
             404,
-            "3bc0a462-5088-4f04-b94a-f9b2d3433cfe",
+            null,
             "92d99f62-fe4f-4337-b833-351751db12dc"),
         Arguments.of(
-            "src/test/resources/notifications/laboratory/scenarioExamples/S3A.json",
-            "3A",
+            "src/test/resources/notifications/laboratory/scenarioExamples/aFM_NEG.json",
+            "aFM_NEG",
             404,
-            "43c2f6f1-f935-4a26-9aeb-9a6f3f1bd36c",
-            null),
+            null,
+            "92d99f62-fe4f-4337-b833-351751db12dc"),
         Arguments.of(
-            "src/test/resources/notifications/laboratory/scenarioExamples/S3A1.json",
-            "3A1",
-            200,
-            "43c2f6f1-f935-4a26-9aeb-9a6f3f1bd36c",
-            null),
-        Arguments.of(
-            "src/test/resources/notifications/laboratory/scenarioExamples/S3A2.json",
-            "3A2",
+            "src/test/resources/notifications/laboratory/scenarioExamples/EM_NEG.json",
+            "EM_NEG",
             200,
             "d7a333e9-439f-4be4-9824-bab1444fe085",
             null),
         Arguments.of(
-            "src/test/resources/notifications/laboratory/scenarioExamples/S4A.json",
-            "4A",
-            200,
-            "47a7f3e6-18f8-44ba-88e1-ec7a014372c9",
-            null),
-        Arguments.of(
-            "src/test/resources/notifications/laboratory/scenarioExamples/S4B.json",
-            "4B",
-            200,
-            "47a7f3e6-18f8-44ba-88e1-ec7a014372c9",
-            null),
-        Arguments.of(
-            "src/test/resources/notifications/laboratory/scenarioExamples/S5A.json",
-            "5A",
-            200,
-            "84075dca-4049-4d7d-aa33-a9dbd6e13062",
-            null),
-        Arguments.of(
-            "src/test/resources/notifications/laboratory/scenarioExamples/S5B.json",
-            "5B",
-            200,
-            "84075dca-4049-4d7d-aa33-a9dbd6e13062",
-            null),
-        Arguments.of(
-            "src/test/resources/notifications/laboratory/scenarioExamples/S7.json",
-            "7",
+            "src/test/resources/notifications/laboratory/scenarioExamples/IM_NEG_CVDP.json",
+            "IM_NEG_CVDP",
             404,
             "e8d8cc43-32c2-4f93-8eaf-b2f3e6deb2a9",
             null));
+  }
+
+  static Stream<String> scenarioNamesInvalidUuid() {
+    return Stream.of(
+        "src/test/resources/notifications/laboratory/scenarioExamples/invalid/FM_NEG_invalid_uuid.json",
+        "src/test/resources/notifications/laboratory/scenarioExamples/invalid/EM_NEG_invalid_uuid.json",
+        "src/test/resources/notifications/laboratory/scenarioExamples/invalid/aFM_NEG_relatesToId_invalid_uuid.json",
+        "src/test/resources/notifications/laboratory/scenarioExamples/invalid/aFM_POS_relatesToId_invalid_uuid.json");
+  }
+
+  static Stream<Arguments> scenarioNamesIdDoesNotExist() {
+    return Stream.of(
+        Arguments.of(
+            "src/test/resources/notifications/laboratory/scenarioExamples/FM_NEG.json",
+            "3bc0a462-5088-4f04-b94a-f9b2d3433cfe"),
+        Arguments.of(
+            "src/test/resources/notifications/laboratory/scenarioExamples/EM_NEG.json",
+            "d7a333e9-439f-4be4-9824-bab1444fe085"),
+        Arguments.of(
+            "src/test/resources/notifications/laboratory/scenarioExamples/aFM_NEG.json",
+            "92d99f62-fe4f-4337-b833-351751db12dc"),
+        Arguments.of(
+            "src/test/resources/notifications/laboratory/scenarioExamples/aFM_POS.json",
+            "92d99f62-fe4f-4337-b833-351751db12dc"));
   }
 
   private void configureMockServer(
       final String notificationId, final int status, final String relatesToId) {
     DLS_SERVER.resetAll();
     configureFor(DLS_SERVER.port());
-    if (status == 404) {
-      stubFor(
-          get(urlEqualTo("/notification/" + notificationId + "/notificationCategory"))
-              .willReturn(aResponse().withStatus(status)));
-    } else {
-      stubFor(
-          get(urlEqualTo("/notification/" + notificationId + "/notificationCategory"))
-              .willReturn(
-                  aResponse()
-                      .withStatus(status)
-                      .withHeader("Content-Type", "application/json")
-                      .withBody(NOTIFICATION_CATEGORY_CVDP)));
+    if (notificationId != null && status != 0) {
+      if (status == 404) {
+        stubFor(
+            get(urlEqualTo("/notification/" + notificationId + "/notificationCategory"))
+                .willReturn(aResponse().withStatus(status)));
+      } else {
+        stubFor(
+            get(urlEqualTo("/notification/" + notificationId + "/notificationCategory"))
+                .willReturn(
+                    aResponse()
+                        .withStatus(status)
+                        .withHeader("Content-Type", "application/json")
+                        .withBody(NOTIFICATION_CATEGORY_CVDP)));
+      }
     }
 
     if (relatesToId != null) {
@@ -256,51 +246,13 @@ class NotificationScenarioValidationServiceIntegrationTest {
   }
 
   @Test
-  void shouldReturnExpectedScenario_S2A_NotExistingNotificationId() throws IOException {
-    DLS_SERVER.resetAll();
-    configureFor(DLS_SERVER.port());
-    final String notificationId = "3bc0a462-5088-4f04-b94a-f9b2d3433cfe";
-    stubFor(
-        get(urlEqualTo("/notification/" + notificationId + "/notificationCategory"))
-            .willReturn(aResponse().withStatus(404)));
-
-    String fileContent =
-        Files.readString(
-            Paths.get("src/test/resources/notifications/laboratory/scenarioExamples/S2A.json"));
-
-    NotificationScenarioValidationService<LaboratoryScenario>
-        notificationScenarioValidationService =
-            new NotificationScenarioValidationService<>(
-                FhirContext.forR4Cached(),
-                scenarios,
-                new ValidationMetrics(meterRegistry),
-                additionalOperationExecuter,
-                fhirParser);
-
-    final String scenario =
-        notificationScenarioValidationService.getValidScenariosForNotification(
-            fileContent, MediaType.APPLICATION_JSON, null);
-
-    assertThat(scenario).isEqualTo("2A");
-  }
-
-  @Test
-  void shouldReturnExpectedScenario_S2B_NotExistingRelatesToId() throws IOException {
-    DLS_SERVER.resetAll();
-    configureFor(DLS_SERVER.port());
+  void shouldProcessPositiveNotification_withRelatesTo_shouldNotCallDLS() throws IOException {
     final String notificationId = "3bc0a462-5088-4f04-b94a-f9b2d3433cfe";
     final String relatesToId = "92d99f62-fe4f-4337-b833-351751db12dc";
-    stubFor(
-        get(urlEqualTo("/notification/" + notificationId + "/notificationCategory"))
-            .willReturn(aResponse().withStatus(404)));
-
-    stubFor(
-        get(urlEqualTo("/notification/" + relatesToId + "/notificationCategory"))
-            .willReturn(aResponse().withStatus(404)));
 
     String fileContent =
         Files.readString(
-            Paths.get("src/test/resources/notifications/laboratory/scenarioExamples/S2B.json"));
+            Paths.get("src/test/resources/notifications/laboratory/scenarioExamples/M_POS.json"));
 
     NotificationScenarioValidationService<LaboratoryScenario>
         notificationScenarioValidationService =
@@ -315,53 +267,30 @@ class NotificationScenarioValidationServiceIntegrationTest {
         notificationScenarioValidationService.getValidScenariosForNotification(
             fileContent, MediaType.APPLICATION_JSON, null);
 
-    assertThat(scenario).isEqualTo("2B");
+    assertThat(scenario).isEqualTo("M_POS");
+
+    // verify no request with notificationId to DLS is made, when byName notification is positive
     verify(
-        1, getRequestedFor(urlEqualTo("/notification/" + relatesToId + "/notificationCategory")));
+        0,
+        getRequestedFor(urlEqualTo("/notification/" + notificationId + "/notificationCategory")));
+
+    // verify no request with relatesToId to DLS is made, when byName notification is positive
+    verify(
+        0, getRequestedFor(urlEqualTo("/notification/" + relatesToId + "/notificationCategory")));
   }
 
-  @Test
-  void shouldReturnExpectedScenario_S2B_RelatesToId_invalidUUID() throws IOException {
+  @ParameterizedTest
+  @MethodSource("scenarioNamesIdDoesNotExist")
+  void shouldThrowLifeCycleValidationError_NotExistingRelatesToId(
+      final String notificationPath, final String id) throws IOException {
     DLS_SERVER.resetAll();
     configureFor(DLS_SERVER.port());
-    final String notificationId = "3bc0a462-5088-4f04-b94a-f9b2d3433cfe";
+
     stubFor(
-        get(urlEqualTo("/notification/" + notificationId + "/notificationCategory"))
+        get(urlEqualTo("/notification/" + id + "/notificationCategory"))
             .willReturn(aResponse().withStatus(404)));
 
-    String fileContent =
-        Files.readString(
-            Paths.get("src/test/resources/notifications/laboratory/followup_invalid_uuid.json"));
-
-    NotificationScenarioValidationService<LaboratoryScenario>
-        notificationScenarioValidationService =
-            new NotificationScenarioValidationService<>(
-                FhirContext.forR4Cached(),
-                scenarios,
-                new ValidationMetrics(meterRegistry),
-                additionalOperationExecuter,
-                fhirParser);
-
-    final String scenario =
-        notificationScenarioValidationService.getValidScenariosForNotification(
-            fileContent, MediaType.APPLICATION_JSON, null);
-
-    assertThat(scenario).isEqualTo("2B");
-    verify(0, getRequestedFor(urlEqualTo("/notification/12345/notificationCategory")));
-  }
-
-  @Test
-  void shouldThrowLifeCycleValidationError_S2C_NotExistingRelatesToId() throws IOException {
-    DLS_SERVER.resetAll();
-    configureFor(DLS_SERVER.port());
-    final String relatesToId = "92d99f62-fe4f-4337-b833-351751db12dc";
-    stubFor(
-        get(urlEqualTo("/notification/" + relatesToId + "/notificationCategory"))
-            .willReturn(aResponse().withStatus(404)));
-
-    String fileContent =
-        Files.readString(
-            Paths.get("src/test/resources/notifications/laboratory/scenarioExamples/S2C.json"));
+    final String fileContent = Files.readString(Paths.get(notificationPath));
 
     NotificationScenarioValidationService<LaboratoryScenario>
         notificationScenarioValidationService =
@@ -379,19 +308,56 @@ class NotificationScenarioValidationServiceIntegrationTest {
         .isInstanceOf(LifecycleValidationException.class)
         .hasMessageContaining("No valid lifecycle scenario found");
 
-    verify(
-        1, getRequestedFor(urlEqualTo("/notification/" + relatesToId + "/notificationCategory")));
+    verify(1, getRequestedFor(urlEqualTo("/notification/" + id + "/notificationCategory")));
+  }
+
+  @ParameterizedTest
+  @MethodSource("scenarioNamesInvalidUuid")
+  void shouldThrowLifeCycleValidationError_RelatesToId_invalidUUID(final String notificationPath)
+      throws IOException {
+    DLS_SERVER.resetAll();
+    configureFor(DLS_SERVER.port());
+
+    final String fileContent = Files.readString(Paths.get(notificationPath));
+
+    NotificationScenarioValidationService<LaboratoryScenario>
+        notificationScenarioValidationService =
+            new NotificationScenarioValidationService<>(
+                FhirContext.forR4Cached(),
+                scenarios,
+                new ValidationMetrics(meterRegistry),
+                additionalOperationExecuter,
+                fhirParser);
+
+    assertThatThrownBy(
+            () ->
+                notificationScenarioValidationService.getValidScenariosForNotification(
+                    fileContent, MediaType.APPLICATION_JSON, null))
+        .isInstanceOf(LifecycleValidationException.class)
+        .hasMessageContaining("No valid lifecycle scenario found");
+
+    // verify no reuest to DLS is made, when ID is invalid UUID
+    verify(0, getRequestedFor(urlEqualTo("/notification/12345/notificationCategory")));
   }
 
   @Test
-  void shouldThrowLifeCycleValidationError_S2C_RelatesToId_invalidUUID() throws IOException {
+  void shouldThrowLifeCycleValidationError_7_4_NotificationIdExists() throws IOException {
     DLS_SERVER.resetAll();
     configureFor(DLS_SERVER.port());
+
+    final String notificationId = "e8d8cc43-32c2-4f93-8eaf-b2f3e6deb2a9";
+    stubFor(
+        get(urlEqualTo("/notification/" + notificationId + "/notificationCategory"))
+            .willReturn(
+                aResponse()
+                    .withStatus(200)
+                    .withHeader("Content-Type", "application/json")
+                    .withBody(NOTIFICATION_CATEGORY_CVDP)));
 
     String fileContent =
         Files.readString(
             Paths.get(
-                "src/test/resources/notifications/laboratory/anonymous_followup_invalid_uuid.json"));
+                "src/test/resources/notifications/laboratory/scenarioExamples/IM_NEG_CVDP.json"));
 
     NotificationScenarioValidationService<LaboratoryScenario>
         notificationScenarioValidationService =
@@ -409,6 +375,10 @@ class NotificationScenarioValidationServiceIntegrationTest {
         .isInstanceOf(LifecycleValidationException.class)
         .hasMessageContaining("No valid lifecycle scenario found");
 
-    verify(0, getRequestedFor(urlEqualTo("/notification/12345/notificationCategory")));
+    // fhirPath validation valid, verify that notificationCategory for notificationId was requested
+    // at DLS
+    verify(
+        1,
+        getRequestedFor(urlEqualTo("/notification/" + notificationId + "/notificationCategory")));
   }
 }

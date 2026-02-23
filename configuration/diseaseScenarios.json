@@ -1,5 +1,67 @@
 [
   {
+    "name": "S_IM_V",
+    "fhirPathExpression": [
+      {
+        "fhirPath": "Patient.profile(byName)"
+      },
+      {
+        "fhirPath": "Composition.status(preliminary)"
+      },
+      {
+        "fhirPath": "Condition.clinicalStatus(active)"
+      },
+      {
+        "fhirPath": "Condition.verificationStatus(unconfirmed)"
+      },
+      {
+        "fhirPath": "DiseaseInformationCommon.QuestionnaireResponse.status(completed)"
+      },
+      {
+        "fhirPath": "DiseaseInformationXYZD.QuestionnaireResponse.status(completed)"
+      }
+    ],
+    "externalChecks": [
+      {
+        "type": "NOTIFICATION_ID_NOT_EXISTING",
+        "inputs": {
+          "id": "NotificationId"
+        }
+      }
+    ]
+  },
+  {
+    "name": "S_IM_E",
+    "fhirPathExpression": [
+      {
+        "fhirPath": "Patient.profile(byName)"
+      },
+      {
+        "fhirPath": "Composition.status(final)"
+      },
+      {
+        "fhirPath": "Condition.clinicalStatus(active)"
+      },
+      {
+        "fhirPath": "Condition.verificationStatus(confirmed)"
+      },
+      {
+        "fhirPath": "DiseaseInformationCommon.QuestionnaireResponse.status(completed)"
+      },
+      {
+        "fhirPath": "DiseaseInformationXYZD.QuestionnaireResponse.status(completed)"
+      }
+    ],
+    "externalChecks": [
+      {
+        "type": "NOTIFICATION_ID_NOT_EXISTING",
+        "inputs": {
+          "id": "NotificationId"
+        }
+      }
+    ]
+  },
+  {
     "name": "S_FM_V2V",
     "fhirPathExpression": [
       {
@@ -19,6 +81,16 @@
       },
       {
         "fhirPath": "DiseaseInformationXYZD.QuestionnaireResponse.status(completed or amended)"
+      }
+    ],
+    "externalChecks": [
+      {
+        "type": "CATEGORY_MAPPING",
+        "inputs": {
+          "id": "NotificationId",
+          "hasToExist": true,
+          "notificationCategory": "NotificationDiseaseCategory"
+        }
       }
     ]
   },
@@ -46,9 +118,9 @@
     ],
     "externalChecks": [
       {
-        "type": "RELATES_TO_ID_CATEGORY_MAPPING",
+        "type": "CATEGORY_MAPPING",
         "inputs": {
-          "relatesToId": "RelatesToId",
+          "id": "RelatesToId",
           "hasToExist": true,
           "notificationCategory": "NotificationDiseaseCategory"
         }
@@ -76,6 +148,16 @@
       {
         "fhirPath": "DiseaseInformationXYZD.QuestionnaireResponse.status(completed or amended)"
       }
+    ],
+    "externalChecks": [
+      {
+        "type": "CATEGORY_MAPPING",
+        "inputs": {
+          "id": "NotificationId",
+          "hasToExist": true,
+          "notificationCategory": "NotificationDiseaseCategory"
+        }
+      }
     ]
   },
   {
@@ -102,9 +184,9 @@
     ],
     "externalChecks": [
       {
-        "type": "RELATES_TO_ID_CATEGORY_MAPPING",
+        "type": "CATEGORY_MAPPING",
         "inputs": {
-          "relatesToId": "RelatesToId",
+          "id": "RelatesToId",
           "hasToExist": true,
           "notificationCategory": "NotificationDiseaseCategory"
         }
@@ -132,6 +214,16 @@
       {
         "fhirPath": "DiseaseInformationXYZD.QuestionnaireResponse.status(completed or amended)"
       }
+    ],
+    "externalChecks": [
+      {
+        "type": "CATEGORY_MAPPING",
+        "inputs": {
+          "id": "NotificationId",
+          "hasToExist": true,
+          "notificationCategory": "NotificationDiseaseCategory"
+        }
+      }
     ]
   },
   {
@@ -158,9 +250,9 @@
     ],
     "externalChecks": [
       {
-        "type": "RELATES_TO_ID_CATEGORY_MAPPING",
+        "type": "CATEGORY_MAPPING",
         "inputs": {
-          "relatesToId": "RelatesToId",
+          "id": "RelatesToId",
           "hasToExist": true,
           "notificationCategory": "NotificationDiseaseCategory"
         }
@@ -188,6 +280,16 @@
       {
         "fhirPath": "DiseaseInformationXYZD.QuestionnaireResponse.status(completed or amended)"
       }
+    ],
+    "externalChecks": [
+      {
+        "type": "CATEGORY_MAPPING",
+        "inputs": {
+          "id": "NotificationId",
+          "hasToExist": true,
+          "notificationCategory": "NotificationDiseaseCategory"
+        }
+      }
     ]
   },
   {
@@ -214,9 +316,9 @@
     ],
     "externalChecks": [
       {
-        "type": "RELATES_TO_ID_CATEGORY_MAPPING",
+        "type": "CATEGORY_MAPPING",
         "inputs": {
-          "relatesToId": "RelatesToId",
+          "id": "RelatesToId",
           "hasToExist": true,
           "notificationCategory": "NotificationDiseaseCategory"
         }
@@ -241,6 +343,16 @@
       {
         "fhirPath": "DiseaseInformationXYZD.QuestionnaireResponse.status(completed or amended)"
       }
+    ],
+    "externalChecks": [
+      {
+        "type": "CATEGORY_MAPPING",
+        "inputs": {
+          "id": "NotificationId",
+          "hasToExist": true,
+          "notificationCategory": "NotificationDiseaseCategory"
+        }
+      }
     ]
   },
   {
@@ -264,9 +376,9 @@
     ],
     "externalChecks": [
       {
-        "type": "RELATES_TO_ID_CATEGORY_MAPPING",
+        "type": "CATEGORY_MAPPING",
         "inputs": {
-          "relatesToId": "RelatesToId",
+          "id": "RelatesToId",
           "hasToExist": true,
           "notificationCategory": "NotificationDiseaseCategory"
         }
@@ -297,6 +409,16 @@
       {
         "fhirPath": "DiseaseInformationXYZD.QuestionnaireResponse.status(completed or amended)"
       }
+    ],
+    "externalChecks": [
+      {
+        "type": "CATEGORY_MAPPING",
+        "inputs": {
+          "id": "NotificationId",
+          "hasToExist": true,
+          "notificationCategory": "NotificationDiseaseCategory"
+        }
+      }
     ]
   },
   {
@@ -326,9 +448,9 @@
     ],
     "externalChecks": [
       {
-        "type": "RELATES_TO_ID_CATEGORY_MAPPING",
+        "type": "CATEGORY_MAPPING",
         "inputs": {
-          "relatesToId": "RelatesToId",
+          "id": "RelatesToId",
           "hasToExist": true,
           "notificationCategory": "NotificationDiseaseCategory"
         }

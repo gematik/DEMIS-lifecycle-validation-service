@@ -89,13 +89,25 @@ class DiseaseNotificationValidationSrvIntegrationTest {
       """
                 {"notificationCategory": "cvdd"}
                 """;
+  public static final String NOTIFICATION_CATEGORY_RUND =
+      """
+                {"notificationCategory": "rund"}
+                """;
 
   private static List<DiseaseScenario> scenarios;
   @Autowired private FhirParser fhirParser;
   private final MeterRegistry meterRegistry = new SimpleMeterRegistry();
   @Autowired private AdditionalOperationExecuter additionalOperationExecuter;
 
-  static Stream<Arguments> scenarioNames() {
+  static Stream<Arguments> scenarioNameInitial() {
+    return Stream.of(
+        Arguments.of(
+            "src/test/resources/notifications/disease/scenarioExamples/S_IM_V.json", "S_IM_V"),
+        Arguments.of(
+            "src/test/resources/notifications/disease/scenarioExamples/S_IM_E.json", "S_IM_E"));
+  }
+
+  static Stream<Arguments> scenarioNamesSupplementary() {
     return Stream.of(
         Arguments.of(
             "src/test/resources/notifications/disease/scenarioExamples/S_FM_V2V-11.json",
@@ -162,12 +174,7 @@ class DiseaseNotificationValidationSrvIntegrationTest {
             "S_FM_T2V"),
         Arguments.of(
             "src/test/resources/notifications/disease/scenarioExamples/S_FM_T2V-2.json",
-            "S_FM_T2V"),
-        Arguments.of(
-            "src/test/resources/notifications/disease/scenarioExamples/RUND.json", "S_FM_V2E"),
-        Arguments.of(
-            "src/test/resources/notifications/disease/scenarioExamples/no_common_questionnaire.json",
-            "S_FM_V2E"));
+            "S_FM_T2V"));
   }
 
   static Stream<Arguments> scenarioNamesFollowUp() {
@@ -259,11 +266,12 @@ class DiseaseNotificationValidationSrvIntegrationTest {
   }
 
   @ParameterizedTest
-  @MethodSource("scenarioNames")
+  @MethodSource("scenarioNameInitial")
+  @MethodSource("scenarioNamesSupplementary")
   @MethodSource("scenarioNamesFollowUp")
   void shouldProcessScenarioExample(final String notificationPath, final String expectedScenario)
       throws IOException {
-    configureDlsMockServer();
+    configureDlsMockServerForValidScenarios();
     configureFutsMockServer();
     String fileContent = Files.readString(Paths.get(notificationPath));
 
@@ -283,16 +291,12 @@ class DiseaseNotificationValidationSrvIntegrationTest {
   }
 
   @ParameterizedTest
+  @MethodSource("scenarioNamesSupplementary")
   @MethodSource("scenarioNamesFollowUp")
-  void shouldThrowExceptionForEach_FollowUp_RelatesToIdNotFound(final String notificationPath)
+  void shouldThrowExceptionForEachNotification_IdNotFound(final String notificationPath)
       throws IOException {
-    DLS_SERVER.resetAll();
-    configureFor(DLS_SERVER.port());
+    configureDlsMockServerIdDoesNotExist();
 
-    final String relatesToId = "92d99f62-fe4f-4337-b833-351751db12dc";
-    stubFor(
-        get(urlEqualTo("/notification/" + relatesToId + "/notificationCategory"))
-            .willReturn(aResponse().withStatus(404)));
     String fileContent = Files.readString(Paths.get(notificationPath));
 
     NotificationScenarioValidationService<DiseaseScenario> notificationScenarioValidationService =
@@ -303,33 +307,30 @@ class DiseaseNotificationValidationSrvIntegrationTest {
             additionalOperationExecuter,
             fhirParser);
 
-    assertThatThrownBy(
-            () ->
-                notificationScenarioValidationService.getValidScenariosForNotification(
-                    fileContent, MediaType.APPLICATION_JSON, null))
-        .isInstanceOf(LifecycleValidationException.class)
-        .hasMessageContaining("No valid lifecycle scenario found");
+    if (notificationPath.endsWith("scenarioExamples/S_FM_V2V-11.json")
+        || notificationPath.endsWith("scenarioExamples/S_FM_V2E-11.json")) {
+      final String scenario =
+          notificationScenarioValidationService.getValidScenariosForNotification(
+              fileContent, MediaType.APPLICATION_JSON, null);
+      assertThat(scenario).startsWith("S_IM");
+    } else {
+      assertThatThrownBy(
+              () ->
+                  notificationScenarioValidationService.getValidScenariosForNotification(
+                      fileContent, MediaType.APPLICATION_JSON, null))
+          .isInstanceOf(LifecycleValidationException.class)
+          .hasMessageContaining("No valid lifecycle scenario found");
+    }
   }
 
   @ParameterizedTest
+  @MethodSource("scenarioNamesSupplementary")
   @MethodSource("scenarioNamesFollowUp")
-  void shouldThrowExceptionForEach_FollowUp_NotificationCategoryDoesNotMatch(
+  void shouldThrowExceptionForEachNotification_NotificationCategoryDoesNotMatch(
       final String notificationPath) throws IOException {
 
     configureFutsMockServer();
-
-    DLS_SERVER.resetAll();
-    configureFor(DLS_SERVER.port());
-    stubFor(
-        get(urlEqualTo(
-                "/notification/"
-                    + "92d99f62-fe4f-4337-b833-351751db12dc"
-                    + "/notificationCategory"))
-            .willReturn(
-                aResponse()
-                    .withStatus(200)
-                    .withHeader("Content-Type", "application/json")
-                    .withBody(NOTIFICATION_CATEGORY_CVDD)));
+    configureDlsMockServerDifferentNotificationCategory();
 
     String fileContent = Files.readString(Paths.get(notificationPath));
     NotificationScenarioValidationService<DiseaseScenario> notificationScenarioValidationService =
@@ -348,8 +349,11 @@ class DiseaseNotificationValidationSrvIntegrationTest {
         .hasMessageContaining(EXCEPTION_MESSAGE_NOTIFICATION_CATEGORY_MISMATCH);
   }
 
-  private void configureDlsMockServer() {
+  private void configureDlsMockServerForValidScenarios() {
+    DLS_SERVER.resetAll();
     configureFor(DLS_SERVER.port());
+
+    // configure dls to return band category for relatesToId of followUp band scenarios
     stubFor(
         get(urlEqualTo(
                 "/notification/"
@@ -360,9 +364,100 @@ class DiseaseNotificationValidationSrvIntegrationTest {
                     .withStatus(200)
                     .withHeader("Content-Type", "application/json")
                     .withBody(NOTIFICATION_CATEGORY_BAND)));
+
+    // configure dls to return band category for notificationId of supplementary band scenarios
+    stubFor(
+        get(urlEqualTo(
+                "/notification/"
+                    + "d02cb640-eecd-4f8e-9695-b489321bd9b7"
+                    + "/notificationCategory"))
+            .willReturn(
+                aResponse()
+                    .withStatus(200)
+                    .withHeader("Content-Type", "application/json")
+                    .withBody(NOTIFICATION_CATEGORY_BAND)));
+
+    // configure dls to return rund category for notificationId of supplementary rund scenario
+    stubFor(
+        get(urlEqualTo(
+                "/notification/"
+                    + "2693612f-847d-4dd8-becc-16a7da0bb453"
+                    + "/notificationCategory"))
+            .willReturn(
+                aResponse()
+                    .withStatus(200)
+                    .withHeader("Content-Type", "application/json")
+                    .withBody(NOTIFICATION_CATEGORY_RUND)));
+
+    // configure dls to return 404 for notificationId of initial scenario
+    stubFor(
+        get(urlEqualTo("/notification/e719e5f6-f8de-470f-8d88-60a3820c037a/notificationCategory"))
+            .willReturn(aResponse().withStatus(404)));
+  }
+
+  private void configureDlsMockServerDifferentNotificationCategory() {
+    DLS_SERVER.resetAll();
+    configureFor(DLS_SERVER.port());
+    // configure dls to return non-matching category for notificationId of supplementary band
+    // scenarios
+    stubFor(
+        get(urlEqualTo(
+                "/notification/"
+                    + "d02cb640-eecd-4f8e-9695-b489321bd9b7"
+                    + "/notificationCategory"))
+            .willReturn(
+                aResponse()
+                    .withStatus(200)
+                    .withHeader("Content-Type", "application/json")
+                    .withBody(NOTIFICATION_CATEGORY_CVDD)));
+
+    // configure dls to return non-matching category for notificationId of supplementary rund
+    // scenario
+    stubFor(
+        get(urlEqualTo(
+                "/notification/"
+                    + "2693612f-847d-4dd8-becc-16a7da0bb453"
+                    + "/notificationCategory"))
+            .willReturn(
+                aResponse()
+                    .withStatus(200)
+                    .withHeader("Content-Type", "application/json")
+                    .withBody(NOTIFICATION_CATEGORY_CVDD)));
+
+    // configure dls to return non-matching category for relatesToId of follow up band scenarios
+    stubFor(
+        get(urlEqualTo(
+                "/notification/"
+                    + "92d99f62-fe4f-4337-b833-351751db12dc"
+                    + "/notificationCategory"))
+            .willReturn(
+                aResponse()
+                    .withStatus(200)
+                    .withHeader("Content-Type", "application/json")
+                    .withBody(NOTIFICATION_CATEGORY_CVDD)));
+  }
+
+  private void configureDlsMockServerIdDoesNotExist() {
+    DLS_SERVER.resetAll();
+    configureFor(DLS_SERVER.port());
+    // configure dls to return 404 for notificationId of supplementary band scenarios
+    stubFor(
+        get(urlEqualTo("/notification/d02cb640-eecd-4f8e-9695-b489321bd9b7/notificationCategory"))
+            .willReturn(aResponse().withStatus(404)));
+
+    // configure dls to return 404 for notificationId of supplementary rund scenario
+    stubFor(
+        get(urlEqualTo("/notification/2693612f-847d-4dd8-becc-16a7da0bb453/notificationCategory"))
+            .willReturn(aResponse().withStatus(404)));
+
+    // configure dls to return 404 for relatesToId of follow up band scenarios
+    stubFor(
+        get(urlEqualTo("/notification/92d99f62-fe4f-4337-b833-351751db12dc/notificationCategory"))
+            .willReturn(aResponse().withStatus(404)));
   }
 
   private void configureFutsMockServer() {
+    FUTS_SERVER.resetAll();
     configureFor(FUTS_SERVER.port());
     stubFor(
         get(urlEqualTo(
@@ -371,7 +466,7 @@ class DiseaseNotificationValidationSrvIntegrationTest {
                 aResponse()
                     .withStatus(200)
                     .withHeader("Content-Type", "application/json")
-                    .withBody("{\"band\":\"ban\", \"cvdd\":\"cvd\"}")));
+                    .withBody("{\"banp\":\"ban\", \"cvdp\":\"cvd\", \"runp\":\"run\"}")));
     stubFor(
         get(urlEqualTo(
                 "/fhir-ui-data-model-translation/conceptmap/NotificationDiseaseCategoryToTransmissionCategory"))
@@ -379,6 +474,6 @@ class DiseaseNotificationValidationSrvIntegrationTest {
                 aResponse()
                     .withStatus(200)
                     .withHeader("Content-Type", "application/json")
-                    .withBody("{\"banp\":\"ban\", \"cvdp\":\"cvd\"}")));
+                    .withBody("{\"band\":\"ban\", \"cvdd\":\"cvd\", \"rund\":\"run\"}")));
   }
 }

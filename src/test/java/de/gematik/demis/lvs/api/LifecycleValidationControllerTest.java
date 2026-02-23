@@ -81,11 +81,13 @@ class LifecycleValidationControllerTest {
     Map<String, String> labMap = new HashMap<>();
     labMap.put("cvdp", "cvd");
     labMap.put("abvp", "abv");
+    labMap.put("banp", "ban");
     when(futsClientMock.getConceptMap("NotificationCategoryToTransmissionCategory"))
         .thenReturn(labMap);
     Map<String, String> disMap = new HashMap<>();
     disMap.put("cvdd", "cvd");
     disMap.put("abvd", "abv");
+    disMap.put("band", "ban");
     when(futsClientMock.getConceptMap("NotificationDiseaseCategoryToTransmissionCategory"))
         .thenReturn(disMap);
   }
@@ -100,6 +102,9 @@ class LifecycleValidationControllerTest {
           Files.readString(
               Path.of(
                   "src/test/resources/notifications/disease/scenarioExamples/S_FM_V2V-11.json"));
+
+      when(destinationLookupServiceClientMock.getNotificationCategory(anyString()))
+          .thenReturn(new NotificationCategoryDTO("band"));
 
       mockMvc
           .perform(
@@ -135,7 +140,7 @@ class LifecycleValidationControllerTest {
 
       String notification =
           Files.readString(
-              Path.of("src/test/resources/notifications/laboratory/scenarioExamples/S1.json"));
+              Path.of("src/test/resources/notifications/laboratory/scenarioExamples/M_POS.json"));
 
       byte[] body = new byte[] {};
       when(destinationLookupServiceClientMock.getNotificationCategory(anyString()))
@@ -153,7 +158,7 @@ class LifecycleValidationControllerTest {
                   .header("Content-Type", "application/json")
                   .content(notification))
           .andExpect(status().isOk())
-          .andExpect(content().string("1"))
+          .andExpect(content().string("M_POS"))
           .andReturn();
     }
 
@@ -162,17 +167,9 @@ class LifecycleValidationControllerTest {
 
       String notification =
           Files.readString(
-              Path.of("src/test/resources/notifications/laboratory/InvalidNotification.json"));
+              Path.of(
+                  "src/test/resources/notifications/laboratory/scenarioExamples/invalid/IM_NEG.json"));
 
-      byte[] body = new byte[] {};
-      when(destinationLookupServiceClientMock.getNotificationCategory(anyString()))
-          .thenThrow(
-              new FeignException.FeignClientException(
-                  404,
-                  "mocked Exception for S1 Test",
-                  mock(Request.class),
-                  body,
-                  Collections.emptyMap()));
       mockMvc
           .perform(
               post("/laboratory/$validate")
@@ -187,7 +184,7 @@ class LifecycleValidationControllerTest {
 
       String notification =
           Files.readString(
-              Path.of("src/test/resources/notifications/laboratory/scenarioExamples/S1.json"));
+              Path.of("src/test/resources/notifications/laboratory/scenarioExamples/FM_NEG.json"));
 
       when(destinationLookupServiceClientMock.getNotificationCategory(anyString()))
           .thenReturn(new NotificationCategoryDTO("abvp"));
@@ -200,21 +197,6 @@ class LifecycleValidationControllerTest {
           .andExpect(status().isUnprocessableEntity())
           .andExpect(content().string(EXCEPTION_MESSAGE_NOTIFICATION_CATEGORY_MISMATCH));
     }
-  }
-
-  @Test
-  void shouldCallDiseaseNotificationLifecycleValidationSrv() throws Exception {
-
-    String notification =
-        Files.readString(
-            Path.of("src/test/resources/notifications/disease/scenarioExamples/S_FM_V2V-11.json"));
-
-    mockMvc
-        .perform(
-            post("/$validate").header("Content-Type", "application/json").content(notification))
-        .andExpect(status().isOk())
-        .andExpect(content().string("S_FM_V2V"))
-        .andReturn();
   }
 
   @Test

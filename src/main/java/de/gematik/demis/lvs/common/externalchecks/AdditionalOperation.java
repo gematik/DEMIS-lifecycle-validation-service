@@ -28,7 +28,6 @@ package de.gematik.demis.lvs.common.externalchecks;
  */
 
 public enum AdditionalOperation {
-  NOTIFICATION_ID_CATEGORY_MAPPING,
-  RELATES_TO_ID_CATEGORY_MAPPING,
-  NOTIFICATION_ID_NOT_EXISTING;
+  CATEGORY_MAPPING,
+  NOTIFICATION_ID_NOT_EXISTING
 }
