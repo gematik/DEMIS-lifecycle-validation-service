@@ -38,7 +38,6 @@ import de.gematik.demis.lvs.common.exception.LifecycleValidationException;
 import de.gematik.demis.lvs.common.fhir.NotificationHelper;
 import de.gematik.demis.lvs.common.validation.NotificationScenarioValidationService;
 import de.gematik.demis.lvs.common.validation.NotificationValidationService;
-import de.gematik.demis.lvs.labnotification.fhirpath.LaboratoryScenario;
 import de.gematik.demis.lvs.metrics.ValidationMetrics;
 import java.util.Optional;
 import org.hl7.fhir.r4.model.Bundle;
@@ -57,10 +56,10 @@ import org.springframework.http.MediaType;
 class LaboratoryNotificationValidationServiceTest {
 
   private NotificationBasicValidationService basicService;
-  private NotificationScenarioValidationService<LaboratoryScenario> scenarioService;
+  private NotificationScenarioValidationService scenarioService;
   private ValidationMetrics validationMetrics;
 
-  private NotificationValidationService<LaboratoryScenario> service;
+  private NotificationValidationService service;
 
   @Nested
   class FhirPathValidationInResponseActive {
@@ -71,8 +70,7 @@ class LaboratoryNotificationValidationServiceTest {
       scenarioService = mock(NotificationScenarioValidationService.class);
       validationMetrics = mock(ValidationMetrics.class);
       service =
-          new NotificationValidationService<>(
-              basicService, scenarioService, true, validationMetrics);
+          new NotificationValidationService(basicService, scenarioService, true, validationMetrics);
     }
 
     @Test
@@ -173,7 +171,7 @@ class LaboratoryNotificationValidationServiceTest {
       validationMetrics = mock(ValidationMetrics.class);
 
       service =
-          new NotificationValidationService<>(
+          new NotificationValidationService(
               basicService, scenarioService, false, validationMetrics);
     }
 

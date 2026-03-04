@@ -29,21 +29,20 @@ package de.gematik.demis.lvs.common.validation;
 
 import ca.uhn.fhir.rest.server.exceptions.InternalErrorException;
 import de.gematik.demis.lvs.common.exception.LifecycleValidationException;
-import de.gematik.demis.lvs.common.fhirpath.Scenario;
 import de.gematik.demis.lvs.metrics.ValidationMetrics;
 import javax.annotation.CheckForNull;
 import org.springframework.http.MediaType;
 
-public class NotificationValidationService<S extends Scenario> {
+public class NotificationValidationService {
 
   private final NotifcationBasicValidator notificationBasicValidationService;
-  private final NotificationScenarioValidationService<S> notificationScenarioValidationService;
+  private final NotificationScenarioValidationService notificationScenarioValidationService;
   private final boolean returnFhirpathValidationInResponse;
   private final ValidationMetrics validationMetrics;
 
   public NotificationValidationService(
       final NotifcationBasicValidator notificationBasicValidationService,
-      final NotificationScenarioValidationService<S> notificationScenarioValidationService,
+      final NotificationScenarioValidationService notificationScenarioValidationService,
       boolean returnFhirpathValidationInResponse,
       ValidationMetrics validationMetrics) {
     this.notificationBasicValidationService = notificationBasicValidationService;
@@ -113,11 +112,9 @@ public class NotificationValidationService<S extends Scenario> {
       boolean successfulBasicValidation,
       boolean successfulScenarioValidation) {
     if (notificationType.equals("laboratory")) {
-      validationMetrics.countLabValResult(
-          successfulBasicValidation == successfulScenarioValidation);
+      validationMetrics.countLabValResult(successfulBasicValidation, successfulScenarioValidation);
     } else {
-      validationMetrics.countDisValResult(
-          successfulBasicValidation == successfulScenarioValidation);
+      validationMetrics.countDisValResult(successfulBasicValidation, successfulScenarioValidation);
     }
   }
 }

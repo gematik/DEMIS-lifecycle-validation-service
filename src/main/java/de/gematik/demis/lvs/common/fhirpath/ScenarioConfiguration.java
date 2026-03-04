@@ -28,9 +28,7 @@ package de.gematik.demis.lvs.common.fhirpath;
  */
 
 import de.gematik.demis.lvs.disease.fhirpath.DiseaseConfigurationProperties;
-import de.gematik.demis.lvs.disease.fhirpath.DiseaseScenario;
 import de.gematik.demis.lvs.labnotification.fhirpath.LaboratoryConfigurationProperties;
-import de.gematik.demis.lvs.labnotification.fhirpath.LaboratoryScenario;
 import java.util.List;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
@@ -44,16 +42,14 @@ import org.springframework.context.annotation.Configuration;
   DiseaseConfigurationProperties.class
 })
 public class ScenarioConfiguration {
+
   @Bean
-  public List<DiseaseScenario> loadDiseaseScenarios(DiseaseConfigurationProperties properties) {
-    return ScenarioLoader.loadScenarios(
-        properties.fhirPathData(), properties.keyToFhirPathData(), DiseaseScenario[].class);
+  public List<Scenario> loadDiseaseScenarios(DiseaseConfigurationProperties properties) {
+    return ScenarioLoader.loadScenarios(properties.fhirPathData(), properties.keyToFhirPathData());
   }
 
   @Bean
-  public List<LaboratoryScenario> loadLaboratoryScenarios(
-      LaboratoryConfigurationProperties properties) {
-    return ScenarioLoader.loadScenarios(
-        properties.fhirPathData(), properties.keyToFhirPathData(), LaboratoryScenario[].class);
+  public List<Scenario> loadLaboratoryScenarios(LaboratoryConfigurationProperties properties) {
+    return ScenarioLoader.loadScenarios(properties.fhirPathData(), properties.keyToFhirPathData());
   }
 }

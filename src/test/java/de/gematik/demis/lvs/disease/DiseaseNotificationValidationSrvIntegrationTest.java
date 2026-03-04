@@ -41,10 +41,10 @@ import com.github.tomakehurst.wiremock.WireMockServer;
 import de.gematik.demis.fhirparserlibrary.FhirParser;
 import de.gematik.demis.lvs.common.exception.LifecycleValidationException;
 import de.gematik.demis.lvs.common.externalchecks.AdditionalOperationExecuter;
+import de.gematik.demis.lvs.common.fhirpath.Scenario;
 import de.gematik.demis.lvs.common.fhirpath.ScenarioLoader;
 import de.gematik.demis.lvs.common.validation.NotificationScenarioValidationService;
 import de.gematik.demis.lvs.disease.fhirpath.DiseaseConfigurationProperties;
-import de.gematik.demis.lvs.disease.fhirpath.DiseaseScenario;
 import de.gematik.demis.lvs.metrics.ValidationMetrics;
 import io.micrometer.core.instrument.MeterRegistry;
 import io.micrometer.core.instrument.simple.SimpleMeterRegistry;
@@ -94,7 +94,7 @@ class DiseaseNotificationValidationSrvIntegrationTest {
                 {"notificationCategory": "rund"}
                 """;
 
-  private static List<DiseaseScenario> scenarios;
+  private static List<Scenario> scenarios;
   @Autowired private FhirParser fhirParser;
   private final MeterRegistry meterRegistry = new SimpleMeterRegistry();
   @Autowired private AdditionalOperationExecuter additionalOperationExecuter;
@@ -104,147 +104,49 @@ class DiseaseNotificationValidationSrvIntegrationTest {
         Arguments.of(
             "src/test/resources/notifications/disease/scenarioExamples/S_IM_V.json", "S_IM_V"),
         Arguments.of(
-            "src/test/resources/notifications/disease/scenarioExamples/S_IM_E.json", "S_IM_E"));
+            "src/test/resources/notifications/disease/scenarioExamples/S_IM_EoT.json", "S_IM_EoT"));
   }
 
   static Stream<Arguments> scenarioNamesSupplementary() {
     return Stream.of(
         Arguments.of(
-            "src/test/resources/notifications/disease/scenarioExamples/S_FM_V2V-11.json",
-            "S_FM_V2V"),
+            "src/test/resources/notifications/disease/scenarioExamples/S_FM_V2V.json", "S_FM_V2V"),
         Arguments.of(
-            "src/test/resources/notifications/disease/scenarioExamples/S_FM_V2V-12.json",
-            "S_FM_V2V"),
+            "src/test/resources/notifications/disease/scenarioExamples/S_FM_V2I.json", "S_FM_V2I"),
         Arguments.of(
-            "src/test/resources/notifications/disease/scenarioExamples/S_FM_V2V-21.json",
-            "S_FM_V2V"),
+            "src/test/resources/notifications/disease/scenarioExamples/S_FM_V2EoT.json",
+            "S_FM_V2EoT"),
         Arguments.of(
-            "src/test/resources/notifications/disease/scenarioExamples/S_FM_V2V-12.json",
-            "S_FM_V2V"),
+            "src/test/resources/notifications/disease/scenarioExamples/S_FM_confirmed.json",
+            "S_FM"),
         Arguments.of(
-            "src/test/resources/notifications/disease/scenarioExamples/S_FM_V2I-11.json",
-            "S_FM_V2I"),
+            "src/test/resources/notifications/disease/scenarioExamples/S_FM_enteredInError.json",
+            "S_FM"),
         Arguments.of(
-            "src/test/resources/notifications/disease/scenarioExamples/S_FM_V2I-12.json",
-            "S_FM_V2I"),
-        Arguments.of(
-            "src/test/resources/notifications/disease/scenarioExamples/S_FM_V2I-21.json",
-            "S_FM_V2I"),
-        Arguments.of(
-            "src/test/resources/notifications/disease/scenarioExamples/S_FM_V2I-22.json",
-            "S_FM_V2I"),
-        Arguments.of(
-            "src/test/resources/notifications/disease/scenarioExamples/S_FM_V2E-11.json",
-            "S_FM_V2E"),
-        Arguments.of(
-            "src/test/resources/notifications/disease/scenarioExamples/S_FM_V2E-12.json",
-            "S_FM_V2E"),
-        Arguments.of(
-            "src/test/resources/notifications/disease/scenarioExamples/S_FM_V2E-21.json",
-            "S_FM_V2E"),
-        Arguments.of(
-            "src/test/resources/notifications/disease/scenarioExamples/S_FM_V2E-22.json",
-            "S_FM_V2E"),
-        Arguments.of(
-            "src/test/resources/notifications/disease/scenarioExamples/S_FM_E2E-11.json",
-            "S_FM_E2E"),
-        Arguments.of(
-            "src/test/resources/notifications/disease/scenarioExamples/S_FM_E2E-12.json",
-            "S_FM_E2E"),
-        Arguments.of(
-            "src/test/resources/notifications/disease/scenarioExamples/S_FM_E2E-21.json",
-            "S_FM_E2E"),
-        Arguments.of(
-            "src/test/resources/notifications/disease/scenarioExamples/S_FM_E2E-22.json",
-            "S_FM_E2E"),
-        Arguments.of(
-            "src/test/resources/notifications/disease/scenarioExamples/S_FM_E2I-11.json",
-            "S_FM_E2I"),
-        Arguments.of(
-            "src/test/resources/notifications/disease/scenarioExamples/S_FM_E2I-12.json",
-            "S_FM_E2I"),
-        Arguments.of(
-            "src/test/resources/notifications/disease/scenarioExamples/S_FM_E2I-21.json",
-            "S_FM_E2I"),
-        Arguments.of(
-            "src/test/resources/notifications/disease/scenarioExamples/S_FM_E2I-22.json",
-            "S_FM_E2I"),
-        Arguments.of(
-            "src/test/resources/notifications/disease/scenarioExamples/S_FM_T2V-1.json",
-            "S_FM_T2V"),
-        Arguments.of(
-            "src/test/resources/notifications/disease/scenarioExamples/S_FM_T2V-2.json",
-            "S_FM_T2V"));
+            "src/test/resources/notifications/disease/scenarioExamples/S_FM_unconfirmed.json",
+            "S_FM"));
   }
 
-  static Stream<Arguments> scenarioNamesFollowUp() {
+  static Stream<Arguments> scenarioNamesAnonymous() {
     return Stream.of(
         Arguments.of(
-            "src/test/resources/notifications/disease/scenarioExamples/followUp/S_FM_V2V-11.json",
-            "S_FM_V2V_FollowUp"),
+            "src/test/resources/notifications/disease/scenarioExamples/anonymous/S_FM_V2V.json",
+            "S_FM_V2V_Anonymous"),
         Arguments.of(
-            "src/test/resources/notifications/disease/scenarioExamples/followUp/S_FM_V2V-12.json",
-            "S_FM_V2V_FollowUp"),
+            "src/test/resources/notifications/disease/scenarioExamples/anonymous/S_FM_V2I.json",
+            "S_FM_V2I_Anonymous"),
         Arguments.of(
-            "src/test/resources/notifications/disease/scenarioExamples/followUp/S_FM_V2V-21.json",
-            "S_FM_V2V_FollowUp"),
+            "src/test/resources/notifications/disease/scenarioExamples/anonymous/S_FM_V2EoT.json",
+            "S_FM_V2EoT_Anonymous"),
         Arguments.of(
-            "src/test/resources/notifications/disease/scenarioExamples/followUp/S_FM_V2V-12.json",
-            "S_FM_V2V_FollowUp"),
+            "src/test/resources/notifications/disease/scenarioExamples/anonymous/S_FM_confirmed.json",
+            "S_FM_Anonymous"),
         Arguments.of(
-            "src/test/resources/notifications/disease/scenarioExamples/followUp/S_FM_V2I-11.json",
-            "S_FM_V2I_FollowUp"),
+            "src/test/resources/notifications/disease/scenarioExamples/anonymous/S_FM_enteredInError.json",
+            "S_FM_Anonymous"),
         Arguments.of(
-            "src/test/resources/notifications/disease/scenarioExamples/followUp/S_FM_V2I-12.json",
-            "S_FM_V2I_FollowUp"),
-        Arguments.of(
-            "src/test/resources/notifications/disease/scenarioExamples/followUp/S_FM_V2I-21.json",
-            "S_FM_V2I_FollowUp"),
-        Arguments.of(
-            "src/test/resources/notifications/disease/scenarioExamples/followUp/S_FM_V2I-22.json",
-            "S_FM_V2I_FollowUp"),
-        Arguments.of(
-            "src/test/resources/notifications/disease/scenarioExamples/followUp/S_FM_V2E-11.json",
-            "S_FM_V2E_FollowUp"),
-        Arguments.of(
-            "src/test/resources/notifications/disease/scenarioExamples/followUp/S_FM_V2E-12.json",
-            "S_FM_V2E_FollowUp"),
-        Arguments.of(
-            "src/test/resources/notifications/disease/scenarioExamples/followUp/S_FM_V2E-21.json",
-            "S_FM_V2E_FollowUp"),
-        Arguments.of(
-            "src/test/resources/notifications/disease/scenarioExamples/followUp/S_FM_V2E-22.json",
-            "S_FM_V2E_FollowUp"),
-        Arguments.of(
-            "src/test/resources/notifications/disease/scenarioExamples/followUp/S_FM_E2E-11.json",
-            "S_FM_E2E_FollowUp"),
-        Arguments.of(
-            "src/test/resources/notifications/disease/scenarioExamples/followUp/S_FM_E2E-12.json",
-            "S_FM_E2E_FollowUp"),
-        Arguments.of(
-            "src/test/resources/notifications/disease/scenarioExamples/followUp/S_FM_E2E-21.json",
-            "S_FM_E2E_FollowUp"),
-        Arguments.of(
-            "src/test/resources/notifications/disease/scenarioExamples/followUp/S_FM_E2E-22.json",
-            "S_FM_E2E_FollowUp"),
-        Arguments.of(
-            "src/test/resources/notifications/disease/scenarioExamples/followUp/S_FM_E2I-11.json",
-            "S_FM_E2I_FollowUp"),
-        Arguments.of(
-            "src/test/resources/notifications/disease/scenarioExamples/followUp/S_FM_E2I-12.json",
-            "S_FM_E2I_FollowUp"),
-        Arguments.of(
-            "src/test/resources/notifications/disease/scenarioExamples/followUp/S_FM_E2I-21.json",
-            "S_FM_E2I_FollowUp"),
-        Arguments.of(
-            "src/test/resources/notifications/disease/scenarioExamples/followUp/S_FM_E2I-22.json",
-            "S_FM_E2I_FollowUp"),
-        Arguments.of(
-            "src/test/resources/notifications/disease/scenarioExamples/followUp/S_FM_T2V-1.json",
-            "S_FM_T2V_FollowUp"),
-        Arguments.of(
-            "src/test/resources/notifications/disease/scenarioExamples/followUp/S_FM_T2V-2.json",
-            "S_FM_T2V_FollowUp"));
+            "src/test/resources/notifications/disease/scenarioExamples/anonymous/S_FM_unconfirmed.json",
+            "S_FM_Anonymous"));
   }
 
   @BeforeAll
@@ -255,8 +157,7 @@ class DiseaseNotificationValidationSrvIntegrationTest {
         new DiseaseConfigurationProperties(
             "configuration/diseaseScenarios.json", "configuration/keyToFhirPath.json", true);
     scenarios =
-        ScenarioLoader.loadScenarios(
-            properties.fhirPathData(), properties.keyToFhirPathData(), DiseaseScenario[].class);
+        ScenarioLoader.loadScenarios(properties.fhirPathData(), properties.keyToFhirPathData());
   }
 
   @AfterAll
@@ -268,15 +169,15 @@ class DiseaseNotificationValidationSrvIntegrationTest {
   @ParameterizedTest
   @MethodSource("scenarioNameInitial")
   @MethodSource("scenarioNamesSupplementary")
-  @MethodSource("scenarioNamesFollowUp")
+  @MethodSource("scenarioNamesAnonymous")
   void shouldProcessScenarioExample(final String notificationPath, final String expectedScenario)
       throws IOException {
     configureDlsMockServerForValidScenarios();
     configureFutsMockServer();
     String fileContent = Files.readString(Paths.get(notificationPath));
 
-    NotificationScenarioValidationService<DiseaseScenario> notificationScenarioValidationService =
-        new NotificationScenarioValidationService<>(
+    NotificationScenarioValidationService notificationScenarioValidationService =
+        new NotificationScenarioValidationService(
             FhirContext.forR4Cached(),
             scenarios,
             new ValidationMetrics(meterRegistry),
@@ -292,23 +193,23 @@ class DiseaseNotificationValidationSrvIntegrationTest {
 
   @ParameterizedTest
   @MethodSource("scenarioNamesSupplementary")
-  @MethodSource("scenarioNamesFollowUp")
+  @MethodSource("scenarioNamesAnonymous")
   void shouldThrowExceptionForEachNotification_IdNotFound(final String notificationPath)
       throws IOException {
     configureDlsMockServerIdDoesNotExist();
 
     String fileContent = Files.readString(Paths.get(notificationPath));
 
-    NotificationScenarioValidationService<DiseaseScenario> notificationScenarioValidationService =
-        new NotificationScenarioValidationService<>(
+    NotificationScenarioValidationService notificationScenarioValidationService =
+        new NotificationScenarioValidationService(
             FhirContext.forR4Cached(),
             scenarios,
             new ValidationMetrics(meterRegistry),
             additionalOperationExecuter,
             fhirParser);
 
-    if (notificationPath.endsWith("scenarioExamples/S_FM_V2V-11.json")
-        || notificationPath.endsWith("scenarioExamples/S_FM_V2E-11.json")) {
+    if (notificationPath.contains("scenarioExamples/S_FM_V2V")
+        || notificationPath.contains("scenarioExamples/S_FM_V2E")) {
       final String scenario =
           notificationScenarioValidationService.getValidScenariosForNotification(
               fileContent, MediaType.APPLICATION_JSON, null);
@@ -325,7 +226,7 @@ class DiseaseNotificationValidationSrvIntegrationTest {
 
   @ParameterizedTest
   @MethodSource("scenarioNamesSupplementary")
-  @MethodSource("scenarioNamesFollowUp")
+  @MethodSource("scenarioNamesAnonymous")
   void shouldThrowExceptionForEachNotification_NotificationCategoryDoesNotMatch(
       final String notificationPath) throws IOException {
 
@@ -333,8 +234,8 @@ class DiseaseNotificationValidationSrvIntegrationTest {
     configureDlsMockServerDifferentNotificationCategory();
 
     String fileContent = Files.readString(Paths.get(notificationPath));
-    NotificationScenarioValidationService<DiseaseScenario> notificationScenarioValidationService =
-        new NotificationScenarioValidationService<>(
+    NotificationScenarioValidationService notificationScenarioValidationService =
+        new NotificationScenarioValidationService(
             FhirContext.forR4Cached(),
             scenarios,
             new ValidationMetrics(meterRegistry),

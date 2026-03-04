@@ -541,7 +541,7 @@
           ]
         },
         "questionnaire": "https://demis.rki.de/fhir/Questionnaire/DiseaseQuestionsCommon",
-        "status": "amended",
+        "status": "completed",
         "subject": {
           "reference": "Patient/59949e30-a8ab-4c1e-8f46-4a154d581be8"
         },
@@ -552,8 +552,8 @@
               {
                 "valueCoding": {
                   "system": "https://demis.rki.de/fhir/CodeSystem/yesOrNoAnswer",
-                  "code": "no",
-                  "display": "Nein"
+                  "code": "yes",
+                  "display": "Ja"
                 }
               }
             ]
@@ -802,7 +802,7 @@
           ]
         },
         "questionnaire": "https://demis.rki.de/fhir/Questionnaire/DiseaseQuestionsBAND",
-        "status": "completed",
+        "status": "amended",
         "subject": {
           "reference": "Patient/59949e30-a8ab-4c1e-8f46-4a154d581be8"
         },

@@ -1,6 +1,10 @@
 <div style="text-align:right"><img src="https://raw.githubusercontent.com/gematik/gematik.github.io/master/Gematik_Logo_Flag_With_Background.png" width="250" height="47" alt="gematik GmbH Logo"/> <br/> </div> <br/> 
  
 # Release notes
+## Release 1.4.4
+- removed validation of QuestionnaireResponse for disease notifications
+- Removed istio helm chart
+- enhanced metrics by adding information about individual result of legacy and fhirpath validation
 
 ## Release 1.4.3
 - updated spring-parent to 2.14.20

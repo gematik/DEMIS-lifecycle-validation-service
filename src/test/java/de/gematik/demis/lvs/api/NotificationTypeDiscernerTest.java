@@ -47,7 +47,7 @@ class NotificationTypeDiscernerTest {
     String disNotification =
         Files.readString(
             Paths.get(
-                "src/test/resources/notifications/disease/scenarioExamples/S_FM_E2E-11.json"));
+                "src/test/resources/notifications/disease/scenarioExamples/S_FM_confirmed.json"));
 
     assertThat(NotificationTypeDiscerner.detectNotificationType(disNotification))
         .isEqualTo("disease");

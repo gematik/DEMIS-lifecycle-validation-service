@@ -74,7 +74,7 @@ class DiseaseNotificationLifecycleValidationCtrTest {
 
     String notification =
         Files.readString(
-            Path.of("src/test/resources/notifications/disease/scenarioExamples/S_FM_V2V-11.json"));
+            Path.of("src/test/resources/notifications/disease/scenarioExamples/S_FM_V2V.json"));
 
     when(destinationLookupServiceClientMock.getNotificationCategory(anyString()))
         .thenReturn(new NotificationCategoryDTO("band"));
@@ -112,7 +112,7 @@ class DiseaseNotificationLifecycleValidationCtrTest {
     String notification =
         Files.readString(
             Path.of(
-                "src/test/resources/notifications/disease/scenarioExamples/followUp/S_FM_E2E-11.json"));
+                "src/test/resources/notifications/disease/scenarioExamples/anonymous/S_FM_confirmed.json"));
 
     when(destinationLookupServiceClientMock.getNotificationCategory(
             "92d99f62-fe4f-4337-b833-351751db12dc"))
@@ -126,7 +126,7 @@ class DiseaseNotificationLifecycleValidationCtrTest {
                 .header("Content-Type", "application/json")
                 .content(notification))
         .andExpect(status().isOk())
-        .andExpect(content().string("S_FM_E2E_FollowUp"))
+        .andExpect(content().string("S_FM_Anonymous"))
         .andReturn();
 
     verifyNoInteractions(futsClientMock);

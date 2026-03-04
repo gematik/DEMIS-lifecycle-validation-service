@@ -62,7 +62,7 @@ public class AdditionalOperationExecuter {
 
   public boolean checkAllExternalChecks(
       final Bundle bundle, final Scenario scenario, final IFhirPath fhirPath) {
-    for (Scenario.ExternalCheckConfig externalCheckConfig : scenario.getExternalChecks()) {
+    for (Scenario.ExternalCheckConfig externalCheckConfig : scenario.externalChecks()) {
       if (!isExternalCheckValid(externalCheckConfig, bundle, fhirPath)) return false;
     }
     return true;

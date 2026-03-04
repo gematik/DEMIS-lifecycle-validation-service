@@ -36,10 +36,10 @@ import com.github.tomakehurst.wiremock.WireMockServer;
 import de.gematik.demis.fhirparserlibrary.FhirParser;
 import de.gematik.demis.lvs.common.exception.LifecycleValidationException;
 import de.gematik.demis.lvs.common.externalchecks.AdditionalOperationExecuter;
+import de.gematik.demis.lvs.common.fhirpath.Scenario;
 import de.gematik.demis.lvs.common.fhirpath.ScenarioLoader;
 import de.gematik.demis.lvs.common.validation.NotificationScenarioValidationService;
 import de.gematik.demis.lvs.labnotification.fhirpath.LaboratoryConfigurationProperties;
-import de.gematik.demis.lvs.labnotification.fhirpath.LaboratoryScenario;
 import de.gematik.demis.lvs.metrics.ValidationMetrics;
 import io.micrometer.core.instrument.MeterRegistry;
 import io.micrometer.core.instrument.simple.SimpleMeterRegistry;
@@ -79,7 +79,7 @@ class NotificationScenarioValidationServiceIntegrationTest {
             {"notificationCategory": "cvdp"}
             """;
 
-  private static List<LaboratoryScenario> scenarios;
+  private static List<Scenario> scenarios;
   @Autowired private FhirParser fhirParser;
 
   @BeforeAll
@@ -90,8 +90,7 @@ class NotificationScenarioValidationServiceIntegrationTest {
         new LaboratoryConfigurationProperties(
             "configuration/laboratoryScenarios.json", "configuration/keyToFhirPath.json", true);
     scenarios =
-        ScenarioLoader.loadScenarios(
-            properties.fhirPathData(), properties.keyToFhirPathData(), LaboratoryScenario[].class);
+        ScenarioLoader.loadScenarios(properties.fhirPathData(), properties.keyToFhirPathData());
 
     configureFor(FUTS_SERVER.port());
     stubFor(
@@ -229,14 +228,13 @@ class NotificationScenarioValidationServiceIntegrationTest {
 
     String fileContent = Files.readString(Paths.get(notificationPath));
 
-    NotificationScenarioValidationService<LaboratoryScenario>
-        notificationScenarioValidationService =
-            new NotificationScenarioValidationService<>(
-                FhirContext.forR4Cached(),
-                scenarios,
-                new ValidationMetrics(meterRegistry),
-                additionalOperationExecuter,
-                fhirParser);
+    NotificationScenarioValidationService notificationScenarioValidationService =
+        new NotificationScenarioValidationService(
+            FhirContext.forR4Cached(),
+            scenarios,
+            new ValidationMetrics(meterRegistry),
+            additionalOperationExecuter,
+            fhirParser);
 
     final String scenario =
         notificationScenarioValidationService.getValidScenariosForNotification(
@@ -254,14 +252,13 @@ class NotificationScenarioValidationServiceIntegrationTest {
         Files.readString(
             Paths.get("src/test/resources/notifications/laboratory/scenarioExamples/M_POS.json"));
 
-    NotificationScenarioValidationService<LaboratoryScenario>
-        notificationScenarioValidationService =
-            new NotificationScenarioValidationService<>(
-                FhirContext.forR4Cached(),
-                scenarios,
-                new ValidationMetrics(meterRegistry),
-                additionalOperationExecuter,
-                fhirParser);
+    NotificationScenarioValidationService notificationScenarioValidationService =
+        new NotificationScenarioValidationService(
+            FhirContext.forR4Cached(),
+            scenarios,
+            new ValidationMetrics(meterRegistry),
+            additionalOperationExecuter,
+            fhirParser);
 
     final String scenario =
         notificationScenarioValidationService.getValidScenariosForNotification(
@@ -292,14 +289,13 @@ class NotificationScenarioValidationServiceIntegrationTest {
 
     final String fileContent = Files.readString(Paths.get(notificationPath));
 
-    NotificationScenarioValidationService<LaboratoryScenario>
-        notificationScenarioValidationService =
-            new NotificationScenarioValidationService<>(
-                FhirContext.forR4Cached(),
-                scenarios,
-                new ValidationMetrics(meterRegistry),
-                additionalOperationExecuter,
-                fhirParser);
+    NotificationScenarioValidationService notificationScenarioValidationService =
+        new NotificationScenarioValidationService(
+            FhirContext.forR4Cached(),
+            scenarios,
+            new ValidationMetrics(meterRegistry),
+            additionalOperationExecuter,
+            fhirParser);
 
     assertThatThrownBy(
             () ->
@@ -320,14 +316,13 @@ class NotificationScenarioValidationServiceIntegrationTest {
 
     final String fileContent = Files.readString(Paths.get(notificationPath));
 
-    NotificationScenarioValidationService<LaboratoryScenario>
-        notificationScenarioValidationService =
-            new NotificationScenarioValidationService<>(
-                FhirContext.forR4Cached(),
-                scenarios,
-                new ValidationMetrics(meterRegistry),
-                additionalOperationExecuter,
-                fhirParser);
+    NotificationScenarioValidationService notificationScenarioValidationService =
+        new NotificationScenarioValidationService(
+            FhirContext.forR4Cached(),
+            scenarios,
+            new ValidationMetrics(meterRegistry),
+            additionalOperationExecuter,
+            fhirParser);
 
     assertThatThrownBy(
             () ->
@@ -359,14 +354,13 @@ class NotificationScenarioValidationServiceIntegrationTest {
             Paths.get(
                 "src/test/resources/notifications/laboratory/scenarioExamples/IM_NEG_CVDP.json"));
 
-    NotificationScenarioValidationService<LaboratoryScenario>
-        notificationScenarioValidationService =
-            new NotificationScenarioValidationService<>(
-                FhirContext.forR4Cached(),
-                scenarios,
-                new ValidationMetrics(meterRegistry),
-                additionalOperationExecuter,
-                fhirParser);
+    NotificationScenarioValidationService notificationScenarioValidationService =
+        new NotificationScenarioValidationService(
+            FhirContext.forR4Cached(),
+            scenarios,
+            new ValidationMetrics(meterRegistry),
+            additionalOperationExecuter,
+            fhirParser);
 
     assertThatThrownBy(
             () ->

@@ -42,18 +42,17 @@ public final class ScenarioLoader {
 
   private ScenarioLoader() {}
 
-  public static <S extends Scenario> List<S> loadScenarios(
-      String fhirPathData, String keyToFhirPathData, Class<S[]> scenarioClass) {
+  public static List<Scenario> loadScenarios(String fhirPathData, String keyToFhirPathData) {
     try {
       ObjectMapper objectMapper = new ObjectMapper();
-      final S[] scenarios = objectMapper.readValue(new File(fhirPathData), scenarioClass);
+      final Scenario[] scenarios = objectMapper.readValue(new File(fhirPathData), Scenario[].class);
       final JsonNode keysToFhirPath = objectMapper.readTree(new File(keyToFhirPathData)).get(0);
 
       Arrays.stream(scenarios)
           .forEach(
               scenario -> {
                 scenario
-                    .getFhirPathExpression()
+                    .fhirPathExpression()
                     .forEach(
                         expression -> {
                           final String key = expression.getFhirPath();
@@ -61,7 +60,7 @@ public final class ScenarioLoader {
                           expression.setFhirPath(resolved);
                         });
                 scenario
-                    .getExternalChecks()
+                    .externalChecks()
                     .forEach(
                         check -> {
                           Map<String, Object> map = check.getInputs();

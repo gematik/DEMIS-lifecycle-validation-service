@@ -42,14 +42,13 @@ public class ValidationMetrics {
 
   private static final String COUNTER_VALIDATION = "DEMIS_COUNTER_VALIDATION";
 
-  private static final String TAG_SUCCESS = "success";
   private static final String TAG_PRINCIPAL = "principal_id";
   private static final String TAG_ERROR_TYPE = "error_type";
   private static final String TAG_SCENARIO_LIST = "scenario_list";
   private static final String VALIDATION_ERROR_TYPE_METRIC = "validation_error_type";
 
-  private static final String COUNTER_LAB_VAL_RESULT = "counter_lab_val_result";
-  private static final String COUNTER_DIS_VAL_RESULT = "counter_dis_val_result";
+  private static final String COUNTER_LAB_VAL_RESULT = "lvs_lab_val_res";
+  private static final String COUNTER_DIS_VAL_RESULT = "lvs_disease_val_res";
 
   private final MeterRegistry meterRegistry;
 
@@ -58,12 +57,28 @@ public class ValidationMetrics {
     log.info("Metrics: {}", COUNTER_VALIDATION);
   }
 
-  public void countLabValResult(final boolean isEqual) {
-    meterRegistry.counter(COUNTER_LAB_VAL_RESULT + (isEqual ? "_equal" : "_not_equal")).increment();
+  public void countLabValResult(final boolean isSuccessLegacy, final boolean isSuccessFhirpath) {
+    final String equalString = isSuccessLegacy == isSuccessFhirpath ? "_equal" : "_unequal";
+    final String resultString = getResultString(isSuccessLegacy, isSuccessFhirpath);
+    meterRegistry.counter(COUNTER_LAB_VAL_RESULT + equalString + resultString).increment();
   }
 
-  public void countDisValResult(final boolean isEqual) {
-    meterRegistry.counter(COUNTER_DIS_VAL_RESULT + (isEqual ? "_equal" : "_not_equal")).increment();
+  public void countDisValResult(final boolean isSuccessLegacy, final boolean isSuccessFhirPath) {
+    final String equalString = isSuccessLegacy == isSuccessFhirPath ? "_equal" : "_unequal";
+    final String resultString = getResultString(isSuccessLegacy, isSuccessFhirPath);
+    meterRegistry.counter(COUNTER_DIS_VAL_RESULT + equalString + resultString).increment();
+  }
+
+  private String getResultString(final boolean isSuccessLegacy, final boolean isSuccessFhirPath) {
+    if (isSuccessLegacy && isSuccessFhirPath) {
+      return "_success";
+    } else if (!isSuccessLegacy && !isSuccessFhirPath) {
+      return "_fail";
+    } else if (isSuccessLegacy) {
+      return "_legacy_success_fhirpath_fail";
+    } else {
+      return "_legacy_fail_fhirpath_success";
+    }
   }
 
   public void saveScenario(final String scenario) {

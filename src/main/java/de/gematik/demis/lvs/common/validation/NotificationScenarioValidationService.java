@@ -45,11 +45,11 @@ import org.hl7.fhir.r4.model.Bundle;
 import org.springframework.http.MediaType;
 
 @Slf4j
-public class NotificationScenarioValidationService<S extends Scenario> {
+public class NotificationScenarioValidationService {
 
   public static final String NO_VALID_LIFECYCLE_SCENARIO_FOUND =
       "No valid lifecycle scenario found";
-  private final List<S> allowedScenarioList;
+  private final List<Scenario> allowedScenarioList;
   private final FhirContext context;
   private final ValidationMetrics validationMetrics;
   private final AdditionalOperationExecuter additionalOperationExecuter;
@@ -57,7 +57,7 @@ public class NotificationScenarioValidationService<S extends Scenario> {
 
   public NotificationScenarioValidationService(
       FhirContext context,
-      List<S> allowedScenarioList,
+      List<Scenario> allowedScenarioList,
       ValidationMetrics validationMetrics,
       AdditionalOperationExecuter additionalOperationExecuter,
       FhirParser fhirParser) {
@@ -80,27 +80,23 @@ public class NotificationScenarioValidationService<S extends Scenario> {
     IFhirPath fhirPath = context.newFhirPath();
     CustomEvaluationContext evaluationContext = new CustomEvaluationContext(notification);
     fhirPath.setEvaluationContext(evaluationContext);
-    for (S ls : allowedScenarioList) {
+    for (Scenario s : allowedScenarioList) {
       try {
         boolean atLeastOneFhirPathExpressionInvalid =
-            FhirPathExecutor.isAtLeastOneFhirPathExpressionInvalid(notification, ls, fhirPath);
+            FhirPathExecutor.isAtLeastOneFhirPathExpressionInvalid(notification, s, fhirPath);
 
         if (!atLeastOneFhirPathExpressionInvalid
-            && additionalOperationExecuter.checkAllExternalChecks(notification, ls, fhirPath)) {
+            && additionalOperationExecuter.checkAllExternalChecks(notification, s, fhirPath)) {
           log.info(
               "Lifecycle Validation of Notification with BundleID {} successful. Valid Scenario: {}",
               notification.getIdentifier().getValue(),
-              ls.getName());
-          validationMetrics.saveScenario(ls.getName());
-          return ls.getName();
+              s.name());
+          validationMetrics.saveScenario(s.name());
+          return s.name();
         }
       } catch (FhirPathExecutionException e) {
         log.error(
-            "Error evaluating FhirPath expression: "
-                + ls.getName()
-                + "|"
-                + ls.getFhirPathExpression(),
-            e);
+            "Error evaluating FhirPath expression: " + s.name() + "|" + s.fhirPathExpression(), e);
         throw new LifecycleValidationException("Error evaluating FhirPath expression", e);
       }
     }

@@ -31,14 +31,11 @@ import static de.gematik.demis.lvs.disease.DiseaseBasicNotificationLifecycleVali
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThatThrownBy;
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.anyBoolean;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 import de.gematik.demis.lvs.common.exception.LifecycleValidationException;
 import de.gematik.demis.lvs.disease.DiseaseBasicNotificationLifecycleValidationSrv;
-import de.gematik.demis.lvs.disease.fhirpath.DiseaseScenario;
-import de.gematik.demis.lvs.labnotification.fhirpath.LaboratoryScenario;
 import de.gematik.demis.lvs.labnotification.validation.NotificationBasicValidationService;
 import de.gematik.demis.lvs.metrics.ValidationMetrics;
 import java.io.IOException;
@@ -51,20 +48,20 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
 
 @ExtendWith(MockitoExtension.class)
 class NotificationValidationServiceTest {
 
   @Mock DiseaseBasicNotificationLifecycleValidationSrv basicDiseaseValidationService;
-  @Mock NotificationBasicValidationService basicValidationService;
+  @Mock NotificationBasicValidationService basicLaboratoryValidationService;
 
-  @Mock
-  NotificationScenarioValidationService<LaboratoryScenario> laboratoryScenarioValidationService;
-
-  @Mock NotificationScenarioValidationService<DiseaseScenario> diseaseScenarioValidationService;
+  @Mock NotificationScenarioValidationService laboratoryScenarioValidationService;
+  @Mock NotificationScenarioValidationService diseaseScenarioValidationService;
   @Mock ValidationMetrics validationMetricsMock;
-  NotificationValidationService<DiseaseScenario> diseaseValidationService;
+
+  NotificationValidationService diseaseValidationService;
 
   @Nested
   class ScenarioValidationTests {
@@ -72,7 +69,7 @@ class NotificationValidationServiceTest {
     @BeforeEach
     void setUp() {
       diseaseValidationService =
-          new NotificationValidationService<>(
+          new NotificationValidationService(
               basicDiseaseValidationService,
               diseaseScenarioValidationService,
               true,
@@ -115,7 +112,7 @@ class NotificationValidationServiceTest {
     @BeforeEach
     void setUp() {
       diseaseValidationService =
-          new NotificationValidationService<>(
+          new NotificationValidationService(
               basicDiseaseValidationService,
               diseaseScenarioValidationService,
               false,
@@ -188,47 +185,178 @@ class NotificationValidationServiceTest {
   }
 
   @Nested
-  class MetricTests {
+  @SpringBootTest
+  class DiseaseMetricTests {
 
-    @SneakyThrows
-    @Test
-    void shouldCreateDiseaseMetric() {
+    @BeforeEach
+    void setUp() {
       diseaseValidationService =
-          new NotificationValidationService<>(
+          new NotificationValidationService(
               basicDiseaseValidationService,
               diseaseScenarioValidationService,
               false,
               validationMetricsMock);
-
-      String diseaseExample = getDiseaseExampleString();
-      when(diseaseScenarioValidationService.getValidScenariosForNotification(any(), any(), any()))
-          .thenReturn("S_IM_V");
-
-      diseaseValidationService.validate(
-          diseaseExample, MediaType.APPLICATION_JSON, null, "disease");
-
-      verify(validationMetricsMock).countDisValResult(anyBoolean());
     }
 
     @SneakyThrows
     @Test
-    void shouldCreateLaboratoryMetric() {
-      NotificationValidationService<LaboratoryScenario> laboratoryValidationService =
-          new NotificationValidationService<>(
-              basicValidationService,
+    void shouldCreateDiseaseMetric_equalSuccess() {
+      String diseaseExample = getDiseaseExampleString();
+      when(diseaseScenarioValidationService.getValidScenariosForNotification(any(), any(), any()))
+          .thenReturn("S_IM_V");
+
+      when(basicDiseaseValidationService.validate(any(), any())).thenReturn("S_IM_V");
+
+      diseaseValidationService.validate(
+          diseaseExample, MediaType.APPLICATION_JSON, null, "disease");
+
+      verify(validationMetricsMock).countDisValResult(true, true);
+    }
+
+    @SneakyThrows
+    @Test
+    void shouldCreateDiseaseMetric_equalFail() {
+      String diseaseExample = getDiseaseExampleString();
+      when(diseaseScenarioValidationService.getValidScenariosForNotification(any(), any(), any()))
+          .thenThrow(new LifecycleValidationException(NO_VALID_LIFECYCLE_SCENARIO_FOUND));
+
+      when(basicDiseaseValidationService.validate(any(), any()))
+          .thenThrow(new LifecycleValidationException(NO_VALID_LIFECYCLE_SCENARIO_FOUND));
+
+      assertThatThrownBy(
+              () ->
+                  diseaseValidationService.validate(
+                      diseaseExample, MediaType.APPLICATION_JSON, null, "disease"))
+          .isInstanceOf(LifecycleValidationException.class)
+          .hasMessageContaining("No valid lifecycle scenario found");
+
+      verify(validationMetricsMock).countDisValResult(false, false);
+    }
+
+    @SneakyThrows
+    @Test
+    void shouldCreateDiseaseMetric_unequal_legacySuccess() {
+      String diseaseExample = getDiseaseExampleString();
+      when(diseaseScenarioValidationService.getValidScenariosForNotification(any(), any(), any()))
+          .thenThrow(new LifecycleValidationException(NO_VALID_LIFECYCLE_SCENARIO_FOUND));
+
+      when(basicDiseaseValidationService.validate(any(), any())).thenReturn("S_IM_V");
+
+      diseaseValidationService.validate(
+          diseaseExample, MediaType.APPLICATION_JSON, null, "disease");
+
+      verify(validationMetricsMock).countDisValResult(true, false);
+    }
+
+    @SneakyThrows
+    @Test
+    void shouldCreateDiseaseMetric_unequal_legacyFail() {
+      String diseaseExample = getDiseaseExampleString();
+      when(diseaseScenarioValidationService.getValidScenariosForNotification(any(), any(), any()))
+          .thenReturn("S_IM_V");
+
+      when(basicDiseaseValidationService.validate(any(), any()))
+          .thenThrow(new LifecycleValidationException(NO_VALID_LIFECYCLE_SCENARIO_FOUND));
+
+      assertThatThrownBy(
+              () ->
+                  diseaseValidationService.validate(
+                      diseaseExample, MediaType.APPLICATION_JSON, null, "disease"))
+          .isInstanceOf(LifecycleValidationException.class)
+          .hasMessageContaining("No valid lifecycle scenario found");
+
+      verify(validationMetricsMock).countDisValResult(false, true);
+    }
+  }
+
+  @Nested
+  @SpringBootTest
+  class LaboratoryMetricTests {
+    NotificationValidationService laboratoryValidationService;
+
+    @BeforeEach
+    void setUp() {
+
+      laboratoryValidationService =
+          new NotificationValidationService(
+              basicLaboratoryValidationService,
               laboratoryScenarioValidationService,
               false,
               validationMetricsMock);
+    }
 
+    @SneakyThrows
+    @Test
+    void shouldCreateLaboratoryMetric_equalSuccess() {
       String laboratoryExampleString = getLaboratoryExampleString();
       when(laboratoryScenarioValidationService.getValidScenariosForNotification(
               any(), any(), any()))
           .thenReturn("M_POS");
 
+      when(basicLaboratoryValidationService.validate(any(), any())).thenReturn("M_POS");
+
       laboratoryValidationService.validate(
           laboratoryExampleString, MediaType.APPLICATION_JSON, null, "laboratory");
 
-      verify(validationMetricsMock).countLabValResult(anyBoolean());
+      verify(validationMetricsMock).countLabValResult(true, true);
+    }
+
+    @SneakyThrows
+    @Test
+    void shouldCreateLaboratoryMetric_equalFail() {
+      String laboratoryExampleString = getLaboratoryExampleString();
+      when(laboratoryScenarioValidationService.getValidScenariosForNotification(
+              any(), any(), any()))
+          .thenThrow(new LifecycleValidationException(NO_VALID_LIFECYCLE_SCENARIO_FOUND));
+
+      when(basicLaboratoryValidationService.validate(any(), any()))
+          .thenThrow(new LifecycleValidationException(NO_VALID_LIFECYCLE_SCENARIO_FOUND));
+
+      assertThatThrownBy(
+              () ->
+                  laboratoryValidationService.validate(
+                      laboratoryExampleString, MediaType.APPLICATION_JSON, null, "laboratory"))
+          .isInstanceOf(LifecycleValidationException.class)
+          .hasMessageContaining("No valid lifecycle scenario found");
+
+      verify(validationMetricsMock).countLabValResult(false, false);
+    }
+
+    @SneakyThrows
+    @Test
+    void shouldCreateLaboratoryMetric_unequal_legacySuccess() {
+      String laboratoryExampleString = getLaboratoryExampleString();
+      when(laboratoryScenarioValidationService.getValidScenariosForNotification(
+              any(), any(), any()))
+          .thenThrow(new LifecycleValidationException(NO_VALID_LIFECYCLE_SCENARIO_FOUND));
+
+      when(basicLaboratoryValidationService.validate(any(), any())).thenReturn("M_POS");
+
+      laboratoryValidationService.validate(
+          laboratoryExampleString, MediaType.APPLICATION_JSON, null, "laboratory");
+
+      verify(validationMetricsMock).countLabValResult(true, false);
+    }
+
+    @SneakyThrows
+    @Test
+    void shouldCreateLaboratoryMetric_unequal_legacyFail() {
+      String laboratoryExampleString = getLaboratoryExampleString();
+      when(laboratoryScenarioValidationService.getValidScenariosForNotification(
+              any(), any(), any()))
+          .thenReturn("M_POS");
+
+      when(basicLaboratoryValidationService.validate(any(), any()))
+          .thenThrow(new LifecycleValidationException(NO_VALID_LIFECYCLE_SCENARIO_FOUND));
+
+      assertThatThrownBy(
+              () ->
+                  laboratoryValidationService.validate(
+                      laboratoryExampleString, MediaType.APPLICATION_JSON, null, "laboratory"))
+          .isInstanceOf(LifecycleValidationException.class)
+          .hasMessageContaining("No valid lifecycle scenario found");
+
+      verify(validationMetricsMock).countLabValResult(false, true);
     }
   }
 
@@ -238,7 +366,7 @@ class NotificationValidationServiceTest {
   }
 
   private String getDiseaseExampleString() throws IOException {
-    String path = "src/test/resources/notifications/disease/scenarioExamples/S_FM_V2V-11.json";
+    String path = "src/test/resources/notifications/disease/scenarioExamples/S_FM_V2V.json";
     return Files.readString(Paths.get(path));
   }
 }

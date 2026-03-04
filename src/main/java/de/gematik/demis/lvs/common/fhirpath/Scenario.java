@@ -27,6 +27,7 @@ package de.gematik.demis.lvs.common.fhirpath;
  * #L%
  */
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import de.gematik.demis.lvs.common.externalchecks.AdditionalOperation;
 import java.util.List;
 import java.util.Map;
@@ -37,17 +38,15 @@ import lombok.Setter;
  * Represents a scenario, which includes a name, a list of FHIRPath expressions and additional
  * comparisons
  */
-@Getter
-public abstract class Scenario {
+public record Scenario(
+    String name,
+    List<FhirPathExpression> fhirPathExpression,
+    List<ExternalCheckConfig> externalChecks) {
 
-  protected final String name;
-  protected final List<FhirPathExpression> fhirPathExpression;
-  protected final List<ExternalCheckConfig> externalChecks;
-
-  protected Scenario(
-      String name,
-      List<FhirPathExpression> fhirPathExpression,
-      List<ExternalCheckConfig> externalChecks) {
+  public Scenario(
+      @JsonProperty("name") String name,
+      @JsonProperty("fhirPathExpression") List<FhirPathExpression> fhirPathExpression,
+      @JsonProperty("externalChecks") List<ExternalCheckConfig> externalChecks) {
     this.name = name;
     this.fhirPathExpression = fhirPathExpression;
     this.externalChecks = externalChecks != null ? externalChecks : List.of();
