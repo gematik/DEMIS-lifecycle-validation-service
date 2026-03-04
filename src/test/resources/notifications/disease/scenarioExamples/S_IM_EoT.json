@@ -25,7 +25,7 @@
         },
         "identifier": {
           "system": "https://demis.rki.de/fhir/NamingSystem/NotificationId",
-          "value": "d02cb640-eecd-4f8e-9695-b489321bd9b7"
+          "value": "e719e5f6-f8de-470f-8d88-60a3820c037a"
         },
         "status": "final",
         "type": {
@@ -58,19 +58,7 @@
           }
         ],
         "title": "Meldung gemäß §6 Absatz 1, 2 IfSG",
-        "relatesTo" : [
-                {
-                  "code" : "appends" ,
-                  "targetReference" : {
-                      "type" : "Composition" ,
-                      "identifier" : {
-                          "system" : "https://demis.rki.de/fhir/NamingSystem/NotificationId" ,
-                          "value" : "92d99f62-fe4f-4337-b833-351751db12dc"
-                        }
-                    }
-                }
-              ] ,
-            "section" : [
+        "section": [
           {
             "title": "disease",
             "code": {
@@ -132,7 +120,7 @@
         "id": "59949e30-a8ab-4c1e-8f46-4a154d581be8",
         "meta": {
           "profile": [
-            "https://demis.rki.de/fhir/StructureDefinition/NotifiedPersonAnonymous"
+            "https://demis.rki.de/fhir/StructureDefinition/NotifiedPerson"
           ]
         },
         "name": [
@@ -541,7 +529,7 @@
           ]
         },
         "questionnaire": "https://demis.rki.de/fhir/Questionnaire/DiseaseQuestionsCommon",
-        "status": "amended",
+        "status": "completed",
         "subject": {
           "reference": "Patient/59949e30-a8ab-4c1e-8f46-4a154d581be8"
         },
@@ -552,8 +540,8 @@
               {
                 "valueCoding": {
                   "system": "https://demis.rki.de/fhir/CodeSystem/yesOrNoAnswer",
-                  "code": "no",
-                  "display": "Nein"
+                  "code": "yes",
+                  "display": "Ja"
                 }
               }
             ]
@@ -802,7 +790,7 @@
           ]
         },
         "questionnaire": "https://demis.rki.de/fhir/Questionnaire/DiseaseQuestionsBAND",
-        "status": "amended",
+        "status": "completed",
         "subject": {
           "reference": "Patient/59949e30-a8ab-4c1e-8f46-4a154d581be8"
         },

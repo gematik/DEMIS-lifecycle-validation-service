@@ -43,13 +43,13 @@ public class FhirPathExecutor {
    * result, the scenario is not fulfilled.
    *
    * @param notification
-   * @param ls
+   * @param scenario
    * @param fhirPath
    * @return
    */
   public static boolean isAtLeastOneFhirPathExpressionInvalid(
-      Bundle notification, Scenario ls, IFhirPath fhirPath) {
-    return ls.getFhirPathExpression().stream()
+      Bundle notification, Scenario scenario, IFhirPath fhirPath) {
+    return scenario.fhirPathExpression().stream()
         .map(Scenario.FhirPathExpression::getFhirPath)
         .map(s -> fhirPath.evaluate(notification, s, BooleanType.class))
         .map(List::getFirst)

@@ -13,12 +13,6 @@
       },
       {
         "fhirPath": "Condition.verificationStatus(unconfirmed)"
-      },
-      {
-        "fhirPath": "DiseaseInformationCommon.QuestionnaireResponse.status(completed)"
-      },
-      {
-        "fhirPath": "DiseaseInformationXYZD.QuestionnaireResponse.status(completed)"
       }
     ],
     "externalChecks": [
@@ -31,7 +25,7 @@
     ]
   },
   {
-    "name": "S_IM_E",
+    "name": "S_IM_EoT",
     "fhirPathExpression": [
       {
         "fhirPath": "Patient.profile(byName)"
@@ -44,12 +38,6 @@
       },
       {
         "fhirPath": "Condition.verificationStatus(confirmed)"
-      },
-      {
-        "fhirPath": "DiseaseInformationCommon.QuestionnaireResponse.status(completed)"
-      },
-      {
-        "fhirPath": "DiseaseInformationXYZD.QuestionnaireResponse.status(completed)"
       }
     ],
     "externalChecks": [
@@ -75,12 +63,6 @@
       },
       {
         "fhirPath": "Condition.verificationStatus(unconfirmed)"
-      },
-      {
-        "fhirPath": "DiseaseInformationCommon.QuestionnaireResponse.status(completed or amended)"
-      },
-      {
-        "fhirPath": "DiseaseInformationXYZD.QuestionnaireResponse.status(completed or amended)"
       }
     ],
     "externalChecks": [
@@ -95,10 +77,13 @@
     ]
   },
   {
-    "name": "S_FM_V2V_FollowUp",
+    "name": "S_FM_V2V_Anonymous",
     "fhirPathExpression": [
       {
         "fhirPath": "Patient.profile(anonymous)"
+      },
+      {
+        "fhirPath": "HasRelatesToEntry"
       },
       {
         "fhirPath": "Composition.status(preliminary)"
@@ -108,12 +93,6 @@
       },
       {
         "fhirPath": "Condition.verificationStatus(unconfirmed)"
-      },
-      {
-        "fhirPath": "DiseaseInformationCommon.QuestionnaireResponse.status(completed or amended)"
-      },
-      {
-        "fhirPath": "DiseaseInformationXYZD.QuestionnaireResponse.status(completed or amended)"
       }
     ],
     "externalChecks": [
@@ -141,12 +120,6 @@
       },
       {
         "fhirPath": "Condition.verificationStatus(refuted)"
-      },
-      {
-        "fhirPath": "DiseaseInformationCommon.QuestionnaireResponse.status(completed or amended)"
-      },
-      {
-        "fhirPath": "DiseaseInformationXYZD.QuestionnaireResponse.status(completed or amended)"
       }
     ],
     "externalChecks": [
@@ -161,10 +134,13 @@
     ]
   },
   {
-    "name": "S_FM_V2I_FollowUp",
+    "name": "S_FM_V2I_Anonymous",
     "fhirPathExpression": [
       {
         "fhirPath": "Patient.profile(anonymous)"
+      },
+      {
+        "fhirPath": "HasRelatesToEntry"
       },
       {
         "fhirPath": "Composition.status(final)"
@@ -174,12 +150,6 @@
       },
       {
         "fhirPath": "Condition.verificationStatus(refuted)"
-      },
-      {
-        "fhirPath": "DiseaseInformationCommon.QuestionnaireResponse.status(completed or amended)"
-      },
-      {
-        "fhirPath": "DiseaseInformationXYZD.QuestionnaireResponse.status(completed or amended)"
       }
     ],
     "externalChecks": [
@@ -194,7 +164,7 @@
     ]
   },
   {
-    "name": "S_FM_V2E",
+    "name": "S_FM_V2EoT",
     "fhirPathExpression": [
       {
         "fhirPath": "Patient.profile(byName)"
@@ -207,12 +177,6 @@
       },
       {
         "fhirPath": "Condition.verificationStatus(confirmed)"
-      },
-      {
-        "fhirPath": "DiseaseInformationCommon.QuestionnaireResponse.status(completed or amended)"
-      },
-      {
-        "fhirPath": "DiseaseInformationXYZD.QuestionnaireResponse.status(completed or amended)"
       }
     ],
     "externalChecks": [
@@ -227,10 +191,13 @@
     ]
   },
   {
-    "name": "S_FM_V2E_FollowUp",
+    "name": "S_FM_V2EoT_Anonymous",
     "fhirPathExpression": [
       {
         "fhirPath": "Patient.profile(anonymous)"
+      },
+      {
+        "fhirPath": "HasRelatesToEntry"
       },
       {
         "fhirPath": "Composition.status(final)"
@@ -240,12 +207,6 @@
       },
       {
         "fhirPath": "Condition.verificationStatus(confirmed)"
-      },
-      {
-        "fhirPath": "DiseaseInformationCommon.QuestionnaireResponse.status(completed or amended)"
-      },
-      {
-        "fhirPath": "DiseaseInformationXYZD.QuestionnaireResponse.status(completed or amended)"
       }
     ],
     "externalChecks": [
@@ -260,7 +221,7 @@
     ]
   },
   {
-    "name": "S_FM_E2E",
+    "name": "S_FM",
     "fhirPathExpression": [
       {
         "fhirPath": "Patient.profile(byName)"
@@ -269,16 +230,7 @@
         "fhirPath": "Composition.status(amended)"
       },
       {
-        "fhirPath": "Condition.clinicalStatus(active)"
-      },
-      {
-        "fhirPath": "Condition.verificationStatus(confirmed)"
-      },
-      {
-        "fhirPath": "DiseaseInformationCommon.QuestionnaireResponse.status(completed or amended)"
-      },
-      {
-        "fhirPath": "DiseaseInformationXYZD.QuestionnaireResponse.status(completed or amended)"
+        "fhirPath": "Condition.verificationStatus(confirmed|unconfirmed|entered-in-error)"
       }
     ],
     "externalChecks": [
@@ -293,157 +245,19 @@
     ]
   },
   {
-    "name": "S_FM_E2E_FollowUp",
+    "name": "S_FM_Anonymous",
     "fhirPathExpression": [
       {
         "fhirPath": "Patient.profile(anonymous)"
       },
       {
-        "fhirPath": "Composition.status(amended)"
-      },
-      {
-        "fhirPath": "Condition.clinicalStatus(active)"
-      },
-      {
-        "fhirPath": "Condition.verificationStatus(confirmed)"
-      },
-      {
-        "fhirPath": "DiseaseInformationCommon.QuestionnaireResponse.status(completed or amended)"
-      },
-      {
-        "fhirPath": "DiseaseInformationXYZD.QuestionnaireResponse.status(completed or amended)"
-      }
-    ],
-    "externalChecks": [
-      {
-        "type": "CATEGORY_MAPPING",
-        "inputs": {
-          "id": "RelatesToId",
-          "hasToExist": true,
-          "notificationCategory": "NotificationDiseaseCategory"
-        }
-      }
-    ]
-  },
-  {
-    "name": "S_FM_E2I",
-    "fhirPathExpression": [
-      {
-        "fhirPath": "Patient.profile(byName)"
+        "fhirPath": "HasRelatesToEntry"
       },
       {
         "fhirPath": "Composition.status(amended)"
       },
       {
-        "fhirPath": "Condition.verificationStatus(entered-in-error)"
-      },
-      {
-        "fhirPath": "DiseaseInformationCommon.QuestionnaireResponse.status(completed or amended)"
-      },
-      {
-        "fhirPath": "DiseaseInformationXYZD.QuestionnaireResponse.status(completed or amended)"
-      }
-    ],
-    "externalChecks": [
-      {
-        "type": "CATEGORY_MAPPING",
-        "inputs": {
-          "id": "NotificationId",
-          "hasToExist": true,
-          "notificationCategory": "NotificationDiseaseCategory"
-        }
-      }
-    ]
-  },
-  {
-    "name": "S_FM_E2I_FollowUp",
-    "fhirPathExpression": [
-      {
-        "fhirPath": "Patient.profile(anonymous)"
-      },
-      {
-        "fhirPath": "Composition.status(amended)"
-      },
-      {
-        "fhirPath": "Condition.verificationStatus(entered-in-error)"
-      },
-      {
-        "fhirPath": "DiseaseInformationCommon.QuestionnaireResponse.status(completed or amended)"
-      },
-      {
-        "fhirPath": "DiseaseInformationXYZD.QuestionnaireResponse.status(completed or amended)"
-      }
-    ],
-    "externalChecks": [
-      {
-        "type": "CATEGORY_MAPPING",
-        "inputs": {
-          "id": "RelatesToId",
-          "hasToExist": true,
-          "notificationCategory": "NotificationDiseaseCategory"
-        }
-      }
-    ]
-  },
-  {
-    "name": "S_FM_T2V",
-    "fhirPathExpression": [
-      {
-        "fhirPath": "Patient.profile(byName)"
-      },
-      {
-        "fhirPath": "Composition.status(amended)"
-      },
-      {
-        "fhirPath": "Condition.clinicalStatus(active)"
-      },
-      {
-        "fhirPath": "Condition.verificationStatus(unconfirmed)"
-      },
-      {
-        "fhirPath": "DiseaseInformationCommon.QuestionnaireResponse.status(amended)"
-      },
-      {
-        "fhirPath": "DiseaseInformationCommon.linkId(isDead=false)"
-      },
-      {
-        "fhirPath": "DiseaseInformationXYZD.QuestionnaireResponse.status(completed or amended)"
-      }
-    ],
-    "externalChecks": [
-      {
-        "type": "CATEGORY_MAPPING",
-        "inputs": {
-          "id": "NotificationId",
-          "hasToExist": true,
-          "notificationCategory": "NotificationDiseaseCategory"
-        }
-      }
-    ]
-  },
-  {
-    "name": "S_FM_T2V_FollowUp",
-    "fhirPathExpression": [
-      {
-        "fhirPath": "Patient.profile(anonymous)"
-      },
-      {
-        "fhirPath": "Composition.status(amended)"
-      },
-      {
-        "fhirPath": "Condition.clinicalStatus(active)"
-      },
-      {
-        "fhirPath": "Condition.verificationStatus(unconfirmed)"
-      },
-      {
-        "fhirPath": "DiseaseInformationCommon.QuestionnaireResponse.status(amended)"
-      },
-      {
-        "fhirPath": "DiseaseInformationCommon.linkId(isDead=false)"
-      },
-      {
-        "fhirPath": "DiseaseInformationXYZD.QuestionnaireResponse.status(completed or amended)"
+        "fhirPath": "Condition.verificationStatus(confirmed|unconfirmed|entered-in-error)"
       }
     ],
     "externalChecks": [

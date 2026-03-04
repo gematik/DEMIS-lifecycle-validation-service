@@ -100,8 +100,7 @@ class LifecycleValidationControllerTest {
 
       String notification =
           Files.readString(
-              Path.of(
-                  "src/test/resources/notifications/disease/scenarioExamples/S_FM_V2V-11.json"));
+              Path.of("src/test/resources/notifications/disease/scenarioExamples/S_FM_V2V.json"));
 
       when(destinationLookupServiceClientMock.getNotificationCategory(anyString()))
           .thenReturn(new NotificationCategoryDTO("band"));

@@ -45,7 +45,6 @@ import de.gematik.demis.lvs.common.fhirpath.Scenario;
 import de.gematik.demis.lvs.common.fhirpath.ScenarioLoader;
 import de.gematik.demis.lvs.common.validation.NotificationScenarioValidationService;
 import de.gematik.demis.lvs.labnotification.fhirpath.LaboratoryConfigurationProperties;
-import de.gematik.demis.lvs.labnotification.fhirpath.LaboratoryScenario;
 import de.gematik.demis.lvs.metrics.ValidationMetrics;
 import io.micrometer.core.instrument.MeterRegistry;
 import io.micrometer.core.instrument.simple.SimpleMeterRegistry;
@@ -74,8 +73,7 @@ import org.springframework.http.MediaType;
 class NotificationScenarioValidationServiceTest {
 
   private static final FhirParser fhirParser = new FhirParser(FhirContext.forR4Cached());
-  private static NotificationScenarioValidationService<LaboratoryScenario>
-      notificationScenarioValidationService;
+  private static NotificationScenarioValidationService notificationScenarioValidationService;
   private final MeterRegistry meterRegistry = new SimpleMeterRegistry();
   @Mock private AdditionalOperationExecuter additionalOperationExecuter;
 
@@ -108,12 +106,11 @@ class NotificationScenarioValidationServiceTest {
     LaboratoryConfigurationProperties properties =
         new LaboratoryConfigurationProperties(
             "configuration/laboratoryScenarios.json", "configuration/keyToFhirPath.json", true);
-    List<LaboratoryScenario> scenarios =
-        ScenarioLoader.loadScenarios(
-            properties.fhirPathData(), properties.keyToFhirPathData(), LaboratoryScenario[].class);
+    List<Scenario> scenarios =
+        ScenarioLoader.loadScenarios(properties.fhirPathData(), properties.keyToFhirPathData());
 
     notificationScenarioValidationService =
-        new NotificationScenarioValidationService<>(
+        new NotificationScenarioValidationService(
             FhirContext.forR4Cached(),
             scenarios,
             new ValidationMetrics(meterRegistry),
@@ -200,13 +197,12 @@ class NotificationScenarioValidationServiceTest {
     LaboratoryConfigurationProperties properties =
         new LaboratoryConfigurationProperties(
             "configuration/laboratoryScenarios.json", "configuration/keyToFhirPath.json", true);
-    List<LaboratoryScenario> scenarios =
-        ScenarioLoader.loadScenarios(
-            properties.fhirPathData(), properties.keyToFhirPathData(), LaboratoryScenario[].class);
+    List<Scenario> scenarios =
+        ScenarioLoader.loadScenarios(properties.fhirPathData(), properties.keyToFhirPathData());
 
     ValidationMetrics validationMetrics = mock(ValidationMetrics.class);
     notificationScenarioValidationService =
-        new NotificationScenarioValidationService<>(
+        new NotificationScenarioValidationService(
             FhirContext.forR4Cached(),
             scenarios,
             validationMetrics,

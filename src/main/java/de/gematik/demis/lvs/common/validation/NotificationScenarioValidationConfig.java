@@ -30,9 +30,8 @@ package de.gematik.demis.lvs.common.validation;
 import ca.uhn.fhir.context.FhirContext;
 import de.gematik.demis.fhirparserlibrary.FhirParser;
 import de.gematik.demis.lvs.common.externalchecks.AdditionalOperationExecuter;
+import de.gematik.demis.lvs.common.fhirpath.Scenario;
 import de.gematik.demis.lvs.disease.DiseaseBasicNotificationLifecycleValidationSrv;
-import de.gematik.demis.lvs.disease.fhirpath.DiseaseScenario;
-import de.gematik.demis.lvs.labnotification.fhirpath.LaboratoryScenario;
 import de.gematik.demis.lvs.labnotification.validation.NotificationBasicValidationService;
 import de.gematik.demis.lvs.metrics.ValidationMetrics;
 import java.util.List;
@@ -58,59 +57,49 @@ public class NotificationScenarioValidationConfig {
   }
 
   @Bean
-  public NotificationScenarioValidationService<DiseaseScenario>
-      diseaseNotificationScenarioValidationService(
-          FhirContext context,
-          @Qualifier("loadDiseaseScenarios") List<DiseaseScenario> loadDiseaseScenarios,
-          ValidationMetrics validationMetrics,
-          AdditionalOperationExecuter additionalOperationExecuter,
-          FhirParser fhirParser) {
-    return new NotificationScenarioValidationService<>(
-        context, loadDiseaseScenarios, validationMetrics, additionalOperationExecuter, fhirParser);
+  public NotificationScenarioValidationService diseaseNotificationScenarioValidationService(
+      FhirContext context,
+      @Qualifier("loadDiseaseScenarios") List<Scenario> diseaseScenarios,
+      ValidationMetrics validationMetrics,
+      AdditionalOperationExecuter additionalOperationExecuter,
+      FhirParser fhirParser) {
+    return new NotificationScenarioValidationService(
+        context, diseaseScenarios, validationMetrics, additionalOperationExecuter, fhirParser);
   }
 
   @Bean
-  public NotificationScenarioValidationService<LaboratoryScenario>
-      laboratoryNotificationScenarioValidationService(
-          FhirContext context,
-          @Qualifier("loadLaboratoryScenarios") List<LaboratoryScenario> loadLaboratoryScenarios,
-          ValidationMetrics validationMetrics,
-          AdditionalOperationExecuter additionalOperationExecuter,
-          FhirParser fhirParser) {
-    return new NotificationScenarioValidationService<>(
-        context,
-        loadLaboratoryScenarios,
-        validationMetrics,
-        additionalOperationExecuter,
-        fhirParser);
+  public NotificationScenarioValidationService laboratoryNotificationScenarioValidationService(
+      FhirContext context,
+      @Qualifier("loadLaboratoryScenarios") List<Scenario> laboratoryScenarios,
+      ValidationMetrics validationMetrics,
+      AdditionalOperationExecuter additionalOperationExecuter,
+      FhirParser fhirParser) {
+    return new NotificationScenarioValidationService(
+        context, laboratoryScenarios, validationMetrics, additionalOperationExecuter, fhirParser);
   }
 
   @Bean
-  public NotificationValidationService<DiseaseScenario>
-      diseaseScenarioNotificationValidationService(
-          DiseaseBasicNotificationLifecycleValidationSrv notificationBasicValidationService,
-          NotificationScenarioValidationService<DiseaseScenario>
-              notificationScenarioValidationService,
-          @Value("${feature.flag.return.disease.fhirpath.validation.in.responses}")
-              boolean returnValidationInResponses) {
-    return new NotificationValidationService<>(
+  public NotificationValidationService diseaseValidationService(
+      DiseaseBasicNotificationLifecycleValidationSrv notificationBasicValidationService,
+      NotificationScenarioValidationService diseaseNotificationScenarioValidationService,
+      @Value("${feature.flag.return.disease.fhirpath.validation.in.responses}")
+          boolean returnValidationInResponses) {
+    return new NotificationValidationService(
         notificationBasicValidationService,
-        notificationScenarioValidationService,
+        diseaseNotificationScenarioValidationService,
         returnValidationInResponses,
         validationMetrics);
   }
 
   @Bean
-  public NotificationValidationService<LaboratoryScenario>
-      laboratoryScenarioNotificationValidationService(
-          NotificationBasicValidationService notificationBasicValidationService,
-          NotificationScenarioValidationService<LaboratoryScenario>
-              notificationScenarioValidationService,
-          @Value("${feature.flag.return.fhirpath.validation.in.responses}")
-              boolean returnValidationInResponses) {
-    return new NotificationValidationService<>(
+  public NotificationValidationService laboratoryValidationService(
+      NotificationBasicValidationService notificationBasicValidationService,
+      NotificationScenarioValidationService laboratoryNotificationScenarioValidationService,
+      @Value("${feature.flag.return.fhirpath.validation.in.responses}")
+          boolean returnValidationInResponses) {
+    return new NotificationValidationService(
         notificationBasicValidationService,
-        notificationScenarioValidationService,
+        laboratoryNotificationScenarioValidationService,
         returnValidationInResponses,
         validationMetrics);
   }

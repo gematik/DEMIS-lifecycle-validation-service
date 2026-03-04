@@ -56,20 +56,15 @@ class DiseaseNotificationLifecycleValidationSrvRegressionTest {
         Arguments.of(
             "src/test/resources/notifications/disease/scenarioExamples/S_FM_V2V-11.json", "S_IM_V"),
         Arguments.of(
-            "src/test/resources/notifications/disease/scenarioExamples/S_FM_V2V-12.json",
-            "S_FM_V2V"),
+            "src/test/resources/notifications/disease/scenarioExamples/S_FM_V2V.json", "S_FM_V2V"),
         Arguments.of(
             "src/test/resources/notifications/disease/scenarioExamples/S_FM_V2V-21.json",
-            "S_FM_V2V"),
-        Arguments.of(
-            "src/test/resources/notifications/disease/scenarioExamples/S_FM_V2V-12.json",
             "S_FM_V2V"),
         Arguments.of(
             "src/test/resources/notifications/disease/scenarioExamples/S_FM_V2I-11.json",
             "S_FM_V2I"),
         Arguments.of(
-            "src/test/resources/notifications/disease/scenarioExamples/S_FM_V2I-12.json",
-            "S_FM_V2I"),
+            "src/test/resources/notifications/disease/scenarioExamples/S_FM_V2I.json", "S_FM_V2I"),
         Arguments.of(
             "src/test/resources/notifications/disease/scenarioExamples/S_FM_V2I-21.json",
             "S_FM_V2I"),
@@ -80,7 +75,7 @@ class DiseaseNotificationLifecycleValidationSrvRegressionTest {
             "src/test/resources/notifications/disease/scenarioExamples/S_FM_V2E-11.json",
             "S_FM_V2E"),
         Arguments.of(
-            "src/test/resources/notifications/disease/scenarioExamples/S_FM_V2E-12.json",
+            "src/test/resources/notifications/disease/scenarioExamples/S_FM_V2EoT.json",
             "S_FM_V2E"),
         Arguments.of(
             "src/test/resources/notifications/disease/scenarioExamples/S_FM_V2E-21.json",
@@ -92,7 +87,7 @@ class DiseaseNotificationLifecycleValidationSrvRegressionTest {
             "src/test/resources/notifications/disease/scenarioExamples/S_FM_E2E-11.json",
             "S_FM_E2E"),
         Arguments.of(
-            "src/test/resources/notifications/disease/scenarioExamples/S_FM_E2E-12.json",
+            "src/test/resources/notifications/disease/scenarioExamples/S_FM_confirmed.json",
             "S_FM_E2E"),
         Arguments.of(
             "src/test/resources/notifications/disease/scenarioExamples/S_FM_E2E-21.json",
@@ -104,7 +99,7 @@ class DiseaseNotificationLifecycleValidationSrvRegressionTest {
             "src/test/resources/notifications/disease/scenarioExamples/S_FM_E2I-11.json",
             "S_FM_E2I"),
         Arguments.of(
-            "src/test/resources/notifications/disease/scenarioExamples/S_FM_E2I-12.json",
+            "src/test/resources/notifications/disease/scenarioExamples/S_FM_enteredInError.json",
             "S_FM_E2I"),
         Arguments.of(
             "src/test/resources/notifications/disease/scenarioExamples/S_FM_E2I-21.json",
@@ -116,7 +111,7 @@ class DiseaseNotificationLifecycleValidationSrvRegressionTest {
             "src/test/resources/notifications/disease/scenarioExamples/S_FM_T2V-1.json",
             "S_FM_T2V"),
         Arguments.of(
-            "src/test/resources/notifications/disease/scenarioExamples/S_FM_T2V-2.json",
+            "src/test/resources/notifications/disease/scenarioExamples/S_FM_unconfirmed.json",
             "S_FM_T2V"),
         Arguments.of(
             "src/test/resources/notifications/disease/scenarioExamples/RUND.json", "S_FM_V2E"));
@@ -127,7 +122,7 @@ class DiseaseNotificationLifecycleValidationSrvRegressionTest {
 
     String jsonString =
         Files.readString(
-            Path.of("src/test/resources/notifications/disease/scenarioExamples/S_FM_V2E-11.json"));
+            Path.of("src/test/resources/notifications/disease/scenarioExamples/S_FM_V2EoT.json"));
 
     DiseaseBasicNotificationLifecycleValidationSrv diseaseNotificationLifecycleValidationSrv =
         new DiseaseBasicNotificationLifecycleValidationSrv(

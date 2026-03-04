@@ -37,10 +37,10 @@ import ca.uhn.fhir.context.FhirContext;
 import de.gematik.demis.fhirparserlibrary.FhirParser;
 import de.gematik.demis.lvs.common.exception.LifecycleValidationException;
 import de.gematik.demis.lvs.common.externalchecks.AdditionalOperationExecuter;
+import de.gematik.demis.lvs.common.fhirpath.Scenario;
 import de.gematik.demis.lvs.common.fhirpath.ScenarioLoader;
 import de.gematik.demis.lvs.common.validation.NotificationScenarioValidationService;
 import de.gematik.demis.lvs.disease.fhirpath.DiseaseConfigurationProperties;
-import de.gematik.demis.lvs.disease.fhirpath.DiseaseScenario;
 import de.gematik.demis.lvs.metrics.ValidationMetrics;
 import de.gematik.demis.notification.builder.demis.fhir.notification.utils.Compositions;
 import de.gematik.demis.notification.builder.demis.fhir.notification.utils.Conditions;
@@ -74,85 +74,37 @@ import org.springframework.http.MediaType;
 class DiseaseNotificationLifecycleValidationSrvTest {
 
   private final FhirParser fhirParser = new FhirParser(FhirContext.forR4Cached());
-  private List<DiseaseScenario> scenarios;
+  private List<Scenario> scenarios;
   private final MeterRegistry meterRegistry = new SimpleMeterRegistry();
   @Mock private AdditionalOperationExecuter additionalOperationExecuter;
 
   static Stream<Arguments> scenarioNames() {
     return Stream.of(
         Arguments.of(
-            "src/test/resources/notifications/disease/scenarioExamples/S_FM_V2V-11.json", "S_IM_V"),
-        Arguments.of(
             "src/test/resources/notifications/disease/scenarioExamples/S_IM_V.json", "S_IM_V"),
         Arguments.of(
-            "src/test/resources/notifications/disease/scenarioExamples/S_IM_E.json", "S_IM_E"),
+            "src/test/resources/notifications/disease/scenarioExamples/S_IM_EoT.json", "S_IM_EoT"),
         Arguments.of(
-            "src/test/resources/notifications/disease/scenarioExamples/S_FM_V2V-12.json",
-            "S_FM_V2V"),
+            "src/test/resources/notifications/disease/scenarioExamples/S_FM_V2V.json", "S_IM_V"),
         Arguments.of(
-            "src/test/resources/notifications/disease/scenarioExamples/S_FM_V2V-21.json",
-            "S_FM_V2V"),
+            "src/test/resources/notifications/disease/scenarioExamples/S_FM_V2I.json", "S_FM_V2I"),
         Arguments.of(
-            "src/test/resources/notifications/disease/scenarioExamples/S_FM_V2V-12.json",
-            "S_FM_V2V"),
+            "src/test/resources/notifications/disease/scenarioExamples/S_FM_V2EoT.json",
+            "S_IM_EoT"),
         Arguments.of(
-            "src/test/resources/notifications/disease/scenarioExamples/S_FM_V2I-11.json",
-            "S_FM_V2I"),
+            "src/test/resources/notifications/disease/scenarioExamples/S_FM_confirmed.json",
+            "S_FM"),
         Arguments.of(
-            "src/test/resources/notifications/disease/scenarioExamples/S_FM_V2I-12.json",
-            "S_FM_V2I"),
+            "src/test/resources/notifications/disease/scenarioExamples/S_FM_enteredInError.json",
+            "S_FM"),
         Arguments.of(
-            "src/test/resources/notifications/disease/scenarioExamples/S_FM_V2I-21.json",
-            "S_FM_V2I"),
+            "src/test/resources/notifications/disease/scenarioExamples/S_FM_unconfirmed.json",
+            "S_FM"),
         Arguments.of(
-            "src/test/resources/notifications/disease/scenarioExamples/S_FM_V2I-22.json",
-            "S_FM_V2I"),
-        Arguments.of(
-            "src/test/resources/notifications/disease/scenarioExamples/S_FM_V2E-11.json", "S_IM_E"),
-        Arguments.of(
-            "src/test/resources/notifications/disease/scenarioExamples/S_FM_V2E-12.json",
-            "S_FM_V2E"),
-        Arguments.of(
-            "src/test/resources/notifications/disease/scenarioExamples/S_FM_V2E-21.json",
-            "S_FM_V2E"),
-        Arguments.of(
-            "src/test/resources/notifications/disease/scenarioExamples/S_FM_V2E-22.json",
-            "S_FM_V2E"),
-        Arguments.of(
-            "src/test/resources/notifications/disease/scenarioExamples/S_FM_E2E-11.json",
-            "S_FM_E2E"),
-        Arguments.of(
-            "src/test/resources/notifications/disease/scenarioExamples/S_FM_E2E-12.json",
-            "S_FM_E2E"),
-        Arguments.of(
-            "src/test/resources/notifications/disease/scenarioExamples/S_FM_E2E-21.json",
-            "S_FM_E2E"),
-        Arguments.of(
-            "src/test/resources/notifications/disease/scenarioExamples/S_FM_E2E-22.json",
-            "S_FM_E2E"),
-        Arguments.of(
-            "src/test/resources/notifications/disease/scenarioExamples/S_FM_E2I-11.json",
-            "S_FM_E2I"),
-        Arguments.of(
-            "src/test/resources/notifications/disease/scenarioExamples/S_FM_E2I-12.json",
-            "S_FM_E2I"),
-        Arguments.of(
-            "src/test/resources/notifications/disease/scenarioExamples/S_FM_E2I-21.json",
-            "S_FM_E2I"),
-        Arguments.of(
-            "src/test/resources/notifications/disease/scenarioExamples/S_FM_E2I-22.json",
-            "S_FM_E2I"),
-        Arguments.of(
-            "src/test/resources/notifications/disease/scenarioExamples/S_FM_T2V-1.json",
-            "S_FM_T2V"),
-        Arguments.of(
-            "src/test/resources/notifications/disease/scenarioExamples/S_FM_T2V-2.json",
-            "S_FM_T2V"),
-        Arguments.of(
-            "src/test/resources/notifications/disease/scenarioExamples/RUND.json", "S_IM_E"),
+            "src/test/resources/notifications/disease/scenarioExamples/RUND.json", "S_IM_EoT"),
         Arguments.of(
             "src/test/resources/notifications/disease/scenarioExamples/no_common_questionnaire.json",
-            "S_IM_E"));
+            "S_IM_EoT"));
   }
 
   @BeforeEach
@@ -161,33 +113,31 @@ class DiseaseNotificationLifecycleValidationSrvTest {
         new DiseaseConfigurationProperties(
             "configuration/diseaseScenarios.json", "configuration/keyToFhirPath.json", true);
     scenarios =
-        ScenarioLoader.loadScenarios(
-            properties.fhirPathData(), properties.keyToFhirPathData(), DiseaseScenario[].class);
+        ScenarioLoader.loadScenarios(properties.fhirPathData(), properties.keyToFhirPathData());
   }
 
   @Test
   void shouldCreateDataOnBuildAndValidateNotificationsRegression() throws IOException {
     String diseaseExample =
-        getString("src/test/resources/notifications/disease/scenarioExamples/S_FM_E2E-11.json");
+        getString("src/test/resources/notifications/disease/scenarioExamples/S_FM_confirmed.json");
 
     when(additionalOperationExecuter.checkAllExternalChecks(
-            any(Bundle.class), any(DiseaseScenario.class), any(FhirPathR4.class)))
+            any(Bundle.class), any(Scenario.class), any(FhirPathR4.class)))
         .thenReturn(true);
 
-    NotificationScenarioValidationService<DiseaseScenario>
-        diseaseNotificationLifecycleValidationSrv =
-            new NotificationScenarioValidationService<>(
-                FhirContext.forR4Cached(),
-                scenarios,
-                new ValidationMetrics(meterRegistry),
-                additionalOperationExecuter,
-                fhirParser);
+    NotificationScenarioValidationService diseaseNotificationLifecycleValidationSrv =
+        new NotificationScenarioValidationService(
+            FhirContext.forR4Cached(),
+            scenarios,
+            new ValidationMetrics(meterRegistry),
+            additionalOperationExecuter,
+            fhirParser);
 
     final String validate =
         diseaseNotificationLifecycleValidationSrv.getValidScenariosForNotification(
             diseaseExample, MediaType.APPLICATION_JSON, null);
 
-    assertThat(validate).contains("S_FM_E2E");
+    assertThat(validate).contains("S_FM");
   }
 
   @Test
@@ -197,14 +147,13 @@ class DiseaseNotificationLifecycleValidationSrvTest {
         getString(
             "src/test/resources/notifications/disease/scenarioExamples/S_FM_V2V_not_valid.json");
 
-    NotificationScenarioValidationService<DiseaseScenario>
-        diseaseNotificationLifecycleValidationSrv =
-            new NotificationScenarioValidationService<>(
-                FhirContext.forR4Cached(),
-                scenarios,
-                new ValidationMetrics(meterRegistry),
-                additionalOperationExecuter,
-                fhirParser);
+    NotificationScenarioValidationService diseaseNotificationLifecycleValidationSrv =
+        new NotificationScenarioValidationService(
+            FhirContext.forR4Cached(),
+            scenarios,
+            new ValidationMetrics(meterRegistry),
+            additionalOperationExecuter,
+            fhirParser);
 
     assertThatThrownBy(
             () ->
@@ -218,26 +167,25 @@ class DiseaseNotificationLifecycleValidationSrvTest {
       throws IOException {
 
     String diseaseExample =
-        getString("src/test/resources/notifications/disease/scenarioExamples/S_FM_V2E-11.json");
+        getString("src/test/resources/notifications/disease/scenarioExamples/S_FM_V2EoT.json");
 
     when(additionalOperationExecuter.checkAllExternalChecks(
-            any(Bundle.class), any(DiseaseScenario.class), any(FhirPathR4.class)))
+            any(Bundle.class), any(Scenario.class), any(FhirPathR4.class)))
         .thenReturn(true);
 
-    NotificationScenarioValidationService<DiseaseScenario>
-        diseaseNotificationLifecycleValidationSrv =
-            new NotificationScenarioValidationService<>(
-                FhirContext.forR4Cached(),
-                scenarios,
-                new ValidationMetrics(meterRegistry),
-                additionalOperationExecuter,
-                fhirParser);
+    NotificationScenarioValidationService diseaseNotificationLifecycleValidationSrv =
+        new NotificationScenarioValidationService(
+            FhirContext.forR4Cached(),
+            scenarios,
+            new ValidationMetrics(meterRegistry),
+            additionalOperationExecuter,
+            fhirParser);
 
     final String validate =
         diseaseNotificationLifecycleValidationSrv.getValidScenariosForNotification(
             diseaseExample, MediaType.APPLICATION_JSON, null);
 
-    assertThat(validate).isEqualTo("S_IM_E");
+    assertThat(validate).isEqualTo("S_IM_EoT");
   }
 
   @ParameterizedTest
@@ -245,19 +193,18 @@ class DiseaseNotificationLifecycleValidationSrvTest {
   void shouldReturnOnlyOneScenario(String path, String expectedScenarios) throws IOException {
 
     when(additionalOperationExecuter.checkAllExternalChecks(
-            any(Bundle.class), any(DiseaseScenario.class), any(FhirPathR4.class)))
+            any(Bundle.class), any(Scenario.class), any(FhirPathR4.class)))
         .thenReturn(true);
 
     String diseaseExample = getString(path);
 
-    NotificationScenarioValidationService<DiseaseScenario>
-        diseaseNotificationLifecycleValidationSrv =
-            new NotificationScenarioValidationService<>(
-                FhirContext.forR4Cached(),
-                scenarios,
-                new ValidationMetrics(meterRegistry),
-                additionalOperationExecuter,
-                fhirParser);
+    NotificationScenarioValidationService diseaseNotificationLifecycleValidationSrv =
+        new NotificationScenarioValidationService(
+            FhirContext.forR4Cached(),
+            scenarios,
+            new ValidationMetrics(meterRegistry),
+            additionalOperationExecuter,
+            fhirParser);
 
     final String validate =
         diseaseNotificationLifecycleValidationSrv.getValidScenariosForNotification(
@@ -277,14 +224,13 @@ class DiseaseNotificationLifecycleValidationSrvTest {
     final String testBundle =
         FhirContext.forR4Cached().newJsonParser().encodeResourceToString(bundle);
 
-    NotificationScenarioValidationService<DiseaseScenario>
-        diseaseNotificationLifecycleValidationSrv =
-            new NotificationScenarioValidationService<>(
-                FhirContext.forR4Cached(),
-                scenarios,
-                new ValidationMetrics(meterRegistry),
-                additionalOperationExecuter,
-                fhirParser);
+    NotificationScenarioValidationService diseaseNotificationLifecycleValidationSrv =
+        new NotificationScenarioValidationService(
+            FhirContext.forR4Cached(),
+            scenarios,
+            new ValidationMetrics(meterRegistry),
+            additionalOperationExecuter,
+            fhirParser);
 
     assertThatExceptionOfType(LifecycleValidationException.class)
         .isThrownBy(
@@ -296,7 +242,7 @@ class DiseaseNotificationLifecycleValidationSrvTest {
   @Test
   void thatMissingClinicalStatusDoesNotMatterForNominalNotifications() throws IOException {
     when(additionalOperationExecuter.checkAllExternalChecks(
-            any(Bundle.class), any(DiseaseScenario.class), any(FhirPathR4.class)))
+            any(Bundle.class), any(Scenario.class), any(FhirPathR4.class)))
         .thenReturn(true);
 
     final String testBundleString =
@@ -306,19 +252,18 @@ class DiseaseNotificationLifecycleValidationSrvTest {
     removeClinicalStatusCode(testBundle);
     final String preppedTestBundle =
         FhirContext.forR4Cached().newJsonParser().encodeResourceToString(testBundle);
-    final NotificationScenarioValidationService<DiseaseScenario>
-        diseaseNotificationLifecycleValidationSrv =
-            new NotificationScenarioValidationService<>(
-                FhirContext.forR4Cached(),
-                scenarios,
-                new ValidationMetrics(meterRegistry),
-                additionalOperationExecuter,
-                fhirParser);
+    final NotificationScenarioValidationService diseaseNotificationLifecycleValidationSrv =
+        new NotificationScenarioValidationService(
+            FhirContext.forR4Cached(),
+            scenarios,
+            new ValidationMetrics(meterRegistry),
+            additionalOperationExecuter,
+            fhirParser);
 
     final String actual =
         diseaseNotificationLifecycleValidationSrv.getValidScenariosForNotification(
             preppedTestBundle, MediaType.APPLICATION_JSON, null);
-    assertThat(actual).isEqualTo("S_FM_E2E");
+    assertThat(actual).isEqualTo("S_FM");
   }
 
   @ParameterizedTest
@@ -336,14 +281,13 @@ class DiseaseNotificationLifecycleValidationSrvTest {
     final String preppedBundleString =
         FhirContext.forR4Cached().newJsonParser().encodeResourceToString(testBundle);
 
-    final NotificationScenarioValidationService<DiseaseScenario>
-        diseaseNotificationLifecycleValidationSrv =
-            new NotificationScenarioValidationService<>(
-                FhirContext.forR4Cached(),
-                scenarios,
-                new ValidationMetrics(meterRegistry),
-                additionalOperationExecuter,
-                fhirParser);
+    final NotificationScenarioValidationService diseaseNotificationLifecycleValidationSrv =
+        new NotificationScenarioValidationService(
+            FhirContext.forR4Cached(),
+            scenarios,
+            new ValidationMetrics(meterRegistry),
+            additionalOperationExecuter,
+            fhirParser);
 
     assertThatExceptionOfType(LifecycleValidationException.class)
         .isThrownBy(
@@ -357,20 +301,18 @@ class DiseaseNotificationLifecycleValidationSrvTest {
   private static Stream<Arguments> clinicalStatusTestBundles() {
     return Stream.of(
         Arguments.of(
-            "src/test/resources/notifications/disease/scenarioExamples/S_FM_E2E-11.json",
-            "S_FM_E2E"),
+            "src/test/resources/notifications/disease/scenarioExamples/S_FM_confirmed.json",
+            "S_FM"),
         Arguments.of(
-            "src/test/resources/notifications/disease/scenarioExamples/S_FM_T2V-1.json",
-            "S_FM_T2V"),
+            "src/test/resources/notifications/disease/scenarioExamples/S_FM_unconfirmed.json",
+            "S_FM"),
         Arguments.of(
-            "src/test/resources/notifications/disease/scenarioExamples/S_FM_V2E-11.json",
-            "S_FM_V2E"),
+            "src/test/resources/notifications/disease/scenarioExamples/S_FM_V2EoT.json",
+            "S_FM_V2EoT"),
         Arguments.of(
-            "src/test/resources/notifications/disease/scenarioExamples/S_FM_V2I-11.json",
-            "S_FM_V2I"),
+            "src/test/resources/notifications/disease/scenarioExamples/S_FM_V2I.json", "S_FM_V2I"),
         Arguments.of(
-            "src/test/resources/notifications/disease/scenarioExamples/S_FM_V2V-11.json",
-            "S_FM_V2V"));
+            "src/test/resources/notifications/disease/scenarioExamples/S_FM_V2V.json", "S_FM_V2V"));
   }
 
   private static void removeClinicalStatusCode(@Nonnull final Bundle testBundle) {

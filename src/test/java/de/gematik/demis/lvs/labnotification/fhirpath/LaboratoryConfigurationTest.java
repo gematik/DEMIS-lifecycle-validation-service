@@ -29,6 +29,7 @@ package de.gematik.demis.lvs.labnotification.fhirpath;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 
+import de.gematik.demis.lvs.common.fhirpath.Scenario;
 import de.gematik.demis.lvs.common.fhirpath.ScenarioLoader;
 import java.util.List;
 import org.junit.jupiter.api.Test;
@@ -39,13 +40,12 @@ class LaboratoryConfigurationTest {
     final LaboratoryConfigurationProperties properties =
         new LaboratoryConfigurationProperties(
             "configuration/laboratoryScenarios.json", "configuration/keyToFhirPath.json", true);
-    final List<LaboratoryScenario> scenarios =
-        ScenarioLoader.loadScenarios(
-            properties.fhirPathData(), properties.keyToFhirPathData(), LaboratoryScenario[].class);
-    assertThat(scenarios.getFirst().getFhirPathExpression().getFirst().getFhirPath())
+    final List<Scenario> scenarios =
+        ScenarioLoader.loadScenarios(properties.fhirPathData(), properties.keyToFhirPathData());
+    assertThat(scenarios.getFirst().fhirPathExpression().getFirst().getFhirPath())
         .isEqualTo(
             "Bundle.where(meta.profile = 'https://demis.rki.de/fhir/StructureDefinition/NotificationBundleLaboratoryNegative').empty()");
-    assertThat(scenarios.getLast().getFhirPathExpression().getFirst().getFhirPath())
+    assertThat(scenarios.getLast().fhirPathExpression().getFirst().getFhirPath())
         .isEqualTo(
             "Bundle.where(meta.profile = 'https://demis.rki.de/fhir/StructureDefinition/NotificationBundleLaboratoryNegative').exists()");
   }

@@ -33,8 +33,7 @@ import ca.uhn.fhir.context.FhirContext;
 import ca.uhn.fhir.fhirpath.IFhirPath;
 import de.gematik.demis.lvs.common.codemapping.SwitchingCodeMappingService;
 import de.gematik.demis.lvs.common.destination.DestinationLookupServiceClient;
-import de.gematik.demis.lvs.disease.fhirpath.DiseaseScenario;
-import de.gematik.demis.lvs.labnotification.fhirpath.LaboratoryScenario;
+import de.gematik.demis.lvs.common.fhirpath.Scenario;
 import java.util.List;
 import org.hl7.fhir.r4.model.Bundle;
 import org.junit.jupiter.api.DisplayName;
@@ -61,13 +60,7 @@ class AdditionalOperationExecuterTest {
 
     assertThat(
             additionalOperationExecuter.checkAllExternalChecks(
-                new Bundle(),
-                new LaboratoryScenario("fakeScenario", List.of(), List.of()),
-                fhirpath))
-        .isTrue();
-    assertThat(
-            additionalOperationExecuter.checkAllExternalChecks(
-                new Bundle(), new DiseaseScenario("fakeScenario", List.of(), List.of()), fhirpath))
+                new Bundle(), new Scenario("fakeScenario", List.of(), List.of()), fhirpath))
         .isTrue();
   }
 }

@@ -32,8 +32,6 @@ import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 import static org.springframework.http.MediaType.APPLICATION_XML_VALUE;
 
 import de.gematik.demis.lvs.common.validation.NotificationValidationService;
-import de.gematik.demis.lvs.disease.fhirpath.DiseaseScenario;
-import de.gematik.demis.lvs.labnotification.fhirpath.LaboratoryScenario;
 import jakarta.validation.constraints.NotBlank;
 import javax.annotation.CheckForNull;
 import lombok.RequiredArgsConstructor;
@@ -57,9 +55,8 @@ public class LifecycleValidationController {
 
   public static final String HEADER_SENDER = "x-sender";
 
-  private final NotificationValidationService<DiseaseScenario> diseaseNotificationValidationService;
-  private final NotificationValidationService<LaboratoryScenario>
-      laboratoryNotificationValidationService;
+  private final NotificationValidationService diseaseValidationService;
+  private final NotificationValidationService laboratoryValidationService;
 
   @PostMapping(
       path = "{notificationType}/$validate",
@@ -78,13 +75,13 @@ public class LifecycleValidationController {
     if (notificationType.equals("disease")) {
       return ResponseEntity.ok()
           .body(
-              diseaseNotificationValidationService.validate(
+              diseaseValidationService.validate(
                   notification, mediaType, principalId, notificationType));
     }
     if (notificationType.equals("laboratory")) {
       return ResponseEntity.ok()
           .body(
-              laboratoryNotificationValidationService.validate(
+              laboratoryValidationService.validate(
                   notification, mediaType, principalId, notificationType));
     }
 

@@ -96,42 +96,85 @@ class ValidationMetricsTest {
   }
 
   @Test
-  void countLabValResult_shouldIncrementEqualCounter() {
-    when(meterRegistry.counter("counter_lab_val_result_equal")).thenReturn(counter);
+  void countLabValResult_shouldIncrementCounter_EqualSuccess() {
+    when(meterRegistry.counter("lvs_lab_val_res_equal_success")).thenReturn(counter);
 
-    validationMetrics.countLabValResult(true);
+    validationMetrics.countLabValResult(true, true);
 
-    verify(meterRegistry).counter("counter_lab_val_result_equal");
+    verify(meterRegistry).counter("lvs_lab_val_res_equal_success");
     verify(counter).increment();
   }
 
   @Test
-  void countLabValResult_shouldIncrementNotEqualCounter() {
-    when(meterRegistry.counter("counter_lab_val_result_not_equal")).thenReturn(counter);
+  void countLabValResult_shouldIncrementCounter_EqualFail() {
+    when(meterRegistry.counter("lvs_lab_val_res_equal_fail")).thenReturn(counter);
 
-    validationMetrics.countLabValResult(false);
+    validationMetrics.countLabValResult(false, false);
 
-    verify(meterRegistry).counter("counter_lab_val_result_not_equal");
+    verify(meterRegistry).counter("lvs_lab_val_res_equal_fail");
     verify(counter).increment();
   }
 
   @Test
-  void countDisValResult_shouldIncrementEqualCounter() {
-    when(meterRegistry.counter("counter_dis_val_result_equal")).thenReturn(counter);
+  void countLabValResult_shouldIncrementCounter_UnequalLegacySuccess() {
+    when(meterRegistry.counter("lvs_lab_val_res_unequal_legacy_success_fhirpath_fail"))
+        .thenReturn(counter);
 
-    validationMetrics.countDisValResult(true);
+    validationMetrics.countLabValResult(true, false);
 
-    verify(meterRegistry).counter("counter_dis_val_result_equal");
+    verify(meterRegistry).counter("lvs_lab_val_res_unequal_legacy_success_fhirpath_fail");
     verify(counter).increment();
   }
 
   @Test
-  void countDisValResult_shouldIncrementNotEqualCounter() {
-    when(meterRegistry.counter("counter_dis_val_result_not_equal")).thenReturn(counter);
+  void countLabValResult_shouldIncrementCounter_UnequalLegacyFail() {
+    when(meterRegistry.counter("lvs_lab_val_res_unequal_legacy_fail_fhirpath_success"))
+        .thenReturn(counter);
 
-    validationMetrics.countDisValResult(false);
+    validationMetrics.countLabValResult(false, true);
 
-    verify(meterRegistry).counter("counter_dis_val_result_not_equal");
+    verify(meterRegistry).counter("lvs_lab_val_res_unequal_legacy_fail_fhirpath_success");
+    verify(counter).increment();
+  }
+
+  @Test
+  void countDisValResult_shouldIncrementCounter_EqualSuccess() {
+    when(meterRegistry.counter("lvs_disease_val_res_equal_success")).thenReturn(counter);
+
+    validationMetrics.countDisValResult(true, true);
+
+    verify(meterRegistry).counter("lvs_disease_val_res_equal_success");
+    verify(counter).increment();
+  }
+
+  @Test
+  void countDisValResult_shouldIncrementCounter_EqualFail() {
+    when(meterRegistry.counter("lvs_disease_val_res_equal_fail")).thenReturn(counter);
+
+    validationMetrics.countDisValResult(false, false);
+
+    verify(meterRegistry).counter("lvs_disease_val_res_equal_fail");
+    verify(counter).increment();
+  }
+
+  @Test
+  void countDisValResult_shouldIncrementCounter_UnequalLegacySuccess() {
+    when(meterRegistry.counter("lvs_disease_val_res_unequal_legacy_success_fhirpath_fail"))
+        .thenReturn(counter);
+
+    validationMetrics.countDisValResult(true, false);
+
+    verify(meterRegistry).counter("lvs_disease_val_res_unequal_legacy_success_fhirpath_fail");
+    verify(counter).increment();
+  }
+
+  @Test
+  void countDisValResult_shouldIncrementCounter_UnequalLegacyFail() {
+    when(meterRegistry.counter("lvs_disease_val_res_unequal_legacy_fail_fhirpath_success"))
+        .thenReturn(counter);
+    validationMetrics.countDisValResult(false, true);
+
+    verify(meterRegistry).counter("lvs_disease_val_res_unequal_legacy_fail_fhirpath_success");
     verify(counter).increment();
   }
 }
