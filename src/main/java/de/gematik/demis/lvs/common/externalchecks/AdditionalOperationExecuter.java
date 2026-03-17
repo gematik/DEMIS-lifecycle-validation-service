@@ -30,11 +30,11 @@ package de.gematik.demis.lvs.common.externalchecks;
 import static de.gematik.demis.lvs.common.exception.ExceptionMessages.EXCEPTION_MESSAGE_NOTIFICATION_CATEGORY_MISMATCH;
 
 import ca.uhn.fhir.fhirpath.IFhirPath;
-import de.gematik.demis.lvs.common.codemapping.SwitchingCodeMappingService;
 import de.gematik.demis.lvs.common.destination.DestinationLookupServiceClient;
 import de.gematik.demis.lvs.common.exception.LifecycleValidationException;
 import de.gematik.demis.lvs.common.fhirpath.Scenario;
 import de.gematik.demis.lvs.common.util.UUIDValidator;
+import de.gematik.demis.service.base.clients.mapping.CodeMappingService;
 import feign.FeignException;
 import java.util.Map;
 import java.util.Optional;
@@ -57,7 +57,7 @@ public class AdditionalOperationExecuter {
 
   public static final String HAS_TO_EXIST = "hasToExist";
   public static final String NOTIFICATION_CATEGORY = "notificationCategory";
-  private final SwitchingCodeMappingService switchingCodeMappingService;
+  private final CodeMappingService codeMappingService;
   private final DestinationLookupServiceClient destinationLookupServiceClient;
 
   public boolean checkAllExternalChecks(
@@ -114,14 +114,14 @@ public class AdditionalOperationExecuter {
       final Map<String, Object> inputs,
       final String notificationCategoryFromDLS) {
     final String mappedCategoryCodeFromDLS =
-        switchingCodeMappingService.mapCode(notificationCategoryFromDLS);
+        codeMappingService.mapCode(notificationCategoryFromDLS);
     final String notificationCategoryPath = (String) inputs.get(NOTIFICATION_CATEGORY);
     final String notificationCategory =
         fhirPath
             .evaluate(notification, notificationCategoryPath, StringType.class)
             .getFirst()
             .getValue();
-    final String mappedCategoryCode = switchingCodeMappingService.mapCode(notificationCategory);
+    final String mappedCategoryCode = codeMappingService.mapCode(notificationCategory);
     if (!mappedCategoryCode.equals(mappedCategoryCodeFromDLS)) {
       throw new LifecycleValidationException(EXCEPTION_MESSAGE_NOTIFICATION_CATEGORY_MISMATCH);
     }

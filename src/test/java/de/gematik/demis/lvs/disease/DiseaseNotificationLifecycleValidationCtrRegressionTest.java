@@ -46,10 +46,7 @@ import org.springframework.test.web.servlet.MockMvc;
 @AutoConfigureMockMvc
 @SpringBootTest
 @AutoConfigureObservability
-@TestPropertySource(
-    properties = {
-      "feature.flag.fhirpath.validation.enabled=false",
-    })
+@TestPropertySource(properties = {"feature.flag.fhirpath.validation.enabled=false"})
 class DiseaseNotificationLifecycleValidationCtrRegressionTest {
 
   @Autowired private MockMvc mockMvc;

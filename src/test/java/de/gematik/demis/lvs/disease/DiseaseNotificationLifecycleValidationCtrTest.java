@@ -28,13 +28,11 @@ package de.gematik.demis.lvs.disease;
  */
 
 import static org.mockito.ArgumentMatchers.anyString;
-import static org.mockito.Mockito.verifyNoInteractions;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-import de.gematik.demis.lvs.common.codemapping.FutsClient;
 import de.gematik.demis.lvs.common.destination.DestinationLookupServiceClient;
 import de.gematik.demis.lvs.common.destination.NotificationCategoryDTO;
 import de.gematik.demis.service.base.clients.mapping.CodeMappingService;
@@ -57,14 +55,11 @@ import org.springframework.test.web.servlet.MockMvc;
 @TestPropertySource(
     properties = {
       "feature.flag.fhirpath.validation.enabled=true",
-      "feature.flag.return.disease.fhirpath.validation.in.responses=true",
-      "feature.flag.codemapping.service.base=true"
+      "feature.flag.return.disease.fhirpath.validation.in.responses=true"
     })
 class DiseaseNotificationLifecycleValidationCtrTest {
 
   @Autowired private MockMvc mockMvc;
-
-  @MockitoBean private FutsClient futsClientMock;
 
   @MockitoBean private DestinationLookupServiceClient destinationLookupServiceClientMock;
   @MockitoBean private CodeMappingService codeMappingServiceMock;
@@ -128,7 +123,5 @@ class DiseaseNotificationLifecycleValidationCtrTest {
         .andExpect(status().isOk())
         .andExpect(content().string("S_FM_Anonymous"))
         .andReturn();
-
-    verifyNoInteractions(futsClientMock);
   }
 }

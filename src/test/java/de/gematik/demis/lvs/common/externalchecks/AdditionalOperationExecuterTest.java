@@ -31,9 +31,9 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 import ca.uhn.fhir.context.FhirContext;
 import ca.uhn.fhir.fhirpath.IFhirPath;
-import de.gematik.demis.lvs.common.codemapping.SwitchingCodeMappingService;
 import de.gematik.demis.lvs.common.destination.DestinationLookupServiceClient;
 import de.gematik.demis.lvs.common.fhirpath.Scenario;
+import de.gematik.demis.service.base.clients.mapping.CodeMappingService;
 import java.util.List;
 import org.hl7.fhir.r4.model.Bundle;
 import org.junit.jupiter.api.DisplayName;
@@ -42,7 +42,7 @@ import org.mockito.Mock;
 
 class AdditionalOperationExecuterTest {
 
-  @Mock SwitchingCodeMappingService switchingCodeMappingServiceMock;
+  @Mock CodeMappingService codeMappingServiceMock;
 
   @Mock DestinationLookupServiceClient destinationLookupServiceClientMock;
 
@@ -55,8 +55,7 @@ class AdditionalOperationExecuterTest {
     fhirpath = FhirContext.forR4Cached().newFhirPath();
 
     AdditionalOperationExecuter additionalOperationExecuter =
-        new AdditionalOperationExecuter(
-            switchingCodeMappingServiceMock, destinationLookupServiceClientMock);
+        new AdditionalOperationExecuter(codeMappingServiceMock, destinationLookupServiceClientMock);
 
     assertThat(
             additionalOperationExecuter.checkAllExternalChecks(

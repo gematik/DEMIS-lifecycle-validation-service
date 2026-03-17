@@ -50,11 +50,7 @@ import org.springframework.test.context.TestPropertySource;
 @AutoConfigureObservability
 @AutoConfiguration
 @Slf4j
-@TestPropertySource(
-    properties = {
-      "lvs.client.futs.address=http://localhost:9999",
-      "feature.flag.fhirpath.validation.enabled=false"
-    })
+@TestPropertySource(properties = {"feature.flag.fhirpath.validation.enabled=false"})
 class LaboratoryNotificationAppContextTest {
 
   @Autowired TestRestTemplate restTemplate;

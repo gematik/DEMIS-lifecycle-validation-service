@@ -49,8 +49,6 @@ import org.springframework.test.web.servlet.MockMvc;
 @TestPropertySource(
     properties = {
       "feature.flag.fhirpath.validation.enabled=false",
-      "feature.flag.codemapping.service.base=false",
-      "lvs.client.futs.address=http://localhost:9999"
     })
 class LaboratoryNotificationRestControllerRegressionTest {
   @Autowired private MockMvc mockMvc;

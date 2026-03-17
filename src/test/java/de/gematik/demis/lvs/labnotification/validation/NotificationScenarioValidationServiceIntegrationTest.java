@@ -65,8 +65,7 @@ import org.springframework.test.context.TestPropertySource;
 @SpringBootTest(
     properties = {
       "lvs.client.dls=http://localhost:7070",
-      "lvs.client.futs.address=http://localhost:7071",
-      "lvs.client.futs.address.context-path=/fhir-ui-data-model-translation/"
+      "demis.codemapping.client.base-url=http://localhost:7071"
     })
 @AutoConfigureWireMock(port = 0) // dynamic random port
 @TestPropertySource(locations = "classpath:application-test.properties")
