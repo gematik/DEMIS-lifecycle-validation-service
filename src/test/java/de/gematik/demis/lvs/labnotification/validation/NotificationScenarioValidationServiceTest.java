@@ -82,6 +82,9 @@ class NotificationScenarioValidationServiceTest {
         Arguments.of(
             "src/test/resources/notifications/laboratory/scenarioExamples/M_POS.json", "M_POS"),
         Arguments.of(
+            "src/test/resources/notifications/laboratory/scenarioExamples/M_POS-validSnomedInterpretationCode.json",
+            "M_POS"),
+        Arguments.of(
             "src/test/resources/notifications/laboratory/scenarioExamples/FM_NEG.json", "EM_NEG"),
         Arguments.of(
             "src/test/resources/notifications/laboratory/scenarioExamples/aFM_POS.json", "aFM_POS"),
@@ -98,7 +101,8 @@ class NotificationScenarioValidationServiceTest {
     return Stream.of(
         "src/test/resources/notifications/laboratory/scenarioExamples/invalid/IM_NEG.json",
         "src/test/resources/notifications/laboratory/scenarioExamples/invalid/IM_NEG-otherCategoryThanCvdp.json",
-        "src/test/resources/notifications/laboratory/scenarioExamples/invalid/IM_NEG_CVDP-withRelatesTo.json");
+        "src/test/resources/notifications/laboratory/scenarioExamples/invalid/IM_NEG_CVDP-withRelatesTo.json",
+        "src/test/resources/notifications/laboratory/scenarioExamples/invalid/M_POS-invalidSnomedInterpretationCode.json");
   }
 
   @BeforeEach

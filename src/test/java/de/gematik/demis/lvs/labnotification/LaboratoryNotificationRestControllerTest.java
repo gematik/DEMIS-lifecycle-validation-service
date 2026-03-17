@@ -29,13 +29,11 @@ package de.gematik.demis.lvs.labnotification;
 
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.verifyNoInteractions;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-import de.gematik.demis.lvs.common.codemapping.LegacyCodeMappingService;
 import de.gematik.demis.lvs.common.destination.DestinationLookupServiceClient;
 import de.gematik.demis.lvs.common.destination.NotificationCategoryDTO;
 import de.gematik.demis.service.base.clients.mapping.CodeMappingService;
@@ -61,16 +59,12 @@ import org.springframework.test.web.servlet.MockMvc;
 @TestPropertySource(
     properties = {
       "feature.flag.fhirpath.validation.enabled=true",
-      "feature.flag.return.fhirpath.validation.in.responses=true",
-      "feature.flag.codemapping.service.base=true",
-      "lvs.client.futs.address=http://localhost:9999"
+      "feature.flag.return.fhirpath.validation.in.responses=true"
     })
 class LaboratoryNotificationRestControllerTest {
   @Autowired private MockMvc mockMvc;
 
   @MockitoBean DestinationLookupServiceClient destinationLookupServiceClientMock;
-
-  @MockitoBean LegacyCodeMappingService legacyCodeMappingServiceMock;
 
   @MockitoBean CodeMappingService codeMappingServiceMock;
 
@@ -135,7 +129,5 @@ class LaboratoryNotificationRestControllerTest {
         .andExpect(status().isOk())
         .andExpect(content().string("aFM_POS"))
         .andReturn();
-
-    verifyNoInteractions(legacyCodeMappingServiceMock);
   }
 }

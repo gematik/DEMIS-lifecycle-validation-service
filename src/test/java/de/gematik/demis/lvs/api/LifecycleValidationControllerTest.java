@@ -35,18 +35,15 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-import de.gematik.demis.lvs.common.codemapping.FutsClient;
 import de.gematik.demis.lvs.common.destination.DestinationLookupServiceClient;
 import de.gematik.demis.lvs.common.destination.NotificationCategoryDTO;
+import de.gematik.demis.service.base.clients.mapping.CodeMappingService;
 import feign.FeignException;
 import feign.Request;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.Collections;
-import java.util.HashMap;
-import java.util.Map;
 import lombok.extern.slf4j.Slf4j;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -73,24 +70,8 @@ class LifecycleValidationControllerTest {
 
   @Autowired private MockMvc mockMvc;
 
-  @MockitoBean private FutsClient futsClientMock;
+  @MockitoBean private CodeMappingService codeMappingServiceMock;
   @MockitoBean private DestinationLookupServiceClient destinationLookupServiceClientMock;
-
-  @BeforeEach
-  void setUp() {
-    Map<String, String> labMap = new HashMap<>();
-    labMap.put("cvdp", "cvd");
-    labMap.put("abvp", "abv");
-    labMap.put("banp", "ban");
-    when(futsClientMock.getConceptMap("NotificationCategoryToTransmissionCategory"))
-        .thenReturn(labMap);
-    Map<String, String> disMap = new HashMap<>();
-    disMap.put("cvdd", "cvd");
-    disMap.put("abvd", "abv");
-    disMap.put("band", "ban");
-    when(futsClientMock.getConceptMap("NotificationDiseaseCategoryToTransmissionCategory"))
-        .thenReturn(disMap);
-  }
 
   @Nested
   class DiseaseTests {
@@ -104,6 +85,8 @@ class LifecycleValidationControllerTest {
 
       when(destinationLookupServiceClientMock.getNotificationCategory(anyString()))
           .thenReturn(new NotificationCategoryDTO("band"));
+
+      when(codeMappingServiceMock.mapCode("band")).thenReturn("ban");
 
       mockMvc
           .perform(
@@ -187,6 +170,10 @@ class LifecycleValidationControllerTest {
 
       when(destinationLookupServiceClientMock.getNotificationCategory(anyString()))
           .thenReturn(new NotificationCategoryDTO("abvp"));
+
+      when(codeMappingServiceMock.mapCode("cvdp")).thenReturn("cvd");
+
+      when(codeMappingServiceMock.mapCode("abvp")).thenReturn("abv");
 
       mockMvc
           .perform(
