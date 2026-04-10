@@ -154,7 +154,7 @@ class DiseaseNotificationValidationSrvIntegrationTest {
     FUTS_SERVER.start();
     DiseaseConfigurationProperties properties =
         new DiseaseConfigurationProperties(
-            "configuration/diseaseScenarios.json", "configuration/keyToFhirPath.json", true);
+            "configuration/diseaseScenarios.json", "configuration/keyToFhirPath.json");
     scenarios =
         ScenarioLoader.loadScenarios(properties.fhirPathData(), properties.keyToFhirPathData());
   }

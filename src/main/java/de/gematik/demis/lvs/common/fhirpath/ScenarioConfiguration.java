@@ -30,18 +30,19 @@ package de.gematik.demis.lvs.common.fhirpath;
 import de.gematik.demis.lvs.disease.fhirpath.DiseaseConfigurationProperties;
 import de.gematik.demis.lvs.labnotification.fhirpath.LaboratoryConfigurationProperties;
 import java.util.List;
-import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
-@ConditionalOnProperty(name = "feature.flag.fhirpath.validation.enabled", havingValue = "true")
 @Configuration
 @EnableConfigurationProperties({
   LaboratoryConfigurationProperties.class,
   DiseaseConfigurationProperties.class
 })
 public class ScenarioConfiguration {
+  @Value("${feature.flag.anonymous.notification}")
+  private boolean anonymous73NotificationsEnabled;
 
   @Bean
   public List<Scenario> loadDiseaseScenarios(DiseaseConfigurationProperties properties) {
@@ -50,6 +51,10 @@ public class ScenarioConfiguration {
 
   @Bean
   public List<Scenario> loadLaboratoryScenarios(LaboratoryConfigurationProperties properties) {
-    return ScenarioLoader.loadScenarios(properties.fhirPathData(), properties.keyToFhirPathData());
+    return ScenarioLoader.loadScenarios(
+        anonymous73NotificationsEnabled
+            ? properties.fhirPathDataAnonymous73()
+            : properties.fhirPathData(),
+        properties.keyToFhirPathData());
   }
 }

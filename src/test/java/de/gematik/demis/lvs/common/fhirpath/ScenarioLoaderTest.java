@@ -1,4 +1,4 @@
-package de.gematik.demis.lvs.labnotification.fhirpath;
+package de.gematik.demis.lvs.common.fhirpath;
 
 /*-
  * #%L
@@ -29,24 +29,41 @@ package de.gematik.demis.lvs.labnotification.fhirpath;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 
-import de.gematik.demis.lvs.common.fhirpath.Scenario;
-import de.gematik.demis.lvs.common.fhirpath.ScenarioLoader;
+import de.gematik.demis.lvs.disease.fhirpath.DiseaseConfigurationProperties;
+import de.gematik.demis.lvs.labnotification.fhirpath.LaboratoryConfigurationProperties;
 import java.util.List;
 import org.junit.jupiter.api.Test;
 
-class LaboratoryConfigurationTest {
+class ScenarioLoaderTest {
   @Test
   void testLoadLaboratoryScenarios() {
     final LaboratoryConfigurationProperties properties =
         new LaboratoryConfigurationProperties(
-            "configuration/laboratoryScenarios.json", "configuration/keyToFhirPath.json", true);
+            "configuration/laboratoryScenarios.json",
+            "configuration/laboratoryScenarios_anonymous73.json",
+            "configuration/keyToFhirPath.json");
     final List<Scenario> scenarios =
         ScenarioLoader.loadScenarios(properties.fhirPathData(), properties.keyToFhirPathData());
     assertThat(scenarios.getFirst().fhirPathExpression().getFirst().getFhirPath())
         .isEqualTo(
-            "Bundle.where(meta.profile = 'https://demis.rki.de/fhir/StructureDefinition/NotificationBundleLaboratoryNegative').empty()");
+            "Bundle.where(meta.profile = 'https://demis.rki.de/fhir/StructureDefinition/NotificationBundleLaboratoryNegative' or meta.profile = 'https://demis.rki.de/fhir/StructureDefinition/NotificationBundleLaboratoryAnonymous').empty()");
     assertThat(scenarios.getLast().fhirPathExpression().getFirst().getFhirPath())
         .isEqualTo(
             "Bundle.where(meta.profile = 'https://demis.rki.de/fhir/StructureDefinition/NotificationBundleLaboratoryNegative').exists()");
+  }
+
+  @Test
+  void testLoadDiseaseScenarios() {
+    final DiseaseConfigurationProperties properties =
+        new DiseaseConfigurationProperties(
+            "configuration/diseaseScenarios.json", "configuration/keyToFhirPath.json");
+    final List<Scenario> scenarios =
+        ScenarioLoader.loadScenarios(properties.fhirPathData(), properties.keyToFhirPathData());
+    assertThat(scenarios.getFirst().fhirPathExpression().getFirst().getFhirPath())
+        .isEqualTo(
+            "Bundle.entry.resource.where($this is Patient).meta.where(profile = 'https://demis.rki.de/fhir/StructureDefinition/NotifiedPerson').exists()");
+    assertThat(scenarios.getFirst().fhirPathExpression().getLast().getFhirPath())
+        .isEqualTo(
+            "Bundle.entry.resource.where($this is Condition).verificationStatus.coding.where(code = 'unconfirmed').exists()");
   }
 }

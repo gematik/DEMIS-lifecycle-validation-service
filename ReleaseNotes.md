@@ -1,7 +1,19 @@
 <div style="text-align:right"><img src="https://raw.githubusercontent.com/gematik/gematik.github.io/master/Gematik_Logo_Flag_With_Background.png" width="250" height="47" alt="gematik GmbH Logo"/> <br/> </div> <br/> 
  
 # Release notes
-## Release 1.5.0 
+
+## Release 1.6.0
+- updated spring-parent to 2.15.6
+- added validation of anonymous §7.3 notifications
+- added FEATURE_FLAG_ANONYMOUS_NOTIFICATION
+- removed regression tests for old basic-validation-only path
+- removed comparison metrics countLabValResult / countDisValResult from ValidationMetrics
+- removed feature flag FEATURE_FLAG_FHIRPATH_VALIDATION_ENABLED (FHIRPath validation is now always active)
+- removed feature flag FEATURE_FLAG_RETURN_FHIRPATH_VALIDATION_IN_RESPONSES (scenario result is always returned in responses)
+- removed feature flag FEATURE_FLAG_RETURN_DISEASE_FHIRPATH_VALIDATION_IN_RESPONSES (scenario result is always returned in disease responses)
+- removed legacy controllers LaboratoryNotificationRestController and DiseaseNotificationLifecycleValidationCtr
+
+## Release 1.5.0
 - updated base-image and updated from java 21 to java 25
 - removed feature flag FEATURE_FLAG_CODEMAPPING_SERVICE_BASE
 - updated snomed codes in fhirpath validation

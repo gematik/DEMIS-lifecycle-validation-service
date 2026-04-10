@@ -37,9 +37,7 @@ import org.springframework.validation.annotation.Validated;
 @Validated
 @Slf4j
 public record DiseaseConfigurationProperties(
-    @NotEmpty String fhirPathData,
-    @NotEmpty String keyToFhirPathData,
-    Boolean configShowAllScenarioPassed) {
+    @NotEmpty String fhirPathData, @NotEmpty String keyToFhirPathData) {
 
   @PostConstruct
   void log() {

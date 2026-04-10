@@ -28,12 +28,9 @@ package de.gematik.demis.lvs.integration;
  */
 
 import de.gematik.demis.lvs.Application;
-import de.gematik.demis.lvs.common.exception.ExceptionMessages;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.params.ParameterizedTest;
-import org.junit.jupiter.params.provider.ValueSource;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.AutoConfiguration;
 import org.springframework.boot.test.autoconfigure.actuate.observability.AutoConfigureObservability;
@@ -42,7 +39,6 @@ import org.springframework.boot.test.web.client.TestRestTemplate;
 import org.springframework.boot.test.web.server.LocalServerPort;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
-import org.springframework.test.context.TestPropertySource;
 
 @SpringBootTest(
     classes = Application.class,
@@ -50,7 +46,6 @@ import org.springframework.test.context.TestPropertySource;
 @AutoConfigureObservability
 @AutoConfiguration
 @Slf4j
-@TestPropertySource(properties = {"feature.flag.fhirpath.validation.enabled=false"})
 class LaboratoryNotificationAppContextTest {
 
   @Autowired TestRestTemplate restTemplate;
@@ -113,70 +108,6 @@ class LaboratoryNotificationAppContextTest {
                     MediaType.APPLICATION_PDF));
     Assertions.assertEquals(
         HttpStatus.UNSUPPORTED_MEDIA_TYPE.value(), result.getStatusCode().value());
-  }
-
-  @ParameterizedTest
-  @ValueSource(
-      strings = {
-        "src/test/resources/notifications/laboratory/positive_test_notification_Dv2.json",
-        "src/test/resources/notifications/laboratory/valid_positive_test_notification_with_multiple_given_names.json",
-        "src/test/resources/notifications/laboratory/invalid_positive_test_notification_with_number_in_family_name.json"
-      }) // six numbers
-  void expect200OnLaboratoryNotification(final String input) {
-    // GIVEN a Valid Laboratory Notification is loaded
-    final var notification = FileLoaderHelper.loadResourceFile(input);
-    // WHEN it is sent to the Service
-    final var response =
-        Assertions.assertDoesNotThrow(
-            () ->
-                RequestEntityHelper.sendLaboratoryNotification(
-                    restTemplate,
-                    createURLWithPort("/laboratory/$validate"),
-                    notification,
-                    MediaType.APPLICATION_JSON));
-    // THEN the response of the server is successful
-    Assertions.assertEquals(200, response.getStatusCode().value());
-  }
-
-  @Test
-  void expect200OnValidLaboratoryNotificationWithComments() {
-    // GIVEN a Valid Laboratory Notification is loaded
-    final var notification =
-        FileLoaderHelper.loadResourceFile(
-            "src/test/resources/notifications/laboratory/labor_notification_with_comments_anfdms_1317.xml");
-    // WHEN it is sent to the Service
-    final var response =
-        Assertions.assertDoesNotThrow(
-            () ->
-                RequestEntityHelper.sendLaboratoryNotification(
-                    restTemplate,
-                    createURLWithPort("/laboratory/$validate"),
-                    notification,
-                    MediaType.APPLICATION_XML));
-    // THEN the response of the server is successful
-    Assertions.assertEquals(200, response.getStatusCode().value());
-  }
-
-  @Test
-  void expect422OnInvalidLaboratoryNotification() {
-    // GIVEN a Valid Laboratory Notification is loaded
-    final var notification =
-        FileLoaderHelper.loadResourceFile(
-            "src/test/resources/notifications/laboratory/scenarioExamples/invalid/IM_NEG.json");
-    // WHEN it is sent to the Service
-    // THEN the response of the server is 422
-    final var result =
-        Assertions.assertDoesNotThrow(
-            () ->
-                RequestEntityHelper.sendLaboratoryNotification(
-                    restTemplate,
-                    createURLWithPort("/laboratory/$validate"),
-                    notification,
-                    MediaType.APPLICATION_JSON));
-    Assertions.assertEquals(
-        HttpStatus.UNPROCESSABLE_ENTITY.value(), result.getStatusCode().value());
-    Assertions.assertEquals(
-        ExceptionMessages.EXCEPTION_MESSAGE_DIAGNOSTIC_REPORT_UNKNOWN, result.getBody());
   }
 
   private String createURLWithPort(final String path) {

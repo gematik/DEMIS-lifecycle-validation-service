@@ -38,8 +38,8 @@ import org.springframework.validation.annotation.Validated;
 @Slf4j
 public record LaboratoryConfigurationProperties(
     @NotEmpty String fhirPathData,
-    @NotEmpty String keyToFhirPathData,
-    Boolean configShowAllScenarioPassed) {
+    @NotEmpty String fhirPathDataAnonymous73,
+    @NotEmpty String keyToFhirPathData) {
 
   @PostConstruct
   void log() {

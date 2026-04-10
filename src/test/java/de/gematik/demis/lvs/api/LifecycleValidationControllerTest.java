@@ -51,7 +51,6 @@ import org.springframework.boot.test.autoconfigure.actuate.observability.AutoCon
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.cache.annotation.EnableCaching;
-import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.test.web.servlet.MockMvc;
 
@@ -60,12 +59,6 @@ import org.springframework.test.web.servlet.MockMvc;
 @SpringBootTest
 @AutoConfigureObservability
 @EnableCaching
-@TestPropertySource(
-    properties = {
-      "feature.flag.fhirpath.validation.enabled=true",
-      "feature.flag.return.fhirpath.validation.in.responses=true",
-      "feature.flag.return.disease.fhirpath.validation.in.responses=true"
-    })
 class LifecycleValidationControllerTest {
 
   @Autowired private MockMvc mockMvc;

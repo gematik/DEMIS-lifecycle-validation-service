@@ -33,9 +33,7 @@ deploymentLabels: {}
 
 # Extra environment variables to be added
 customEnvVars: 
-  FEATURE_FLAG_FHIRPATH_VALIDATION_ENABLED: "false"
-  FEATURE_FLAG_RETURN_FHIRPATH_VALIDATION_IN_RESPONSES: "false"
-  FEATURE_FLAG_RETURN_DISEASE_FHIRPATH_VALIDATION_IN_RESPONSES: "false"
+  FEATURE_FLAG_ANONYMOUS_NOTIFICATION: "false"
 
 # Define custom Container Entrypoint and Arguments (e.g. JVM Tuning)
 # If not given, the Entrypoint defined in Dockerfile will be used

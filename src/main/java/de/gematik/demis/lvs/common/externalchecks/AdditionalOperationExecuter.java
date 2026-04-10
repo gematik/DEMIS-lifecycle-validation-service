@@ -146,7 +146,7 @@ public class AdditionalOperationExecuter {
    */
   private String getNotificationCategoryFromDLS(final String notificationId) {
     try {
-      if (UUIDValidator.isValidUUID(notificationId)) {
+      if (notificationId != null && UUIDValidator.isValidUUID(notificationId)) {
         return destinationLookupServiceClient
             .getNotificationCategory(notificationId)
             .getNotificationCategory();

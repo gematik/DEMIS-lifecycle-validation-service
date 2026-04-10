@@ -7,8 +7,8 @@ All URIs are relative to *http://localhost*
 
 | Class | Method | HTTP request | Description |
 |------------ | ------------- | ------------- | -------------|
-| *DiseaseNotificationLifecycleValidationCtrApi* | [**validate1**](Apis/DiseaseNotificationLifecycleValidationCtrApi.md#validate1) | **POST** /disease/$validate |  |
-| *LaboratoryNotificationRestControllerApi* | [**validate**](Apis/LaboratoryNotificationRestControllerApi.md#validate) | **POST** /laboratory/$validate |  |
+| *LifecycleValidationControllerApi* | [**validate**](Apis/LifecycleValidationControllerApi.md#validate) | **POST** /{notificationType}/$validate |  |
+*LifecycleValidationControllerApi* | [**validate1**](Apis/LifecycleValidationControllerApi.md#validate1) | **POST** /$validate |  |
 
 
 <a name="documentation-for-models"></a>

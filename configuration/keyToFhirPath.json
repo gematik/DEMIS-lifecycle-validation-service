@@ -1,7 +1,8 @@
 [
   {
     "Bundle.profile(negative)": "Bundle.where(meta.profile = 'https://demis.rki.de/fhir/StructureDefinition/NotificationBundleLaboratoryNegative').exists()",
-    "Bundle.profile(!negative)": "Bundle.where(meta.profile = 'https://demis.rki.de/fhir/StructureDefinition/NotificationBundleLaboratoryNegative').empty()",
+    "Bundle.profile(!(negative|anonymous))": "Bundle.where(meta.profile = 'https://demis.rki.de/fhir/StructureDefinition/NotificationBundleLaboratoryNegative' or meta.profile = 'https://demis.rki.de/fhir/StructureDefinition/NotificationBundleLaboratoryAnonymous').empty()",
+    "Bundle.profile(anonymous)": "Bundle.where(meta.profile = 'https://demis.rki.de/fhir/StructureDefinition/NotificationBundleLaboratoryAnonymous').exists()",
     "Patient.profile(anonymous)": "Bundle.entry.resource.where($this is Patient).meta.where(profile = 'https://demis.rki.de/fhir/StructureDefinition/NotifiedPersonAnonymous').exists()",
     "HasRelatesToEntry": "Bundle.entry.resource.where($this is Composition and relatesTo.exists()).exists()",
     "RelatesToEmpty": "Bundle.entry.resource.where($this is Composition and relatesTo.empty()).exists()",
