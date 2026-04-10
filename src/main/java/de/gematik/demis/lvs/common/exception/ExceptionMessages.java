@@ -31,28 +31,6 @@ package de.gematik.demis.lvs.common.exception;
 public final class ExceptionMessages {
   private ExceptionMessages() {}
 
-  public static final String EXCEPTION_MESSAGE_ONLY_POSITIVE_FINAL =
-      "LVS-001: Final notifications are only allowed with a positive interpretation or a reference to another notification.";
-  public static final String EXCEPTION_MESSAGE_ONLY_POSITIVE_PRELIMINARY =
-      "LVS-002: Preliminary notifications are only allowed with a positive interpretation.";
-  public static final String EXCEPTION_MESSAGE_ENTERED_IN_ERROR_NOT_ALLOWED =
-      "LVS-003: Notification with BundleID %s has invalid status 'ENTERED_IN_ERROR'.";
-  public static final String EXCEPTION_MESSAGE_NULL_STATUS_NOT_ALLOWED =
-      "LVS-004: Notification with BundleID %s has invalid status 'NULL'.";
-  public static final String EXCEPTION_MESSAGE_MISSING_STATUS =
-      "LVS-005: Missing Status for Notification with BundleID %s.";
-  public static final String EXCEPTION_MESSAGE_UNKNOWN_STATUS =
-      "LVS-006: Notification with BundleID %s has unprocessable status: %s";
-
-  public static final String EXCEPTION_MESSAGE_DIAGNOSTIC_REPORT_UNKNOWN =
-      "LVS-007: Failed to extract Diagnostic Report from Notification";
-
-  public static final String EXCEPTION_MESSAGE_ANONYMOUS_UNSUPPORTED =
-      "Anonymous notifications are not supported";
-
-  public static final String EXCEPTION_MESSAGE_PATHOGEN_NOT_SUPPORTED_FOR_ANONYMOUS =
-      "LVS-008: Pathogen not supported for anonymous notifications";
-
   public static final String EXCEPTION_MESSAGE_NOTIFICATION_CATEGORY_MISMATCH =
       "Notification-category of related notification does not match";
 }

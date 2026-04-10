@@ -47,6 +47,7 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Stream;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
@@ -78,6 +79,11 @@ class NotificationScenarioValidationServiceIntegrationTest {
             {"notificationCategory": "cvdp"}
             """;
 
+  public static final String NOTIFICATION_CATEGORY_HIVP =
+      """
+                {"notificationCategory": "hivp"}
+                """;
+
   private static List<Scenario> scenarios;
   @Autowired private FhirParser fhirParser;
 
@@ -87,9 +93,12 @@ class NotificationScenarioValidationServiceIntegrationTest {
     FUTS_SERVER.start();
     LaboratoryConfigurationProperties properties =
         new LaboratoryConfigurationProperties(
-            "configuration/laboratoryScenarios.json", "configuration/keyToFhirPath.json", true);
+            "configuration/laboratoryScenarios.json",
+            "configuration/laboratoryScenarios_anonymous73.json",
+            "configuration/keyToFhirPath.json");
     scenarios =
-        ScenarioLoader.loadScenarios(properties.fhirPathData(), properties.keyToFhirPathData());
+        ScenarioLoader.loadScenarios(
+            properties.fhirPathDataAnonymous73(), properties.keyToFhirPathData());
 
     configureFor(FUTS_SERVER.port());
     stubFor(
@@ -99,7 +108,8 @@ class NotificationScenarioValidationServiceIntegrationTest {
                 aResponse()
                     .withStatus(200)
                     .withHeader("Content-Type", "application/json")
-                    .withBody("{\"cvdp\":\"cvd\"}")));
+                    .withBody("{\"cvdp\":\"cvd\", \"hivp\":\"hiv\"}")));
+
     stubFor(
         get(urlEqualTo(
                 "/fhir-ui-data-model-translation/conceptmap/NotificationDiseaseCategoryToTransmissionCategory"))
@@ -121,38 +131,65 @@ class NotificationScenarioValidationServiceIntegrationTest {
         Arguments.of(
             "src/test/resources/notifications/laboratory/scenarioExamples/M_POS.json",
             "M_POS",
-            404,
+            null,
+            null,
             null,
             null),
         Arguments.of(
+            "src/test/resources/notifications/laboratory/scenarioExamples/aM_73_POS.json",
+            "aM_73_POS",
+            null,
+            null,
+            null,
+            null),
+        Arguments.of(
+            "src/test/resources/notifications/laboratory/scenarioExamples/aM_73_POS-withRelatesTo.json",
+            "aM_73_POS",
+            null,
+            null,
+            null,
+            null),
+        Arguments.of(
+            "src/test/resources/notifications/laboratory/scenarioExamples/aM_73_POS-withRelatesTo.json",
+            "aM_73_POS",
+            null,
+            null,
+            "9b0d637c-e163-4380-adb7-8e207f4462c9",
+            NOTIFICATION_CATEGORY_HIVP),
+        Arguments.of(
             "src/test/resources/notifications/laboratory/scenarioExamples/FM_NEG.json",
             "FM_NEG",
-            404,
             null,
-            "92d99f62-fe4f-4337-b833-351751db12dc"),
+            null,
+            "92d99f62-fe4f-4337-b833-351751db12dc",
+            NOTIFICATION_CATEGORY_CVDP),
         Arguments.of(
             "src/test/resources/notifications/laboratory/scenarioExamples/aFM_POS.json",
             "aFM_POS",
-            404,
             null,
-            "92d99f62-fe4f-4337-b833-351751db12dc"),
+            null,
+            "92d99f62-fe4f-4337-b833-351751db12dc",
+            NOTIFICATION_CATEGORY_CVDP),
         Arguments.of(
             "src/test/resources/notifications/laboratory/scenarioExamples/aFM_NEG.json",
             "aFM_NEG",
-            404,
             null,
-            "92d99f62-fe4f-4337-b833-351751db12dc"),
+            null,
+            "92d99f62-fe4f-4337-b833-351751db12dc",
+            NOTIFICATION_CATEGORY_CVDP),
         Arguments.of(
             "src/test/resources/notifications/laboratory/scenarioExamples/EM_NEG.json",
             "EM_NEG",
             200,
             "d7a333e9-439f-4be4-9824-bab1444fe085",
-            null),
+            null,
+            NOTIFICATION_CATEGORY_CVDP),
         Arguments.of(
             "src/test/resources/notifications/laboratory/scenarioExamples/IM_NEG_CVDP.json",
             "IM_NEG_CVDP",
             404,
             "e8d8cc43-32c2-4f93-8eaf-b2f3e6deb2a9",
+            null,
             null));
   }
 
@@ -181,22 +218,27 @@ class NotificationScenarioValidationServiceIntegrationTest {
   }
 
   private void configureMockServer(
-      final String notificationId, final int status, final String relatesToId) {
+      final String notificationId,
+      final Integer statusDlsForNotificationId,
+      final String relatesToId,
+      final String notificationCategoryOfIM) {
     DLS_SERVER.resetAll();
     configureFor(DLS_SERVER.port());
-    if (notificationId != null && status != 0) {
-      if (status == 404) {
+    if (notificationId != null && statusDlsForNotificationId != 0) {
+      if (statusDlsForNotificationId == 404) {
         stubFor(
             get(urlEqualTo("/notification/" + notificationId + "/notificationCategory"))
-                .willReturn(aResponse().withStatus(status)));
+                .willReturn(aResponse().withStatus(statusDlsForNotificationId)));
       } else {
         stubFor(
             get(urlEqualTo("/notification/" + notificationId + "/notificationCategory"))
                 .willReturn(
                     aResponse()
-                        .withStatus(status)
+                        .withStatus(statusDlsForNotificationId)
                         .withHeader("Content-Type", "application/json")
-                        .withBody(NOTIFICATION_CATEGORY_CVDP)));
+                        .withBody(
+                            Optional.ofNullable(notificationCategoryOfIM)
+                                .orElse(NOTIFICATION_CATEGORY_CVDP))));
       }
     }
 
@@ -207,7 +249,9 @@ class NotificationScenarioValidationServiceIntegrationTest {
                   aResponse()
                       .withStatus(200)
                       .withHeader("Content-Type", "application/json")
-                      .withBody(NOTIFICATION_CATEGORY_CVDP)));
+                      .withBody(
+                          Optional.ofNullable(notificationCategoryOfIM)
+                              .orElse(NOTIFICATION_CATEGORY_CVDP))));
     }
   }
 
@@ -219,11 +263,13 @@ class NotificationScenarioValidationServiceIntegrationTest {
   void shouldProcessScenarioExample(
       final String notificationPath,
       final String expectedScenario,
-      final int status,
+      final Integer statusDlsForNotificationId,
       final String notificationId,
-      final String relatesToId)
+      final String relatesToId,
+      final String notificationCategoryOfIM)
       throws IOException {
-    configureMockServer(notificationId, status, relatesToId);
+    configureMockServer(
+        notificationId, statusDlsForNotificationId, relatesToId, notificationCategoryOfIM);
 
     String fileContent = Files.readString(Paths.get(notificationPath));
 
@@ -304,6 +350,44 @@ class NotificationScenarioValidationServiceIntegrationTest {
         .hasMessageContaining("No valid lifecycle scenario found");
 
     verify(1, getRequestedFor(urlEqualTo("/notification/" + id + "/notificationCategory")));
+  }
+
+  @Test
+  void shouldThrowLifeCycleValidationError_anonymous73_otherNotificationCategory()
+      throws IOException {
+    DLS_SERVER.resetAll();
+    configureFor(DLS_SERVER.port());
+
+    stubFor(
+        get(urlEqualTo(
+                "/notification/"
+                    + "9b0d637c-e163-4380-adb7-8e207f4462c9"
+                    + "/notificationCategory"))
+            .willReturn(
+                aResponse()
+                    .withStatus(200)
+                    .withHeader("Content-Type", "application/json")
+                    .withBody(NOTIFICATION_CATEGORY_CVDP)));
+
+    final String fileContent =
+        Files.readString(
+            Paths.get(
+                "src/test/resources/notifications/laboratory/scenarioExamples/aM_73_POS-withRelatesTo.json"));
+
+    NotificationScenarioValidationService notificationScenarioValidationService =
+        new NotificationScenarioValidationService(
+            FhirContext.forR4Cached(),
+            scenarios,
+            new ValidationMetrics(meterRegistry),
+            additionalOperationExecuter,
+            fhirParser);
+
+    assertThatThrownBy(
+            () ->
+                notificationScenarioValidationService.getValidScenariosForNotification(
+                    fileContent, MediaType.APPLICATION_JSON, null))
+        .isInstanceOf(LifecycleValidationException.class)
+        .hasMessageContaining("Notification-category of related notification does not match");
   }
 
   @ParameterizedTest

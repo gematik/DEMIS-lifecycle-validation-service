@@ -57,6 +57,8 @@ import lombok.SneakyThrows;
 import org.hl7.fhir.r4.hapi.fluentpath.FhirPathR4;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -109,9 +111,12 @@ class NotificationScenarioValidationServiceTest {
   void setup() {
     LaboratoryConfigurationProperties properties =
         new LaboratoryConfigurationProperties(
-            "configuration/laboratoryScenarios.json", "configuration/keyToFhirPath.json", true);
+            "configuration/laboratoryScenarios.json",
+            "configuration/laboratoryScenarios_anonymous73.json",
+            "configuration/keyToFhirPath.json");
     List<Scenario> scenarios =
-        ScenarioLoader.loadScenarios(properties.fhirPathData(), properties.keyToFhirPathData());
+        ScenarioLoader.loadScenarios(
+            properties.fhirPathDataAnonymous73(), properties.keyToFhirPathData());
 
     notificationScenarioValidationService =
         new NotificationScenarioValidationService(
@@ -172,6 +177,83 @@ class NotificationScenarioValidationServiceTest {
                 notification, MediaType.APPLICATION_JSON, null));
   }
 
+  @Nested
+  class Anonymous73 {
+
+    static Stream<Arguments> scenarioNamesAnonymous73() {
+      return Stream.of(
+          Arguments.of(
+              "src/test/resources/notifications/laboratory/scenarioExamples/aM_73_POS.json",
+              "aM_73_POS"),
+          Arguments.of(
+              "src/test/resources/notifications/laboratory/scenarioExamples/aM_73_POS-withRelatesTo.json",
+              "aM_73_POS"));
+    }
+
+    @ParameterizedTest
+    @MethodSource("scenarioNamesAnonymous73")
+    @DisplayName("Anonymous §7.3 Notification Disabled")
+    void shouldThrowExceptionForAnonymous73Notification(final String notificationPath)
+        throws Exception {
+      LaboratoryConfigurationProperties properties =
+          new LaboratoryConfigurationProperties(
+              "configuration/laboratoryScenarios.json",
+              "configuration/laboratoryScenarios_anonymous73.json",
+              "configuration/keyToFhirPath.json");
+      List<Scenario> scenarios =
+          ScenarioLoader.loadScenarios(properties.fhirPathData(), properties.keyToFhirPathData());
+
+      notificationScenarioValidationService =
+          new NotificationScenarioValidationService(
+              FhirContext.forR4Cached(),
+              scenarios,
+              new ValidationMetrics(meterRegistry),
+              additionalOperationExecuter,
+              fhirParser);
+      final String notification = Files.readString(Path.of(notificationPath));
+
+      assertThatThrownBy(
+              () ->
+                  notificationScenarioValidationService.getValidScenariosForNotification(
+                      notification, MediaType.APPLICATION_JSON, null))
+          .hasMessageContaining("No valid lifecycle scenario found");
+
+      verify(additionalOperationExecuter, never()).checkAllExternalChecks(any(), any(), any());
+    }
+
+    @ParameterizedTest
+    @MethodSource("scenarioNamesAnonymous73")
+    @DisplayName("Anonymous §7.3 Notification Enabled")
+    void shouldProcessAnonymous73Notification(
+        final String notificationPath, final String expectedScenarios) throws Exception {
+      LaboratoryConfigurationProperties properties =
+          new LaboratoryConfigurationProperties(
+              "configuration/laboratoryScenarios.json",
+              "configuration/laboratoryScenarios_anonymous73.json",
+              "configuration/keyToFhirPath.json");
+      List<Scenario> scenarios =
+          ScenarioLoader.loadScenarios(
+              properties.fhirPathDataAnonymous73(), properties.keyToFhirPathData());
+
+      notificationScenarioValidationService =
+          new NotificationScenarioValidationService(
+              FhirContext.forR4Cached(),
+              scenarios,
+              new ValidationMetrics(meterRegistry),
+              additionalOperationExecuter,
+              fhirParser);
+      final String notification = Files.readString(Path.of(notificationPath));
+
+      when(additionalOperationExecuter.checkAllExternalChecks(
+              any(), any(Scenario.class), any(FhirPathR4.class)))
+          .thenReturn(true);
+      String validatedScenario =
+          notificationScenarioValidationService.getValidScenariosForNotification(
+              notification, MediaType.APPLICATION_JSON, null);
+      assertThat(validatedScenario).isEqualTo(expectedScenarios);
+    }
+  }
+
   @Test
   void shouldThrowErrorWhenFhirPathExecutionException() {
     String validJson = "{\"resourceType\":\"Bundle\"}";
@@ -200,9 +282,12 @@ class NotificationScenarioValidationServiceTest {
 
     LaboratoryConfigurationProperties properties =
         new LaboratoryConfigurationProperties(
-            "configuration/laboratoryScenarios.json", "configuration/keyToFhirPath.json", true);
+            "configuration/laboratoryScenarios.json",
+            "configuration/laboratoryScenarios_anonymous73.json",
+            "configuration/keyToFhirPath.json");
     List<Scenario> scenarios =
-        ScenarioLoader.loadScenarios(properties.fhirPathData(), properties.keyToFhirPathData());
+        ScenarioLoader.loadScenarios(
+            properties.fhirPathDataAnonymous73(), properties.keyToFhirPathData());
 
     ValidationMetrics validationMetrics = mock(ValidationMetrics.class);
     notificationScenarioValidationService =

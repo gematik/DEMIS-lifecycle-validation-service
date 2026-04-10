@@ -17,6 +17,33 @@
     ]
   },
   {
+    "name": "aM_73_POS",
+    "fhirPathExpression": [
+      {
+        "fhirPath": "Bundle.profile(anonymous)"
+      },
+      {
+        "fhirPath": "Patient.profile(anonymous)"
+      },
+      {
+        "fhirPath": "DiagnosticReport.conclusionCode(pathogenDetected)"
+      },
+      {
+        "fhirPath": "Observation.interpretation(pos).or.valueCoding(R,S,I)"
+      }
+    ],
+    "externalChecks": [
+      {
+        "type": "CATEGORY_MAPPING",
+        "inputs": {
+          "id": "RelatesToId",
+          "hasToExist": false,
+          "notificationCategory": "NotificationCategory"
+        }
+      }
+    ]
+  },
+  {
     "name": "EM_NEG",
     "fhirPathExpression": [
       {

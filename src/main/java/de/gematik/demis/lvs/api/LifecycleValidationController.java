@@ -31,12 +31,11 @@ import static org.springframework.http.HttpHeaders.CONTENT_TYPE;
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 import static org.springframework.http.MediaType.APPLICATION_XML_VALUE;
 
-import de.gematik.demis.lvs.common.validation.NotificationValidationService;
+import de.gematik.demis.lvs.common.validation.NotificationScenarioValidationService;
 import jakarta.validation.constraints.NotBlank;
 import javax.annotation.CheckForNull;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
@@ -50,13 +49,13 @@ import org.springframework.web.bind.annotation.RestController;
 @Validated
 @RequiredArgsConstructor
 @Slf4j
-@ConditionalOnProperty(name = "feature.flag.fhirpath.validation.enabled", havingValue = "true")
 public class LifecycleValidationController {
 
   public static final String HEADER_SENDER = "x-sender";
 
-  private final NotificationValidationService diseaseValidationService;
-  private final NotificationValidationService laboratoryValidationService;
+  private final NotificationScenarioValidationService diseaseNotificationScenarioValidationService;
+  private final NotificationScenarioValidationService
+      laboratoryNotificationScenarioValidationService;
 
   @PostMapping(
       path = "{notificationType}/$validate",
@@ -75,14 +74,14 @@ public class LifecycleValidationController {
     if (notificationType.equals("disease")) {
       return ResponseEntity.ok()
           .body(
-              diseaseValidationService.validate(
-                  notification, mediaType, principalId, notificationType));
+              diseaseNotificationScenarioValidationService.getValidScenariosForNotification(
+                  notification, mediaType, principalId));
     }
     if (notificationType.equals("laboratory")) {
       return ResponseEntity.ok()
           .body(
-              laboratoryValidationService.validate(
-                  notification, mediaType, principalId, notificationType));
+              laboratoryNotificationScenarioValidationService.getValidScenariosForNotification(
+                  notification, mediaType, principalId));
     }
 
     throw new IllegalArgumentException("Invalid or unknown notification type");
