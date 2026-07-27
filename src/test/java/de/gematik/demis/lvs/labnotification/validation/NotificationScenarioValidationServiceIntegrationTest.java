@@ -56,11 +56,11 @@ import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.cloud.contract.wiremock.AutoConfigureWireMock;
+import org.springframework.boot.webmvc.test.autoconfigure.AutoConfigureMockMvc;
 import org.springframework.http.MediaType;
 import org.springframework.test.context.TestPropertySource;
+import org.wiremock.spring.EnableWireMock;
 
 @AutoConfigureMockMvc()
 @SpringBootTest(
@@ -68,7 +68,7 @@ import org.springframework.test.context.TestPropertySource;
       "lvs.client.dls=http://localhost:7070",
       "demis.codemapping.client.base-url=http://localhost:7071"
     })
-@AutoConfigureWireMock(port = 0) // dynamic random port
+@EnableWireMock
 @TestPropertySource(locations = "classpath:application-test.properties")
 class NotificationScenarioValidationServiceIntegrationTest {
 

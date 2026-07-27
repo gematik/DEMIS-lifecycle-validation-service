@@ -8,6 +8,7 @@ replicaCount: 2
 # Enables debug mode
 debug:
   enable: false
+  params: "-agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=*:9000"
 
 # Required Values for the Chart
 required:
@@ -32,14 +33,17 @@ customLabels: {}
 deploymentLabels: {}
 
 # Extra environment variables to be added
-customEnvVars: 
+customEnvVars:
+  JAVA_TOOL_OPTIONS: "-XX:ActiveProcessorCount=2 -XX:MaxRAMPercentage=30.0 -XX:MaxMetaspaceSize=128m -XX:+UseG1GC"
+  TZ: "Europe/Berlin"
   FEATURE_FLAG_ANONYMOUS_NOTIFICATION: "false"
+  LVS_CLIENT_DLS: http://destination-lookup-reader.{{ .Release.Namespace }}.svc.cluster.local
+  LVS_CLIENT_FUTS_ADDRESS: http://futs.{{ .Release.Namespace }}.svc.cluster.local
 
-# Define custom Container Entrypoint and Arguments (e.g. JVM Tuning)
 # If not given, the Entrypoint defined in Dockerfile will be used
 application:
-  entrypoint: ["java"]
-  parameters: ["-XX:ActiveProcessorCount=2", "-XX:MaxRAMPercentage=65.0", "-XX:+TieredCompilation", "-XX:+UseG1GC", "-jar", "/app.jar"]
+  entrypoint: []
+  parameters: []
 
 # Define Image Pull Secrets if using private registry
 imagePullSecrets: []

@@ -2,6 +2,15 @@
  
 # Release notes
 
+## Release 1.7.0
+- arranged jvm options and resource limits
+- optimized custom environment variables handling in helm chart
+- updated docker base image to gematik1/osadl-alpine-openjdk25-jre:1.0.5
+- updated to Spring Boot 4
+- arranged jvm options
+- fixed handling of falsy custom environment variables (false, 0) in helm chart
+- removed FEATURE_FLAG_CORE_SPLIT with an update to spring-parent 4.1.0
+
 ## Release 1.6.0
 - updated spring-parent to 2.15.6
 - added validation of anonymous §7.3 notifications
