@@ -2,7 +2,14 @@
  
 # Release notes
 
+## Release 1.8.0
+- added SNOMED and HL7 interpretation codes to FHIRPath validation
+- updated spring-parent to 4.1.6
+- updated docker base image to gematik1/osadl-alpine-openjdk25-jre:1.0.7
+- added VEX documents to repository
+
 ## Release 1.7.1
+- updated docker base image to gematik1/osadl-alpine-openjdk25-jre:1.0.6
 
 ## Release 1.7.0
 - arranged jvm options and resource limits

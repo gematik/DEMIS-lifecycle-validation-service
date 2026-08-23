@@ -4,10 +4,10 @@
   <parent>
     <groupId>de.gematik.demis</groupId>
     <artifactId>spring-parent</artifactId>
-    <version>4.1.0</version>
+    <version>4.1.6</version>
   </parent>
   <artifactId>lifecycle-validation-service</artifactId>
-  <version>1.7.1-SNAPSHOT</version>
+  <version>1.8.0-SNAPSHOT</version>
   <name>lifecycle-validation-service</name>
   <packaging>jar</packaging>
   <description>Lifecycle Validation Service for FHIR Notifications</description>
