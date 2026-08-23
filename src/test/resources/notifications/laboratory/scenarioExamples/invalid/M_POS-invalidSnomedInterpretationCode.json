@@ -277,15 +277,13 @@
               } ,
             "subject" : {"reference" : "urn:uuid:384625bb-847b-35e3-9396-c27c3505a4b3" } ,
             "valueCodeableConcept": {
-              "coding": [
-                {
-                  "system": "http://snomed.info/sct",
-                  "version": "20241115",
-                  "code": "1255965005",
-                  "display": "Positive (qualifier value)"
-                }
-              ]
-            },
+                "coding": [ {
+                  "system": "http://loinc.org",
+                  "version": "2.79",
+                  "code": "LA6576-8",
+                  "display": "Positive"
+                } ]
+              },
             "interpretation": [
               {
                 "coding": [
